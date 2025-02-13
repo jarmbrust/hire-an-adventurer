@@ -1,0 +1,42 @@
+{
+  "adventurers": [
+    {
+    "id": 1,
+    "name": "Timid Edgar",
+    "profession": "Innkeeper",
+    "level": "1",
+    "health": "5",
+    "strength": "1",
+    "cunning": "1",
+    "intellect": "2",
+    "description": "Edgar would rather stay safe in the inn...",
+    "image": "image_fx_timid_edgar.jpeg",
+    "cost": "2"
+  },
+  {
+    "id": 2,
+    "name": "Mighty Torg",
+    "profession": "Barbarian",
+    "level": "4",
+    "health": "35",
+    "strength": "5",
+    "cunning": "2",
+    "intellect": "1",
+    "description": "Very strong, but not too smart.",
+    "image": "image_fx_mighty_torg.jpeg",
+    "cost": "10"
+  },
+  {
+    "id": 3,
+    "name": "Archmage Claus",
+    "profession": "Wizard",
+    "level": "5",
+    "health": "20",
+    "strength": "1",
+    "cunning": "3",
+    "intellect": "5",
+    "description": "Frail, yet powerful and wise.",
+    "image": "image_fx_archmage_claus.jpeg",
+    "cost": "18"
+  }
+]}
