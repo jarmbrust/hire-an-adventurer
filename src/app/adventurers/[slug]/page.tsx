@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { adventurers } from '@/adventurers.json';
+import { Button } from "@/app/ui/button";
 
 const AdventurerDetailsPage = async ({ params}: { params: Promise<{ slug: number }> }) => {
   const adventurerId = (await params).slug - 1;
@@ -14,6 +15,7 @@ const AdventurerDetailsPage = async ({ params}: { params: Promise<{ slug: number
         height={400}
         className="rounded-lg shadow-md"
       />
+      <Button>Hire this adventurer</Button>
     </>
   );
 };

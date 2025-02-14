@@ -1,14 +1,14 @@
 'use client'
 
 import Link from "next/link";
-import { adventurersListPath } from "@/paths";
+import { adventurersListPath } from "@/app/lib/paths";
 
 const Home = () => {
   return (
     <>
       <h1 className="text-3xl font-bold">Welcome to Hire an Adventurer!</h1>
 
-      <p className="mt-4">
+      <p className="mt-4 mb-5">
         Hire an adventurer for your next quest! You can find a list of adventurers
         by clicking the link below.
       </p>
