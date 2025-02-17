@@ -3,32 +3,23 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Button } from "@/app/ui/button";
+import { type Adventurer } from "@/app/lib/definitions";
+import AdventurerStats from "@/app/ui/adventurer-stats";
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  const response = await fetch(`/api/adventurers/${adventurerId}`);
 
+  // Simulate a 1.5 second delay to show the loading state
+  // for demo purposes only!
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  const response = await fetch(`/api/adventurers/${adventurerId}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   const adventurer = await response.json();
   return adventurer;
-}
-
-type Adventurer = {
-  id: number,
-  name: string,
-  profession: string,
-  level: string,
-  health: string,
-  strength: string,
-  cunning: string,
-  intellect: string,
-  description: string,
-  image: string,
-  cost: string,
-}
+};
 
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -79,14 +70,17 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
           />
         </>
         :
-        <Image 
-          src={`/images/${adventurerInfo?.image}`}
-          alt={`${adventurerInfo?.name} Image`} 
-          width={0}
-          height={400} 
-          sizes="150vw"
-          className="w-auto h-auto rounded-lg shadow-md"
-        />
+        <>
+          <Image 
+            src={`/images/${adventurerInfo?.image}`}
+            alt={`${adventurerInfo?.name} Image`} 
+            width={0}
+            height={400} 
+            sizes="150vw"
+            className="w-auto h-auto rounded-lg shadow-md"
+          />
+          <AdventurerStats stats={adventurerInfo} />
+        </>
       }
       <Button onClick={handleHireAdventurer} aria-disabled={isLoading}>Hire this adventurer</Button>
     </>
