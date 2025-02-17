@@ -8,9 +8,6 @@ const fetchAdventurerInfo = async (adventurerId: number) => {
   await new Promise(resolve => setTimeout(resolve, 1500));
   const response = await fetch(`/api/adventurers/${adventurerId}`);
 
-  console.log('response', response)
-
-
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -34,8 +31,6 @@ type Adventurer = {
 }
 
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
-  
-  console.log('params', params)
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
 
@@ -71,19 +66,25 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Adventurer Details</h1>
-      <p>{adventurerInfo?.name}</p>
-      {isLoading && <p>Loading...</p>}
+      <h1 className="text-3xl font-bold mb-4">Adventurer Details</h1>
       {isLoading ?
-        <Image src="/images/loading-spinner1.gif" alt="placeholder" width={300} height={200} className="rounded-lg shadow-md" />
+        <>
+          <p>{adventurerInfo?.name}</p>
+          <Image 
+            src="/images/loading-spinner2.gif"
+            alt="placeholder"
+            width={75}
+            height={75}
+            className="rounded-lg shadow-md"
+          />
+        </>
         :
         <Image 
           src={`/images/${adventurerInfo?.image}`}
-          alt={`${adventurerInfo?.name} picture`} 
+          alt={`${adventurerInfo?.name} Image`} 
           width={0}
           height={400} 
           sizes="150vw"
-          placeholder='empty'
           className="w-auto h-auto rounded-lg shadow-md"
         />
       }
