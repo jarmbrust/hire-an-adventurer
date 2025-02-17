@@ -9,7 +9,7 @@ const AdventurersListPage = () => {
       <ul className="mt-4">
         {adventurers.map((adventurer) => (
           <li key={adventurer.id} className="mb-4">
-            <Link href={`/adventurers/${adventurer.id}`}>
+            <Link href={`adventurers/${adventurer.id}`}>
               <h3 className="text-xl font-bold underline">{adventurer.name}</h3>
             </Link>
             <p><span className="font-bold">Profession:</span> {adventurer.profession}</p>
