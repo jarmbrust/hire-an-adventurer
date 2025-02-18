@@ -16,4 +16,5 @@ export type SelectedAdventurersContextType = {
   selectedAdventurers: Adventurer[];
   addAdventurer: (adventurer: Adventurer) => void;
   removeAdventurer: (id: number) => void;
+  findAdventurer: (id: number | undefined) => Adventurer | undefined;
 };

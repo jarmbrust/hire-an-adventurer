@@ -1,11 +1,11 @@
 'use client';
 
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { Button } from "@/app/ui/button";
-import { type Adventurer } from "@/app/lib/definitions";
-import AdventurerStats from "@/app/ui/adventurer-stats";
-import { useSelectedAdventurers } from "@/context/selected-adventurers-context";
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { Button } from '@/app/ui/button';
+import { type Adventurer } from '@/app/lib/definitions';
+import AdventurerStats from '@/app/ui/adventurer-stats';
+import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
 
@@ -24,9 +24,10 @@ const fetchAdventurerInfo = async (adventurerId: number) => {
 
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
+  const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-  const { addAdventurer } = useSelectedAdventurers();
-
+  const { addAdventurer, findAdventurer } = useSelectedAdventurers();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,21 +47,35 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     fetchData();
   }, [params]);
 
+  useEffect(() => {
+    if (findAdventurer(adventurerInfo?.id)) {
+      setDisableButton(true);
+    };
+  }, [findAdventurer, adventurerInfo?.id]);
+
   const handleHireAdventurer = async () => {
-    // setIsLoading(true);
+    setHireButton(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       if (adventurerInfo) {
-        console.log('Adding adventurer (in handleHireAdventurer):', adventurerInfo);
         addAdventurer(adventurerInfo);
       }
     } catch (err) {
       console.error(err);
-    } 
-    // finally {
-    //   setIsLoading(false);
-    // }
+    } finally {
+      setHireButton(false);
+    }
+  }
+
+  const buttonText = () => {
+    if (hireButton) {
+      return 'Hiring...';
+    }
+    if (disableButton) {
+      return 'Adventurer selected';
+    }
+    return 'Hire this adventurer';
   }
 
   return (
@@ -81,7 +96,12 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
           <AdventurerStats stats={adventurerInfo} />
         </>
       }
-      <Button onClick={handleHireAdventurer} aria-disabled={isLoading}>Hire this adventurer</Button>
+      <Button
+        onClick={handleHireAdventurer}
+        disabled={isLoading || disableButton}
+        aria-disabled={isLoading || disableButton}>
+        { buttonText() }
+      </Button>
     </>
   );
 };

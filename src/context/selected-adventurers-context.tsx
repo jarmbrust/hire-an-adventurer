@@ -17,8 +17,17 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     setSelectedAdventurers((prevAdventurers) => prevAdventurers.filter((adventurer) => adventurer.id !== id));
   };
 
+  const findAdventurer = (id: number | undefined) => {
+    if (!id) {
+      return undefined;
+    }
+    return selectedAdventurers.find((adventurer) => adventurer.id === id);
+  };
+
   return (
-    <SelectedAdventurersContext.Provider value={{ selectedAdventurers, addAdventurer, removeAdventurer }}>
+    <SelectedAdventurersContext.Provider
+      value={{ selectedAdventurers, addAdventurer, removeAdventurer, findAdventurer }}
+    >
       {children}
     </SelectedAdventurersContext.Provider>
   );
