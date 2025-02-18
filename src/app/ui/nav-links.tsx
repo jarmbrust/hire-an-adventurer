@@ -1,23 +1,30 @@
 'use client';
 
 import {
-  // DocumentDuplicateIcon,
   HomeIcon,
   UsersIcon,
-  // UserIcon,
+  ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const links = [
-  { name: 'Home', href: '/', icon: HomeIcon },
+  {
+    name: 'Home',
+    href: '/',
+    icon: HomeIcon
+  },
   {
     name: 'Available Adventurers',
     href: '/adventurers',
     icon: UsersIcon,
   },
-  // { name: 'Adventurer Profile', href: `/adventurers`, icon: UserIcon },
+  { 
+    name: 'Adventurer Cart',
+    href: `/cart`,
+    icon: ShoppingCartIcon
+  },
 ];
 
 export default function NavLinks() {

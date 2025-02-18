@@ -23,7 +23,7 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
       <p><span className="font-bold">Cunning:</span> {stats?.cunning}</p>
       <p><span className="font-bold">Intellect:</span> {stats?.intellect}</p>
       <p><span className="font-bold">Description:</span> {stats?.description}</p>
-      <p><span className="font-bold">Cost:</span> {stats?.cost} silver coins / day</p>
+      <p><span className="font-bold">Fee:</span> {stats?.cost} silver coins / day</p>
     </div>
   );
 };

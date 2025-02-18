@@ -9,6 +9,7 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
 
   const addAdventurer = (adventurer: Adventurer) => {
+    console.log('Adding adventurer:', adventurer);
     setSelectedAdventurers((prevAdventurers) => [...prevAdventurers, adventurer]);
   };
 

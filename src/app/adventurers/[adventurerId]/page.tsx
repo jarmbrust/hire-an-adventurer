@@ -47,18 +47,20 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   }, [params]);
 
   const handleHireAdventurer = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       if (adventurerInfo) {
+        console.log('Adding adventurer (in handleHireAdventurer):', adventurerInfo);
         addAdventurer(adventurerInfo);
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
+    // finally {
+    //   setIsLoading(false);
+    // }
   }
 
   return (
