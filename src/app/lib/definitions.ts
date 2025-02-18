@@ -11,3 +11,9 @@ export type Adventurer = {
   image: string,
   cost: string,
 };
+
+export type SelectedAdventurersContextType = {
+  selectedAdventurers: Adventurer[];
+  addAdventurer: (adventurer: Adventurer) => void;
+  removeAdventurer: (id: number) => void;
+};

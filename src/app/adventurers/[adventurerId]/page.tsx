@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/app/ui/button";
 import { type Adventurer } from "@/app/lib/definitions";
 import AdventurerStats from "@/app/ui/adventurer-stats";
+import { useSelectedAdventurers } from "@/context/selected-adventurers-context";
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
 
@@ -24,6 +25,8 @@ const fetchAdventurerInfo = async (adventurerId: number) => {
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
+  const { addAdventurer } = useSelectedAdventurers();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +51,9 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
+      if (adventurerInfo) {
+        addAdventurer(adventurerInfo);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -60,7 +66,6 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
       <h1 className="text-3xl font-bold mb-4">Adventurer Details</h1>
       {isLoading ?
         <>
-          <p>{adventurerInfo?.name}</p>
           <Image 
             src="/images/loading-spinner2.gif"
             alt="placeholder"
@@ -71,14 +76,6 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
         </>
         :
         <>
-          <Image 
-            src={`/images/${adventurerInfo?.image}`}
-            alt={`${adventurerInfo?.name} Image`} 
-            width={0}
-            height={400} 
-            sizes="150vw"
-            className="w-auto h-auto rounded-lg shadow-md"
-          />
           <AdventurerStats stats={adventurerInfo} />
         </>
       }
