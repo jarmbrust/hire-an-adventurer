@@ -89,7 +89,6 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
           alt="placeholder"
           width={75}
           height={75}
-          className="rounded-lg shadow-md"
         />
         :
         <AdventurerStats stats={adventurerInfo} />

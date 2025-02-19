@@ -9,10 +9,10 @@ const CartPage = () => {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Selected Adventurers</h1>
+      <h1 className="text-3xl font-bold">Hiring Selected Adventurers</h1>
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
-          <tr>
+          <tr className="text-2xl font-bold">
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Fee</th>
           </tr>
@@ -32,10 +32,10 @@ const CartPage = () => {
           ))}
           <tr className="font-bold">
             <td className="border px-4 py-2">
-              <td>Total Cost</td>
+              Total Fee
             </td>
             <td className="border px-4 py-2">
-              {selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0)}  silver coins
+              {selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0)} silver coins
             </td>
           </tr>
         </tbody>

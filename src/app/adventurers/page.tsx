@@ -4,13 +4,12 @@ import Link from 'next/link';
 import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
-// import { useAllAdventurers } from '@/context/all-adventurers-context';
 import { Adventurer } from '@/app/lib/definitions';
 
 const fetchAdventurersList = async () => {
-  // Simulate a 1.5 second delay to show the loading state
+  // Simulate a 0.5 second delay to show the loading state
   // for demo purposes only!
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const response = await fetch(`/api/adventurers-list`);
   if (!response.ok) {
@@ -56,7 +55,6 @@ const AdventurersListPage = () => {
               alt="placeholder"
               width={75}
               height={75}
-              className="rounded-lg shadow-md"
             />
           </>
           :

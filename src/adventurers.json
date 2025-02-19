@@ -1,20 +1,7 @@
 {
   "adventurers": [
-    {
-    "id": 1,
-    "name": "Timid Edgar",
-    "profession": "Innkeeper",
-    "level": "1",
-    "health": "5",
-    "strength": "1",
-    "cunning": "1",
-    "intellect": "2",
-    "description": "Edgar would rather stay safe in the inn...",
-    "image": "image_fx_timid_edgar.jpeg",
-    "fee": "1"
-  },
   {
-    "id": 2,
+    "id": 1,
     "name": "Mighty Torg",
     "profession": "Barbarian",
     "level": "4",
@@ -22,21 +9,70 @@
     "strength": "5",
     "cunning": "2",
     "intellect": "1",
-    "description": "Very strong, but not too smart.",
+    "description": "Very strong with powerful melee attacks, but Torg cannot do much at range.",
     "image": "image_fx_mighty_torg.jpeg",
-    "fee": "10"
+    "fee": 10,
+    "rangedPower": 1,
+    "meleePower": 20
+  },
+  {
+    "id": 2,
+    "name": "Ranger Rena",
+    "profession": "Ranger",
+    "level": "4",
+    "health": "28",
+    "strength": "4",
+    "cunning": "3",
+    "intellect": "3",
+    "description": "Swift and strong, Rena can pinpoint a target from great range, but is not as skilled in melee.",
+    "image": "image_fx_ranger_rena.jpeg",
+    "fee": 13,
+    "rangedPower": 20,
+    "meleePower": 5
   },
   {
     "id": 3,
     "name": "Archmage Claus",
     "profession": "Wizard",
     "level": "5",
-    "health": "20",
+    "health": "15",
     "strength": "1",
     "cunning": "3",
     "intellect": "5",
-    "description": "Frail, yet powerful and wise.",
+    "description": "Frail, yet powerful and wise. Archmage Claus is a master of magic with both ranged and melee spells.",
     "image": "image_fx_archmage_claus.jpeg",
-    "fee": "18"
+    "fee": 18,
+    "rangedPower": 15,
+    "meleePower": 15
+  },
+  {
+    "id": 4,
+    "name": "Shadowstalker Velma",
+    "profession": "Assassin",
+    "level": "3",
+    "health": "20",
+    "strength": "3",
+    "cunning": "5",
+    "intellect": "2",
+    "description": "Elusive and cunning, Velma is a master of stealth and can strike a target in melee or ranged before they knew what hit them.",
+    "image": "image_fx_shadowstalker_velma.jpeg",
+    "fee": 8,
+    "rangedPower": 8,
+    "meleePower": 9
+  },
+  {
+    "id": 5,
+    "name": "Timid Edgar",
+    "profession": "A regular guy",
+    "level": "1",
+    "health": "5",
+    "strength": "1",
+    "cunning": "1",
+    "intellect": "2",
+    "description": "While Edgar can poke things in melee with a small rusty sword, or use his slingshot at range, he would rather stay safe in the inn...",
+    "image": "image_fx_timid_edgar.jpeg",
+    "fee": 1,
+    "rangedPower": 2,
+    "meleePower": 2
   }
 ]}
