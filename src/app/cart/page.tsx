@@ -30,6 +30,14 @@ const CartPage = () => {
               </td>
             </tr>
           ))}
+          <tr className="font-bold">
+            <td className="border px-4 py-2">
+              <td>Total Cost</td>
+            </td>
+            <td className="border px-4 py-2">
+              {selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0)}  silver coins
+            </td>
+          </tr>
         </tbody>
       </table>
     </>
