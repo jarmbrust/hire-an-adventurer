@@ -57,6 +57,8 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     setHireButton(true);
 
     try {
+      // Simulate a 1.5 second delay to show the loading state
+      // for demo purposes only!
       await new Promise(resolve => setTimeout(resolve, 1500));
       if (adventurerInfo) {
         addAdventurer(adventurerInfo);
@@ -82,19 +84,15 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     <>
       <h1 className="text-3xl font-bold mb-4">Adventurer Details</h1>
       {isLoading ?
-        <>
-          <Image 
-            src="/images/loading-spinner2.gif"
-            alt="placeholder"
-            width={75}
-            height={75}
-            className="rounded-lg shadow-md"
-          />
-        </>
+        <Image 
+          src="/images/loading-spinner2.gif"
+          alt="placeholder"
+          width={75}
+          height={75}
+          className="rounded-lg shadow-md"
+        />
         :
-        <>
-          <AdventurerStats stats={adventurerInfo} />
-        </>
+        <AdventurerStats stats={adventurerInfo} />
       }
       <Button
         onClick={handleHireAdventurer}

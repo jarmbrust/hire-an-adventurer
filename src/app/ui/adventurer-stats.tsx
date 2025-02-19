@@ -5,6 +5,9 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
   if (!stats) {
     return null;
   }
+
+  const feeText = parseInt(stats.fee) > 1 ? "silver coins to hire" : "silver coin to hire";
+
   return (
     <div className="flex flex-col items-center justify-center rounded-md bg-gray-50 p-4">
       <Image 
@@ -23,7 +26,7 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
       <p><span className="font-bold">Cunning:</span> {stats?.cunning}</p>
       <p><span className="font-bold">Intellect:</span> {stats?.intellect}</p>
       <p><span className="font-bold">Description:</span> {stats?.description}</p>
-      <p><span className="font-bold">Fee:</span> {stats?.cost} silver coins / day</p>
+      <p><span className="font-bold">Fee:</span> {stats?.fee} {feeText}</p>
     </div>
   );
 };

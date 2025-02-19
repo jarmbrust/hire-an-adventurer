@@ -9,7 +9,7 @@ export type Adventurer = {
   intellect: string,
   description: string,
   image: string,
-  cost: string,
+  fee: string,
 };
 
 export type SelectedAdventurersContextType = {

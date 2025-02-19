@@ -10,15 +10,28 @@ const CartPage = () => {
   return (
     <>
       <h1 className="text-3xl font-bold">Selected Adventurers</h1>
-      <ul className="flex flex-wrap gap-4 mt-4">
-        {selectedAdventurers.map((adventurer) => (
-          <li key={adventurer.id} className="mb-4">
-            <Link href={`adventurers/${adventurer.id}`}>
-              <h3 className="text-xl font-bold">{adventurer.name}</h3>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <table id="adventurers-table" className="w-full mt-4 border-collapse">
+        <thead>
+          <tr>
+            <th className="border px-4 py-2">Name</th>
+            <th className="border px-4 py-2">Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedAdventurers.map((adventurer) => (
+            <tr key={adventurer.id}>
+              <td className="border px-4 py-2">
+                <Link href={`adventurers/${adventurer.id}`}>
+                  <h3 className="text-lg font-bold">{adventurer.name}</h3>
+                </Link>
+              </td>
+              <td className="border px-4 py-2">
+                {adventurer.fee}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };
