@@ -70,7 +70,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
   const buttonText = () => {
     if (hireButton) {
-      return 'Hiring...';
+      return 'Selecting...';
     }
     if (disableButton) {
       return 'Adventurer selected';

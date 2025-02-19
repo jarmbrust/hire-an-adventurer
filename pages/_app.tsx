@@ -1,4 +1,4 @@
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import { SelectedAdventurersProvider } from '@/context/selected-adventurers-context';
 
 function MyApp({ Component, pageProps }: AppProps) {
