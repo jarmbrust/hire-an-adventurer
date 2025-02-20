@@ -1,7 +1,10 @@
 import Image from "next/image";
+import clsx from "clsx";
 import { type Adventurer } from "@/app/lib/definitions";
+import { useTheme } from "@/context/theme-context";
 
 const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
+  const { theme } = useTheme();
   if (!stats) {
     return null;
   }
@@ -9,7 +12,12 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
   const feeText = parseInt(stats.fee) > 1 ? "silver coins to hire" : "silver coin to hire";
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-md bg-gray-50 p-4">
+    <div className={clsx("flex flex-col items-center justify-center rounded-md bg-gray-50 p-4",
+      {
+        'dark-sidebar': theme === 'dark',
+        'light-sidebar': theme === 'light',
+      }
+    )}>
       <Image 
         src={`/images/${stats?.image}`}
         alt={`${stats?.name} Image`} 

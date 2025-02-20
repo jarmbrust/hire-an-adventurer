@@ -9,9 +9,9 @@ import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
 
-  // Simulate a 1.5 second delay to show the loading state
+  // Simulate a 1 second delay to show the loading state
   // for demo purposes only!
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
   const response = await fetch(`/api/adventurers/${adventurerId}`);
   if (!response.ok) {
@@ -75,14 +75,27 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
       return 'Selecting...';
     }
     if (disableButton) {
-      return 'Adventurer selected';
+      return 'Adventurer already selected';
     }
-    return 'Hire this adventurer';
+    return 'Choose this adventurer';
   }
 
   return (
-    <>
-      <h1 className="text-3xl font-bold mb-4">Adventurer Details</h1>
+    <div className="flex flex-col absolute">
+      <span>
+        <h1 className="text-3xl font-bold mb-4">
+          Adventurer Details
+        </h1>
+        {/* <div className="flex flex-col w-full text-center items-center"> */}
+          <Button
+            className="mt-4 mb-4 w-full"
+            onClick={handleHireAdventurer}
+            disabled={isLoading || disableButton}
+            aria-disabled={isLoading || disableButton}>
+            { buttonText() }
+          </Button>
+        {/* </div> */}
+      </span>
       {isLoading ?
         <Image 
           src="/images/loading-spinner2.gif"
@@ -94,12 +107,13 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
         <AdventurerStats stats={adventurerInfo} />
       }
       <Button
+        className="mt-4 mb-4"
         onClick={handleHireAdventurer}
         disabled={isLoading || disableButton}
         aria-disabled={isLoading || disableButton}>
         { buttonText() }
       </Button>
-    </>
+    </div>
   );
 };
 

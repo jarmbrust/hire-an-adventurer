@@ -8,6 +8,7 @@ import {
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from '@/context/theme-context';
 
 const links = [
   {
@@ -28,6 +29,7 @@ const links = [
 ];
 
 export default function NavLinks() {
+  const { theme } = useTheme();
   const pathname = usePathname();
   return (
     <>
@@ -38,9 +40,11 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-200 p-3 text-sm font-medium hover:bg-gray-400 hover:text-white md:flex-none md:justify-start md:p-2 md:px-3',
+              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-200 text-gray-500 p-3 text-sm'
+              + 'font-medium hover:bg-gray-400  md:flex-none md:justify-start md:p-2 md:px-3',
               {
-                'bg-gray-400 text-gray-600': pathname === link.href,
+                'bg-gray-300 text-gray-600': pathname === link.href && theme === 'light',
+                'bg-gray-600 text-gray-300': pathname === link.href && theme === 'dark',
               },
             )}
           >

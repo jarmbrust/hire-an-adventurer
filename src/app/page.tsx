@@ -1,5 +1,7 @@
-import Link from "next/link";
-import { adventurersListPath } from "@/app/lib/paths";
+'use client';
+
+import Link from 'next/link';
+import { adventurersListPath } from '@/app/lib/paths';
 
 const Home = () => {
   return (

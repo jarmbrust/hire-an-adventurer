@@ -12,6 +12,13 @@ export type Adventurer = {
   fee: string,
 };
 
+export type Theme = 'light' | 'dark';
+
+export type ThemeContextType = {
+  theme: Theme;
+  toggleTheme: () => void;
+};
+
 export type SelectedAdventurersContextType = {
   selectedAdventurers: Adventurer[];
   addAdventurer: (adventurer: Adventurer) => void;
