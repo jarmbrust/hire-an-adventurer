@@ -1,10 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { useCoins } from '@/context/coins-context';
+import { Button } from '@/app/ui/button';
 
 const CartPage = () => {
   const { selectedAdventurers } = useSelectedAdventurers();
+  const { coinAmount, changeCoinAmount } = useCoins();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const totalFee = selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0);
+  const handleHireAdventurers = () => {
+    if (isLoading) {
+      return;
+    }
+    if (coinAmount < totalFee) {
+      setErrorMessage('Not enough coins');
+      return;
+    }
+    setIsLoading(true);
+    console.log('Hire adventurers', coinAmount, totalFee);
+    changeCoinAmount(coinAmount - totalFee);
+    setIsLoading(false);
+    setErrorMessage('');
+  }
+  const handleRemoveAdventurer = (id: number) => {
+    const adventurer = selectedAdventurers.find((adventurer) => adventurer.id === id);
+    const fee = adventurer ? parseInt(adventurer.fee) : 0;
+    changeCoinAmount(coinAmount - fee);
+    return selectedAdventurers.filter((adventurer) => adventurer.id !== id);
+  }
 
   return (
     <>
@@ -27,6 +55,11 @@ const CartPage = () => {
               <td className="border px-4 py-2">
                 {adventurer.fee}
               </td>
+              <td>
+                <button onClick={() => handleRemoveAdventurer(adventurer.id)}>
+                  Remove
+                </button>
+              </td>
             </tr>
           ))}
           <tr className="font-bold">
@@ -34,11 +67,23 @@ const CartPage = () => {
               Total Fee
             </td>
             <td className="border px-4 py-2">
-              {selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0)} silver coins
+              {totalFee} cost in gold
             </td>
           </tr>
         </tbody>
       </table>
+      <Button
+        className="mt-4 mb-4"
+        onClick={handleHireAdventurers}
+        disabled={isLoading || !!errorMessage || selectedAdventurers.length === 0}
+        aria-disabled={isLoading || !!errorMessage || selectedAdventurers.length === 0}>
+        {/* { buttonText() } */}
+        Hire
+      </Button>
+
+      <div className="mt-4">
+        <p className="text-2xl font-bold">You have {coinAmount} gold coins</p>
+      </div>
     </>
   );
 };

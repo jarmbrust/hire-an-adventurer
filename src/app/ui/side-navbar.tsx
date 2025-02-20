@@ -26,6 +26,11 @@ export default function SideNavbar() {
             'dark-sidebar': theme === 'dark',
             'light-sidebar': theme === 'light',
           })}>
+          <div className="flex flex-col items-center justify-end h-full">
+            <p className="text-center text-sm absolute bottom-4 ">
+              &copy;James Armbrust 2025
+            </p>
+          </div>
         </div> 
       </div>
     </div>

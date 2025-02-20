@@ -8,6 +8,7 @@ import { useTheme } from '@/context/theme-context';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="w-full">
       <div className="flex justify-end text-sm mt-5">
