@@ -16,7 +16,6 @@ const fetchAdventurersList = async () => {
     throw new Error(`HTTP error! status: ${response.status}`);    
   }
 
-  console.log('response', response);
   const adventurers = await response.json();
   return adventurers;
 };

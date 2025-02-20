@@ -81,20 +81,18 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   }
 
   return (
-    <div className="flex flex-col absolute">
+    <div className="flex flex-col">
       <span>
         <h1 className="text-3xl font-bold mb-4">
           Adventurer Details
         </h1>
-        {/* <div className="flex flex-col w-full text-center items-center"> */}
-          <Button
-            className="mt-4 mb-4 w-full"
-            onClick={handleHireAdventurer}
-            disabled={isLoading || disableButton}
-            aria-disabled={isLoading || disableButton}>
-            { buttonText() }
-          </Button>
-        {/* </div> */}
+        <Button
+          className="mt-4 mb-4 w-full"
+          onClick={handleHireAdventurer}
+          disabled={isLoading || disableButton}
+          aria-disabled={isLoading || disableButton}>
+          { buttonText() }
+        </Button>
       </span>
       {isLoading ?
         <Image 

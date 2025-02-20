@@ -4,7 +4,6 @@ import Header from "@/app/ui/header";
 import "./globals.css";
 import { SelectedAdventurersProvider } from "@/context/selected-adventurers-context";
 import { ThemeProvider } from "@/context/theme-context";
-// import { useTheme } from '@/context/theme-context';
 
 export const metadata: Metadata = {
   title: "Hire an Adventurer",

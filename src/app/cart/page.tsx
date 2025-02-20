@@ -5,7 +5,6 @@ import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 
 const CartPage = () => {
   const { selectedAdventurers } = useSelectedAdventurers();
-  console.log('selectedAdventurers', selectedAdventurers);
 
   return (
     <>
