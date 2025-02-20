@@ -17,15 +17,15 @@
   },
   {
     "id": 2,
-    "name": "Ranger Ashley",
+    "name": "Ranger Reanna",
     "profession": "Archer",
     "level": "4",
     "health": "28",
     "strength": "4",
     "cunning": "3",
     "intellect": "3",
-    "description": "Swift and strong, Ashley can pinpoint a target from great range, but is not as skilled in melee.",
-    "image": "image_fx_ranger_ashley.jpeg",
+    "description": "Swift and strong, Reanna can pinpoint a target from great range, but is not as skilled in melee.",
+    "image": "image_fx_ranger_reanna.jpeg",
     "fee": 13,
     "rangedPower": 20,
     "meleePower": 5
