@@ -12,7 +12,7 @@
     "description": "Very strong with powerful melee attacks, but Torg cannot do much at range.",
     "image": "image_fx_mighty_torg.jpeg",
     "fee": 10,
-    "rangedPower": 1,
+    "rangedPower": 2,
     "meleePower": 20
   },
   {
@@ -58,7 +58,7 @@
     "image": "image_fx_shadowstalker_velma.jpeg",
     "fee": 8,
     "rangedPower": 8,
-    "meleePower": 9
+    "meleePower": 10
   },
   {
     "id": 5,

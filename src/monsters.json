@@ -1,0 +1,49 @@
+{
+  "monsters": [
+    {
+      "id": 1,
+      "name": "Giant Rat",
+      "flies": false,
+      "health": "5",
+      "description": "A giant rat similar to what can be found in the sewers of castles and dungeons. Despite being the size of a large dog, it is fairly weak and relatively easy to defeat.",
+      "image": "image_fx_giant_rat.jpeg",
+      "attack-power": 6
+    },
+    {
+      "id": 2,
+      "name": "Dragon",
+      "flies": true,
+      "health": "50",
+      "description": "A dragon is a creature of legend. Ancient and powerful, it will fly in to devastate entire regions with its fire breath.",
+      "image": "image_fx_dragon.jpeg",
+      "attack-power": 35
+    },
+    {
+      "id": 3,
+      "name": "Minotaur",
+      "flies": false,
+      "health": "40",
+      "description": "Half human, half beast, the minotaur is a powerful combatant that will cleft it's enemies in twain with its mighty great-axe.",
+      "image": "image_fx_minotaur.jpeg",
+      "attack-power": 30
+    },
+    {
+      "id": 4,
+      "name": "Swarm of Flying Monkeys",
+      "flies": true,
+      "health": "20",
+      "description": "While rare, flying monkeys can harass villages and towns across the area. Even though they are not very strong, they are still both agile and dangerous.",
+      "image": "image_fx_flying_monkeys.jpeg",
+      "attack-power": 13
+    },
+    {
+      "id": 5,
+      "name": "Goblin Raiders",
+      "flies": false,
+      "health": "25",
+      "description": "A goblin raiding party can be devastating to a settlement, and should not be taken lightly despite an individual goblin's small size.",
+      "image": "image_fx_goblins.jpeg",
+      "attack-power": 20
+    }
+  ]
+}
