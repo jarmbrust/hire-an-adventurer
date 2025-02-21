@@ -9,11 +9,14 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
 
   const addAdventurer = (adventurer: Adventurer) => {
-    setSelectedAdventurers((prevAdventurers) => [...prevAdventurers, adventurer]);
+    if (!selectedAdventurers.some((a) => a.id === adventurer.id)) {
+      setSelectedAdventurers((prevAdventurers) => [...prevAdventurers, adventurer]);
+    }
   };
 
   const removeAdventurer = (id: number) => {
-    setSelectedAdventurers((prevAdventurers) => prevAdventurers.filter((adventurer) => adventurer.id !== id));
+    const adventurers = selectedAdventurers.filter((adventurer) => adventurer.id !== id);
+    setSelectedAdventurers(adventurers);
   };
 
   const findAdventurer = (id: number | undefined) => {

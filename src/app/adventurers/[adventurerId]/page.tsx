@@ -6,6 +6,7 @@ import { Button } from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { adventurerAPIPath } from '@/app/lib/paths';
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
 
@@ -13,7 +14,7 @@ const fetchAdventurerInfo = async (adventurerId: number) => {
   // for demo purposes only!
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const response = await fetch(`/api/adventurers/${adventurerId}`);
+  const response = await fetch(adventurerAPIPath(adventurerId));
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -55,7 +56,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
   const handleHireAdventurer = async () => {
     setHireButton(true);
-
+    setDisableButton(true);
     try {
       // Simulate a 1.5 second delay to show the loading state
       // for demo purposes only!
@@ -67,6 +68,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
       console.error(err);
     } finally {
       setHireButton(false);
+      setDisableButton(false);
     }
   }
 
@@ -88,9 +90,9 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
         </h1>
         <Button
           className="mt-4 mb-4 w-full"
-          onClick={handleHireAdventurer}
-          disabled={isLoading || disableButton}
-          aria-disabled={isLoading || disableButton}>
+          onClick={ handleHireAdventurer }
+          disabled={ isLoading || disableButton }
+          aria-disabled={ isLoading || disableButton }>
           { buttonText() }
         </Button>
       </span>
@@ -106,9 +108,9 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
       }
       <Button
         className="mt-4 mb-4"
-        onClick={handleHireAdventurer}
-        disabled={isLoading || disableButton}
-        aria-disabled={isLoading || disableButton}>
+        onClick={ handleHireAdventurer }
+        disabled={ isLoading || disableButton }
+        aria-disabled={ isLoading || disableButton }>
         { buttonText() }
       </Button>
     </div>

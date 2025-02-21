@@ -1,18 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useCoins } from '@/context/coins-context';
 import { Button } from '@/app/ui/button';
 
 const CartPage = () => {
-  const { selectedAdventurers } = useSelectedAdventurers();
+  const { selectedAdventurers, removeAdventurer } = useSelectedAdventurers();
   const { coinAmount, changeCoinAmount } = useCoins();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [totalFee, setTotalFee] = useState(0);
 
-  const totalFee = selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0);
+  useEffect(() => {
+    setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
+  }, [selectedAdventurers]);
+
+  console.log('>>', selectedAdventurers, totalFee)
+
   const handleHireAdventurers = () => {
     if (isLoading) {
       return;
@@ -30,8 +36,9 @@ const CartPage = () => {
   const handleRemoveAdventurer = (id: number) => {
     const adventurer = selectedAdventurers.find((adventurer) => adventurer.id === id);
     const fee = adventurer ? parseInt(adventurer.fee) : 0;
-    changeCoinAmount(coinAmount - fee);
-    return selectedAdventurers.filter((adventurer) => adventurer.id !== id);
+    setTotalFee((totalFee) => totalFee - fee);
+    removeAdventurer(id);
+    // selectedAdventurers.filter((adventurer) => adventurer.id !== id);
   }
 
   return (

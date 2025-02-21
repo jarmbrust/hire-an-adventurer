@@ -5,13 +5,18 @@ import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { Adventurer } from '@/app/lib/definitions';
+import {
+  adventurerDetailsPath,
+  adventurersListAPIPath,
+  imageOfAdventurer,
+} from '@/app/lib/paths';
 
 const fetchAdventurersList = async () => {
   // Simulate a 0.5 second delay to show the loading state
   // for demo purposes only!
   await new Promise(resolve => setTimeout(resolve, 500));
 
-  const response = await fetch(`/api/adventurers-list`);
+  const response = await fetch(adventurersListAPIPath());
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);    
   }
@@ -52,7 +57,7 @@ const AdventurersListPage = () => {
             <Image 
               src="/images/loading-spinner2.gif"
               alt="placeholder"
-              width={75}
+              width={ 75}
               height={75}
             />
           </>
@@ -60,18 +65,20 @@ const AdventurersListPage = () => {
           <>
             {adventurerListInfo?.map((adventurer) => (
               <li key={adventurer.id} className="mb-4">
-                <Link href={`adventurers/${adventurer.id}`}>
-                  <h3 className="text-xl font-bold">{adventurer.name}
+                <Link href={ adventurerDetailsPath(adventurer.id) }>
+                  <h3 className="text-xl font-bold">{ adventurer.name }
                     <span className="italic text-gray-500">
-                      {findAdventurer(adventurer.id) ? ' (Selected)' : ''}
+                      { findAdventurer(adventurer.id) ? ' (Selected)' : '' }
                     </span>
                   </h3>
                   <Image 
-                    src={`/images/${adventurer.image}`}
-                    alt={adventurer.name}
-                    width={300}
-                    height={200}
+                    src={ imageOfAdventurer(adventurer.image) }
+                    alt={ adventurer.name}
+                    width={ 300 }
+                    height={ 200 }
+                    style={{ width: 'auto', height: 'auto' }}
                     className="rounded-lg shadow-md"
+                    priority={ true }
                   />
                 </Link>
               </li>
