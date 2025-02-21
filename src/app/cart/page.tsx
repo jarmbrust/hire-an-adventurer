@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useCoins } from '@/context/coins-context';
 import { Button } from '@/app/ui/button';
+import { adventurerDetailsPath } from '@/app/lib/paths';
 
 const CartPage = () => {
-  const { selectedAdventurers, removeAdventurer } = useSelectedAdventurers();
+  const { selectedAdventurers, removeAdventurer, clearAdventurers } = useSelectedAdventurers();
   const { coinAmount, changeCoinAmount } = useCoins();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,8 +17,6 @@ const CartPage = () => {
   useEffect(() => {
     setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
   }, [selectedAdventurers]);
-
-  console.log('>>', selectedAdventurers, totalFee)
 
   const handleHireAdventurers = () => {
     if (isLoading) {
@@ -28,8 +27,8 @@ const CartPage = () => {
       return;
     }
     setIsLoading(true);
-    console.log('Hire adventurers', coinAmount, totalFee);
     changeCoinAmount(coinAmount - totalFee);
+    clearAdventurers();
     setIsLoading(false);
     setErrorMessage('');
   }
@@ -38,7 +37,6 @@ const CartPage = () => {
     const fee = adventurer ? parseInt(adventurer.fee) : 0;
     setTotalFee((totalFee) => totalFee - fee);
     removeAdventurer(id);
-    // selectedAdventurers.filter((adventurer) => adventurer.id !== id);
   }
 
   return (
@@ -47,49 +45,50 @@ const CartPage = () => {
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
           <tr className="text-2xl font-bold">
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Fee</th>
+            <th className="border border-zinc-500 px-4 py-2">Name</th>
+            <th className="border border-zinc-500 px-4 py-2">Fee</th>
+            <th className="border border-zinc-500 px-4 py-2">Remove Adv.</th>
           </tr>
         </thead>
         <tbody>
           {selectedAdventurers.map((adventurer) => (
             <tr key={adventurer.id}>
-              <td className="border px-4 py-2">
-                <Link href={`adventurers/${adventurer.id}`}>
-                  <h3 className="text-lg font-bold">{adventurer.name}</h3>
+              <td className="border border-zinc-500 px-4 py-2">
+                <Link href={ adventurerDetailsPath(adventurer.id || 0) }>
+                  <h3 className="text-lg font-bold">{ adventurer.name }</h3>
                 </Link>
               </td>
-              <td className="border px-4 py-2">
-                {adventurer.fee}
+              <td className="border border-zinc-500 px-4 py-2">
+                { adventurer.fee }
               </td>
-              <td>
-                <button onClick={() => handleRemoveAdventurer(adventurer.id)}>
+              <td className="border border-zinc-500 px-4 py-2"> 
+                <button onClick={ () => handleRemoveAdventurer(adventurer.id || 0) }>
                   Remove
                 </button>
               </td>
             </tr>
           ))}
           <tr className="font-bold">
-            <td className="border px-4 py-2">
+            <td className="border border-zinc-500 px-4 py-2 text-xl">
               Total Fee
             </td>
-            <td className="border px-4 py-2">
-              {totalFee} cost in gold
+            <td className="border border-zinc-500 px-4 py-2 text-xl">
+              { totalFee}
             </td>
+            <td className="border border-zinc-500 px-4 py-2"></td>
           </tr>
         </tbody>
       </table>
       <Button
         className="mt-4 mb-4"
-        onClick={handleHireAdventurers}
-        disabled={isLoading || !!errorMessage || selectedAdventurers.length === 0}
-        aria-disabled={isLoading || !!errorMessage || selectedAdventurers.length === 0}>
-        {/* { buttonText() } */}
-        Hire
+        onClick={ handleHireAdventurers }
+        disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }
+        aria-disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }>
+        Hire all
       </Button>
 
       <div className="mt-4">
-        <p className="text-2xl font-bold">You have {coinAmount} gold coins</p>
+        <p className="text-2xl font-bold">You have { coinAmount} gold coins</p>
       </div>
     </>
   );

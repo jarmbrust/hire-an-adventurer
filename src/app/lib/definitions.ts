@@ -24,6 +24,7 @@ export type SelectedAdventurersContextType = {
   addAdventurer: (adventurer: Adventurer) => void;
   removeAdventurer: (id: number) => void;
   findAdventurer: (id: number | undefined) => Adventurer | undefined;
+  clearAdventurers: () => void;
 };
 
 export type CoinsContextType = {

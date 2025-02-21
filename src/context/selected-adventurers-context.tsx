@@ -19,6 +19,10 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     setSelectedAdventurers(adventurers);
   };
 
+  const clearAdventurers = () => {
+    setSelectedAdventurers([]);
+  };
+
   const findAdventurer = (id: number | undefined) => {
     if (!id) {
       return undefined;
@@ -28,7 +32,7 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
 
   return (
     <SelectedAdventurersContext.Provider
-      value={{ selectedAdventurers, addAdventurer, removeAdventurer, findAdventurer }}
+      value={{ selectedAdventurers, addAdventurer, removeAdventurer, findAdventurer, clearAdventurers }}
     >
       {children}
     </SelectedAdventurersContext.Provider>
