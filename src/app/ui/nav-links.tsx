@@ -4,6 +4,7 @@ import {
   HomeIcon,
   UsersIcon,
   ShoppingCartIcon,
+  FireIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -31,6 +32,11 @@ const links = [
     href: cartPath(),
     icon: ShoppingCartIcon
   },
+  {
+    name: 'Combat',
+    href: '/combat',
+    icon: FireIcon,
+  }
 ];
 
 export default function NavLinks() {
@@ -43,10 +49,10 @@ export default function NavLinks() {
         return (
           <Link
             key={ link.name }
-            href={ link.href}
+            href={ link.href }
             className={ clsx(
-              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-200 text-gray-500 p-3 text-sm'
-              + 'font-medium hover:bg-gray-400  md:flex-none md:justify-start md:p-2 md:px-3',
+              'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm '
+              + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
               {
                 'bg-gray-300 text-gray-600': pathname === link.href && theme === 'light',
                 'bg-gray-600 text-gray-300': pathname === link.href && theme === 'dark',
@@ -54,7 +60,7 @@ export default function NavLinks() {
             ) }
           >
             <LinkIcon className="w-6" />
-            <p className="hidden md:block">{ link.name}</p>
+            <p className="hidden md:block">{ link.name }</p>
           </Link>
         );
       })}

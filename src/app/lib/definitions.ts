@@ -12,6 +12,16 @@ export type Adventurer = {
   fee: string,
 };
 
+export type Monster = {
+  id: number,
+  name: string,
+  flies: boolean,
+  health: string,
+  description: string,
+  image: string,
+  attackPower: number,
+};
+
 export type Theme = 'light' | 'dark';
 
 export type ThemeContextType = {
@@ -21,10 +31,12 @@ export type ThemeContextType = {
 
 export type SelectedAdventurersContextType = {
   selectedAdventurers: Adventurer[];
+  hiredAdventurers: Adventurer[];
   addAdventurer: (adventurer: Adventurer) => void;
   removeAdventurer: (id: number) => void;
   findAdventurer: (id: number | undefined) => Adventurer | undefined;
   clearAdventurers: () => void;
+  hireAdventurers: (adventurers: Adventurer[]) => void;
 };
 
 export type CoinsContextType = {

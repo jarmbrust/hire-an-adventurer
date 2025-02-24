@@ -7,6 +7,7 @@ const SelectedAdventurersContext = createContext<SelectedAdventurersContextType 
 
 export const SelectedAdventurersProvider = ({ children }: { children: ReactNode }) => {
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
+  const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
 
   const addAdventurer = (adventurer: Adventurer) => {
     if (!selectedAdventurers.some((a) => a.id === adventurer.id)) {
@@ -30,9 +31,21 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     return selectedAdventurers.find((adventurer) => adventurer.id === id);
   };
 
+  const hireAdventurers = (adventurers: Adventurer[]) => {
+      setHiredAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
+  };  
+
   return (
     <SelectedAdventurersContext.Provider
-      value={{ selectedAdventurers, addAdventurer, removeAdventurer, findAdventurer, clearAdventurers }}
+      value={{
+        selectedAdventurers,
+        hiredAdventurers,
+        addAdventurer,
+        removeAdventurer,
+        findAdventurer,
+        clearAdventurers,
+        hireAdventurers,
+      }}
     >
       {children}
     </SelectedAdventurersContext.Provider>
