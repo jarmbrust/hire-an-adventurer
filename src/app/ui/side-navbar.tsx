@@ -5,14 +5,17 @@ import { clsx } from 'clsx';
 import NavLinks from '@/app/ui/nav-links';
 import InnLogo from '@/app/ui/inn-logo';
 import { useTheme } from '@/context/theme-context';
+import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 
 export default function SideNavbar() {
   const { theme } = useTheme();
+  const { adventurersInCombat } = useSelectedAdventurers();
 
   return (
     <div className="flex h-full flex-col px-3 py-1 md:px-2">
       <Link
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-zinc-600 p-4 md:h-40"
+        onClick={ adventurersInCombat ? (e) => e.preventDefault() : undefined }
         href="/"
       >
         <div className="w-32 text-white md:w-40">

@@ -15,6 +15,7 @@ import {
   cartPath,
   homePath,
 } from '@/app/lib/paths';
+import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 
 const links = [
   {
@@ -42,6 +43,7 @@ const links = [
 export default function NavLinks() {
   const { theme } = useTheme();
   const pathname = usePathname();
+  const { adventurersInCombat } = useSelectedAdventurers();
 
   return (
     <>
@@ -51,6 +53,7 @@ export default function NavLinks() {
           <Link
             key={ link.name }
             href={ link.href }
+            onClick={ adventurersInCombat ? (e) => e.preventDefault() : undefined }
             className={ clsx(
               'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm '
               + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',

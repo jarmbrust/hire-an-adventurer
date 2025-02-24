@@ -9,6 +9,7 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
   const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
   const [deceasedAdventurers, setDeceasedAdventurers] = useState<Adventurer[]>([]);
+  const [adventurersInCombat, setAdventurersInCombat] = useState<boolean>(false);
 
   const selectAdventurer = (adventurer: Adventurer) => {
     if (!selectedAdventurers.some((a) => a.id === adventurer.id)) {
@@ -33,7 +34,7 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     }
   };
 
-  const findAdventurerStatus = (id: number | undefined): string => {
+  const getAdventurerStatus = (id: number | undefined): string => {
     if (!id) return 'Unknown';
     if (deceasedAdventurers.find((adventurer) => adventurer.id === id)) {
       return 'Deceased';
@@ -55,18 +56,24 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     setDeceasedAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
   };
 
+  const combatEngaged = (inCombat: boolean) => {
+    setAdventurersInCombat(inCombat);
+  };
+
   return (
     <SelectedAdventurersContext.Provider
       value={{
         selectedAdventurers,
         hiredAdventurers,
         deceasedAdventurers,
+        adventurersInCombat,
         selectAdventurer,
         removeSelectedAdventurer,
-        findAdventurerStatus,
+        getAdventurerStatus,
         clearAdventurers,
         hireAdventurers,
         slayAdventurers,
+        combatEngaged,
       }}
     >
       {children}

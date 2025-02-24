@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useTheme } from '@/context/theme-context';
-// import { usePathname } from 'next/navigation';
 import Button from '@/app/ui/button';
 
 const Modal = ({ message, link }: { message: string, link: string }) => {
   const { theme } = useTheme();
-  // const pathname = usePathname();
-
-  // console.log('theme', theme, pathname)
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">

@@ -10,7 +10,7 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
     return null;
   }
 
-  const feeText = parseInt(stats.fee) > 1 ? "gold coins to hire" : "gold coin to hire";
+  const feeText = parseInt(stats.fee) > 1 ? "silver coins to hire" : "silver coin to hire";
 
   return (
     <div className={clsx("flex flex-col items-center justify-center rounded-md bg-gray-50 p-4",

@@ -12,6 +12,8 @@ import { adventurerDetailsPath, combatPath } from '@/app/lib/paths';
 const CartPage = () => {
   const {
     selectedAdventurers,
+    hiredAdventurers,
+    deceasedAdventurers,
     removeSelectedAdventurer,
     clearAdventurers,
     hireAdventurers,
@@ -21,12 +23,13 @@ const CartPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [adventurersHiredOrDeceased, setAdventurersHiredOrDeceased] = useState([...hiredAdventurers, ...deceasedAdventurers]);
   const router = useRouter();
 
   useEffect(() => {
     setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
-    if (selectedAdventurers.length === 0) setShowModal(true);
-  }, [selectedAdventurers]);
+    if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowModal(true);
+  }, [selectedAdventurers, hiredAdventurers]);
 
   const handleHireAdventurers = () => {
     if (isLoading) {
@@ -42,7 +45,7 @@ const CartPage = () => {
     clearAdventurers('selected');
     setIsLoading(false);
     setErrorMessage('');
-    forwardToCombat();
+    setAdventurersHiredOrDeceased([...adventurersHiredOrDeceased, ...selectedAdventurers]);
   };
 
   const handleRemoveAdventurer = (id: number) => {
@@ -52,15 +55,27 @@ const CartPage = () => {
     removeSelectedAdventurer(id);
   };
 
-  const forwardToCombat = () => {
-    setTimeout(() => {
-      router.push(combatPath())
-    }, 2000);  
+  const getAdventurerStatus = (id: number | undefined): string => {
+    if (!id) return 'Unknown';
+    if (deceasedAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Deceased';
+    }
+    if (hiredAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Hired';
+    }
+    if (selectedAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Selected';
+    }
+    return 'Available'
+  };
+
+  const engageAdventurersInCombat = () => {
+    router.push(combatPath());
   };
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Hiring Selected Adventurers</h1>
+      <h2 className="text-3xl font-bold">Hiring Selected Adventurers</h2>
       { showModal && <Modal message="No adventurers selected" link="/adventurers" /> }
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
@@ -93,7 +108,7 @@ const CartPage = () => {
               Total Fee
             </td>
             <td className="border border-zinc-500 px-4 py-2 text-xl">
-              { totalFee}
+              { totalFee} silver
             </td>
             <td className="border border-zinc-500 px-4 py-2"></td>
           </tr>
@@ -104,12 +119,47 @@ const CartPage = () => {
         onClick={ handleHireAdventurers }
         disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }
         aria-disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }>
-        Hire and Continue to Combat
+        Hire Adventurers
       </Button>
       { errorMessage && <p className="text-red-500 mt-4">{ errorMessage }</p> }
       <div className="mt-4">
-        <p className="text-2xl font-bold">You have { coinAmount } gold coins</p>
+        <p className="text-2xl font-bold">You have { coinAmount } silver coins</p>
       </div>
+
+      <h2 className="mt-8 text-2xl font-bold">Hired Adventurers</h2>
+      <table id="hired-adventurers-table" className="w-full mt-2 border-collapse">
+        <thead>
+          <tr className="text-2xl font-bold">
+            <th className="border border-zinc-500 px-4 py-2">Name</th>
+            <th className="border border-zinc-500 px-4 py-2">Profession</th>
+            <th className="border border-zinc-500 px-4 py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {adventurersHiredOrDeceased.map((adventurer) => (
+            <tr key={adventurer.id}>
+              <td className="border border-zinc-500 px-4 py-2">
+                <Link href={ adventurerDetailsPath(adventurer.id || 0) }>
+                  <h3 className="text-lg font-bold">{ adventurer.name || '' }</h3>
+                </Link>
+              </td>
+              <td className="border border-zinc-500 px-4 py-2">
+                { adventurer.profession || '' }
+              </td>
+              <td className="border border-zinc-500 px-4 py-2"> 
+                { getAdventurerStatus(adventurer.id) }
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Button
+        className="mt-4 mb-4"
+        onClick={ engageAdventurersInCombat }
+        disabled={ hiredAdventurers.length === 0 }
+        aria-disabled={ hiredAdventurers.length === 0 }>
+        Fight the Monsters!
+      </Button>
     </>
   );
 };

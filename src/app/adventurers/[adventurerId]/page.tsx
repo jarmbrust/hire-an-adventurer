@@ -28,7 +28,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-  const { selectAdventurer, findAdventurerStatus } = useSelectedAdventurers();
+  const { selectAdventurer, getAdventurerStatus } = useSelectedAdventurers();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,12 +49,12 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   }, [params]);
 
   useEffect(() => {
-    if (findAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||
-      findAdventurerStatus(adventurerInfo?.id) === 'Hired' ||
-      findAdventurerStatus(adventurerInfo?.id) === 'Selected' ) {
+    if (getAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||
+      getAdventurerStatus(adventurerInfo?.id) === 'Hired' ||
+      getAdventurerStatus(adventurerInfo?.id) === 'Selected' ) {
       setDisableButton(true);
     };
-  }, [findAdventurerStatus, adventurerInfo?.id]);
+  }, [getAdventurerStatus, adventurerInfo?.id]);
 
   const handleHireAdventurer = async () => {
     setHireButton(true);
