@@ -26,7 +26,7 @@ const fetchAdventurersList = async () => {
 };
 
 const AdventurersListPage = () => {
-  const { findAdventurer } = useSelectedAdventurers();
+  const { findAdventurerStatus } = useSelectedAdventurers();
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
 
@@ -68,7 +68,7 @@ const AdventurersListPage = () => {
                 <Link href={ adventurerDetailsPath(adventurer.id) }>
                   <h3 className="text-xl font-bold">{ adventurer.name }
                     <span className="italic text-gray-500">
-                      { findAdventurer(adventurer.id) ? ' (Selected)' : '' }
+                      { ` (${findAdventurerStatus(adventurer.id)})` }
                     </span>
                   </h3>
                   <Image 

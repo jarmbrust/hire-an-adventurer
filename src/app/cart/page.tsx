@@ -6,13 +6,13 @@ import Link from 'next/link';
 import Modal from "@/app/ui/modal";
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useCoins } from '@/context/coins-context';
-import { Button } from '@/app/ui/button';
+import Button from '@/app/ui/button';
 import { adventurerDetailsPath, combatPath } from '@/app/lib/paths';
 
 const CartPage = () => {
   const {
     selectedAdventurers,
-    removeAdventurer,
+    removeSelectedAdventurer,
     clearAdventurers,
     hireAdventurers,
   } = useSelectedAdventurers();
@@ -39,7 +39,7 @@ const CartPage = () => {
     setIsLoading(true);
     changeCoinAmount(coinAmount - totalFee);
     hireAdventurers(selectedAdventurers);
-    clearAdventurers();
+    clearAdventurers('selected');
     setIsLoading(false);
     setErrorMessage('');
     forwardToCombat();
@@ -49,7 +49,7 @@ const CartPage = () => {
     const adventurer = selectedAdventurers.find((adventurer) => adventurer.id === id);
     const fee = adventurer ? parseInt(adventurer.fee) : 0;
     setTotalFee((totalFee) => totalFee - fee);
-    removeAdventurer(id);
+    removeSelectedAdventurer(id);
   };
 
   const forwardToCombat = () => {
@@ -61,7 +61,7 @@ const CartPage = () => {
   return (
     <>
       <h1 className="text-3xl font-bold">Hiring Selected Adventurers</h1>
-      {showModal && <Modal message="No adventurers selected" link="/adventurers" />}
+      { showModal && <Modal message="No adventurers selected" link="/adventurers" /> }
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
           <tr className="text-2xl font-bold">

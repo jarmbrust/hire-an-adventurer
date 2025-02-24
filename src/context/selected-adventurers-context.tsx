@@ -8,43 +8,65 @@ const SelectedAdventurersContext = createContext<SelectedAdventurersContextType 
 export const SelectedAdventurersProvider = ({ children }: { children: ReactNode }) => {
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
   const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
+  const [deceasedAdventurers, setDeceasedAdventurers] = useState<Adventurer[]>([]);
 
-  const addAdventurer = (adventurer: Adventurer) => {
+  const selectAdventurer = (adventurer: Adventurer) => {
     if (!selectedAdventurers.some((a) => a.id === adventurer.id)) {
       setSelectedAdventurers((prevAdventurers) => [...prevAdventurers, adventurer]);
     }
   };
 
-  const removeAdventurer = (id: number) => {
+  const removeSelectedAdventurer = (id: number) => {
     const adventurers = selectedAdventurers.filter((adventurer) => adventurer.id !== id);
     setSelectedAdventurers(adventurers);
   };
 
-  const clearAdventurers = () => {
-    setSelectedAdventurers([]);
+  const clearAdventurers = (adventurerGroup: string) => {
+    if (adventurerGroup === 'selected') {
+      setSelectedAdventurers([]);
+    }
+    if (adventurerGroup === 'hired') {
+      setHiredAdventurers([]);
+    }
+    if (adventurerGroup === 'deceased') {
+      setDeceasedAdventurers([]);
+    }
   };
 
-  const findAdventurer = (id: number | undefined) => {
-    if (!id) {
-      return undefined;
+  const findAdventurerStatus = (id: number | undefined): string => {
+    if (!id) return 'Unknown';
+    if (deceasedAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Deceased';
     }
-    return selectedAdventurers.find((adventurer) => adventurer.id === id);
+    if (hiredAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Hired';
+    }
+    if (selectedAdventurers.find((adventurer) => adventurer.id === id)) {
+      return 'Selected';
+    }
+    return 'Available'
   };
 
   const hireAdventurers = (adventurers: Adventurer[]) => {
-      setHiredAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
-  };  
+    setHiredAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
+  };
+
+  const slayAdventurers = (adventurers: Adventurer[]) => {
+    setDeceasedAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
+  };
 
   return (
     <SelectedAdventurersContext.Provider
       value={{
         selectedAdventurers,
         hiredAdventurers,
-        addAdventurer,
-        removeAdventurer,
-        findAdventurer,
+        deceasedAdventurers,
+        selectAdventurer,
+        removeSelectedAdventurer,
+        findAdventurerStatus,
         clearAdventurers,
         hireAdventurers,
+        slayAdventurers,
       }}
     >
       {children}

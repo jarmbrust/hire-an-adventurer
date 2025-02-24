@@ -32,11 +32,13 @@ export type ThemeContextType = {
 export type SelectedAdventurersContextType = {
   selectedAdventurers: Adventurer[];
   hiredAdventurers: Adventurer[];
-  addAdventurer: (adventurer: Adventurer) => void;
-  removeAdventurer: (id: number) => void;
-  findAdventurer: (id: number | undefined) => Adventurer | undefined;
-  clearAdventurers: () => void;
+  deceasedAdventurers: Adventurer[];
+  selectAdventurer: (adventurer: Adventurer) => void;
+  removeSelectedAdventurer: (id: number) => void;
+  findAdventurerStatus: (id: number | undefined) => string;
+  clearAdventurers: (adventurerGroup: string) => void;
   hireAdventurers: (adventurers: Adventurer[]) => void;
+  slayAdventurers: (adventurers: Adventurer[]) => void;
 };
 
 export type CoinsContextType = {

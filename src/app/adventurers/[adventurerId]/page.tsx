@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Button } from '@/app/ui/button';
+import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
@@ -28,7 +28,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-  const { addAdventurer, findAdventurer } = useSelectedAdventurers();
+  const { selectAdventurer, findAdventurerStatus } = useSelectedAdventurers();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,20 +49,22 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   }, [params]);
 
   useEffect(() => {
-    if (findAdventurer(adventurerInfo?.id)) {
+    if (findAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||
+      findAdventurerStatus(adventurerInfo?.id) === 'Hired' ||
+      findAdventurerStatus(adventurerInfo?.id) === 'Selected' ) {
       setDisableButton(true);
     };
-  }, [findAdventurer, adventurerInfo?.id]);
+  }, [findAdventurerStatus, adventurerInfo?.id]);
 
   const handleHireAdventurer = async () => {
     setHireButton(true);
     setDisableButton(true);
     try {
-      // Simulate a 1.5 second delay to show the loading state
+      // Simulate a 1 second delay to show the loading state
       // for demo purposes only!
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       if (adventurerInfo) {
-        addAdventurer(adventurerInfo);
+        selectAdventurer(adventurerInfo);
       }
     } catch (err) {
       console.error(err);
