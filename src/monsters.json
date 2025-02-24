@@ -2,7 +2,7 @@
   "monsters": [
     {
       "id": 1,
-      "name": "A Giant Rat",
+      "name": "Giant Rat",
       "flies": false,
       "health": "5",
       "description": "A giant rat is a larger cousin of what can be found in the sewers of castles and dungeons. Despite being the size of a large dog, it is fairly weak and relatively easy to defeat.",
@@ -29,7 +29,7 @@
     },
     {
       "id": 4,
-      "name": "A Swarm of Flying Monkeys",
+      "name": "Swarm of Flying Monkeys",
       "flies": true,
       "health": "20",
       "description": "While somewhat rare, flying monkeys can harass villages and towns across the area. Even though they are not very strong, they are still both agile and dangerous.",
@@ -38,7 +38,7 @@
     },
     {
       "id": 5,
-      "name": "A Horde ofGoblin Raiders",
+      "name": "Horde ofGoblin Raiders",
       "flies": false,
       "health": "30",
       "description": "A goblin raiding party can be devastating to a settlement, and should not be taken lightly despite an individual goblin's small size.",
