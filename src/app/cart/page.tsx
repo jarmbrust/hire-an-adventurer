@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Modal from "@/app/ui/modal";
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useCoins } from '@/context/coins-context';
 import { Button } from '@/app/ui/button';
@@ -19,10 +20,12 @@ const CartPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
+    if (selectedAdventurers.length === 0) setShowModal(true);
   }, [selectedAdventurers]);
 
   const handleHireAdventurers = () => {
@@ -41,12 +44,14 @@ const CartPage = () => {
     setErrorMessage('');
     forwardToCombat();
   };
+
   const handleRemoveAdventurer = (id: number) => {
     const adventurer = selectedAdventurers.find((adventurer) => adventurer.id === id);
     const fee = adventurer ? parseInt(adventurer.fee) : 0;
     setTotalFee((totalFee) => totalFee - fee);
     removeAdventurer(id);
   };
+
   const forwardToCombat = () => {
     setTimeout(() => {
       router.push(combatPath())
@@ -56,6 +61,7 @@ const CartPage = () => {
   return (
     <>
       <h1 className="text-3xl font-bold">Hiring Selected Adventurers</h1>
+      {showModal && <Modal message="No adventurers selected" link="/adventurers" />}
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
           <tr className="text-2xl font-bold">
@@ -102,7 +108,7 @@ const CartPage = () => {
       </Button>
       { errorMessage && <p className="text-red-500 mt-4">{ errorMessage }</p> }
       <div className="mt-4">
-        <p className="text-2xl font-bold">You have { coinAmount} gold coins</p>
+        <p className="text-2xl font-bold">You have { coinAmount } gold coins</p>
       </div>
     </>
   );

@@ -42,6 +42,7 @@ const links = [
 export default function NavLinks() {
   const { theme } = useTheme();
   const pathname = usePathname();
+
   return (
     <>
       {links.map((link) => {
@@ -54,8 +55,10 @@ export default function NavLinks() {
               'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm '
               + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
               {
-                'bg-gray-300 text-gray-600': pathname === link.href && theme === 'light',
-                'bg-gray-600 text-gray-300': pathname === link.href && theme === 'dark',
+                'bg-gray-400 text-gray-600': pathname === link.href && theme === 'light',
+                'bg-gray-700 text-gray-300': pathname === link.href && theme === 'dark',
+                'bg-gray-300 text-gray-600': pathname !== link.href && theme === 'light',
+                'bg-gray-600 text-gray-300': pathname !== link.href && theme === 'dark',
               },
             ) }
           >
