@@ -7,7 +7,7 @@
       "health": "5",
       "description": "A giant rat is a larger cousin of what can be found in the sewers of castles and dungeons. Despite being the size of a large dog, it is fairly weak and relatively easy to defeat.",
       "image": "image_fx_giant_rat.jpeg",
-      "attackPower": 5
+      "attackPower": 4
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "health": "50",
       "description": "A dragon is a creature of legend. Ancient and powerful, it will fly in to devastate entire regions with its fire breath.",
       "image": "image_fx_dragon.jpeg",
-      "attackPower": 33
+      "attackPower": 30
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "health": "40",
       "description": "Half human, half beast, the minotaur is a powerful combatant that will cleft it's enemies in twain with its mighty great-axe.",
       "image": "image_fx_minotaur.jpeg",
-      "attackPower": 28
+      "attackPower": 21
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "health": "20",
       "description": "While somewhat rare, flying monkeys can harass villages and towns across the area. Even though they are not very strong, they are still both agile and dangerous.",
       "image": "image_fx_flying_monkeys.jpeg",
-      "attackPower": 13
+      "attackPower": 10
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "health": "30",
       "description": "A goblin raiding party can be devastating to a settlement, and should not be taken lightly despite an individual goblin's small size.",
       "image": "image_fx_goblins.jpeg",
-      "attackPower": 20
+      "attackPower": 15
     }
   ]
 }

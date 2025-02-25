@@ -5,9 +5,11 @@ import {
   MoonIcon
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@/context/theme-context';
+import { useScore } from '@/context/score-context';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
+  const { score } = useScore();
 
   return (
     <div className="w-full">
@@ -22,6 +24,7 @@ const Header = () => {
           }</span>
         </div>
       <h1 className="flex text-4xl justify-center font-semibold">Hire an Adventurer</h1>
+      <p className="flex text-sm justify-center mt-0">Score: { score }</p>
     </div>
   );
 };  

@@ -4,7 +4,7 @@ import Header from "@/app/ui/header";
 import "./globals.css";
 import { SelectedAdventurersProvider } from "@/context/selected-adventurers-context";
 import { ThemeProvider } from "@/context/theme-context";
-import { CoinsProvider } from "@/context/coins-context";
+import { ScoreProvider } from "@/context/score-context";
 
 export const metadata: Metadata = {
   title: "Hire an Adventurer",
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <CoinsProvider>
+        <ScoreProvider>
           <SelectedAdventurersProvider>
             <div className="flex h-screen flex-col md:flex-row md:overflow-hidden w-full">
               <div className="w-full flex-none md:w-64">
@@ -33,7 +33,7 @@ export default function RootLayout({
               </div>
             </div>
           </SelectedAdventurersProvider>
-        </CoinsProvider>
+        </ScoreProvider>
       </ThemeProvider>
     </html>
   );

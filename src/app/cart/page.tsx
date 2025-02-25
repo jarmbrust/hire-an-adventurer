@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Modal from "@/app/ui/modal";
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
-import { useCoins } from '@/context/coins-context';
+import { useScore } from '@/context/score-context';
 import Button from '@/app/ui/button';
 import { adventurerDetailsPath, combatPath } from '@/app/lib/paths';
 
@@ -18,7 +18,7 @@ const CartPage = () => {
     clearAdventurers,
     hireAdventurers,
   } = useSelectedAdventurers();
-  const { coinAmount, changeCoinAmount } = useCoins();
+  const { coinAmount, changeCoinAmount } = useScore();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);

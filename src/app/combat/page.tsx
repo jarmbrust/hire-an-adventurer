@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { useScore } from '@/context/score-context';
 // importing the JSON directly file instead of calling the API since even though this will be stored in the DB
 // eventually, it is not based on a choice by the user, so will deal that that later.
 import { monsters } from '@/monsters.json';
@@ -13,6 +14,7 @@ import { type Adventurer, type Monster } from '@/app/lib/definitions';
 
 const CombatPage = () => {
   const { hiredAdventurers, adventurersInCombat, combatEngaged, slayAdventurers, clearAdventurers } = useSelectedAdventurers();
+  const { increaseScore } = useScore();
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
   const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
@@ -54,6 +56,7 @@ const CombatPage = () => {
         setMonsterDefeated(true);
         setAdventurersList(hiredAdventurers);
         clearAdventurers('hired');
+        increaseScore(theMonster.attackPower);
       } else if (theMonster && partyAttackValue < theMonster.attackPower) {
         setMonsterDefeated(false);
         setAdventurersList(hiredAdventurers);
@@ -75,7 +78,7 @@ const CombatPage = () => {
         combatEngaged(false);
       }
     }
-  }, [theMonster, hiredAdventurers, slayAdventurers, clearAdventurers, combatEngaged]);
+  }, [theMonster, hiredAdventurers, slayAdventurers, clearAdventurers, combatEngaged, increaseScore]);
 
   useEffect(() => {
     if (hiredAdventurers.length === 0 && !adventurersInCombat) {

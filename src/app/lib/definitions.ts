@@ -44,7 +44,9 @@ export type SelectedAdventurersContextType = {
   combatEngaged: (inCombat: boolean) => void;
 };
 
-export type CoinsContextType = {
+export type ScoreContextType = {
   coinAmount: number;
+  score: number;
   changeCoinAmount: (amount: number) => void;
+  increaseScore: (amount: number) => void;
 };
