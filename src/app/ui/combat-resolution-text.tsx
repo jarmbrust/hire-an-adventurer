@@ -2,6 +2,8 @@ import { type Adventurer, type Monster } from "@/app/lib/definitions";
 
 const combatResolutionText = (monsterDefeated: boolean, monster: Monster | null, adventurers: Adventurer[]) => {
   if (!monster) return '';
+  console.log(adventurers, adventurers.length);
+  const pastTense = adventurers.length === 1 ? 'was' : 'were';
   const adventurerNames: string = adventurers.map((adventurer) => {
     if (adventurers.length === 1) {
       return adventurer.name;
@@ -22,11 +24,11 @@ const combatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
   }
   if (!monsterDefeated && monster.flies) {
     return `The ${monster.name} flew in to attack ${adventurerNames}!
-      Tragically, ${adventurerNames} did not have the ranged power to slay this threat and were defeated!`;
+      Tragically, ${adventurerNames} did not have the ranged power to slay this threat and ${pastTense} defeated!`;
   }
   if (!monsterDefeated && !monster.flies) {
     return `The ${monster.name} charged in to attack ${adventurerNames}!
-      Tragically, ${adventurerNames} did not have the melee power to slay this threat and were defeated!`;
+      Tragically, ${adventurerNames} did not have the melee power to slay this threat and ${pastTense} defeated!`;
   }
   return 'Error Occurred!!';
 }
