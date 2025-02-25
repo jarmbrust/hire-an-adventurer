@@ -19,10 +19,10 @@ const Home = () => {
         they are available and you have the silver.
       </p>
       <p className="mt-4 mb-3">
-        The game functions where once you have hired your adventurers on the cart page,
+        The game functions as such: once you&apos;ve hired your adventurers on the cart page,
         you can then go to the combat page (you will be able to go back and hire more if you decide to).  
         When you are ready, fight the monster(s).  You will be informed weather or not your
-        selected group of adventurers successfully defeated the them.  Note that some monsters fly and must be 
+        selected group of adventurers were successful in defeating them.  Note that some monsters fly and must be 
         fought with ranged attacks, and others are on terrestrial and must be fought with melee attacks. 
       </p>
       <p>
@@ -30,7 +30,7 @@ const Home = () => {
         you refresh the page. This will be rectified in a near-future version or update.
       </p>
       <p className="mt-4 mb-3">
-        To start, simply go to the Available Adventurers section -- the button is to the left.
+        To start, simply go to the Available Adventurers section (the button is to the left on the navbar).
       </p>
       <p className="mt-6 mb-5">
         * Note, this program was created using React 19 and Next.js, and the code can be located here:&nbsp;
