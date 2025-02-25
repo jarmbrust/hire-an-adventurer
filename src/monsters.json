@@ -44,8 +44,8 @@
       "id": 6,
       "name": "Ravenous Flying Squirrel",
       "flies": true,
-      "description": "The size of a very large squirrel, but with a ferocious carnivorous appetite and quick attacks.",
-      "image": "image_fx_giant_spider.jpeg",
+      "description": "The size of a very very large squirrel, but with a ferocious carnivorous appetite and quick attacks.",
+      "image": "image_fx_flying_squirrel.jpeg",
       "attackPower": 11
     }
   ]

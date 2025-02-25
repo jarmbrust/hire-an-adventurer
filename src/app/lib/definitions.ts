@@ -17,7 +17,6 @@ export type Monster = {
   id: number,
   name: string,
   flies: boolean,
-  health: string,
   description: string,
   image: string,
   attackPower: number,
