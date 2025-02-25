@@ -2,7 +2,6 @@ export type Adventurer = {
   id: number,
   name: string,
   profession: string,
-  level: string,
   health: string,
   strength: string,
   cunning: string,
@@ -10,6 +9,8 @@ export type Adventurer = {
   description: string,
   image: string,
   fee: string,
+  rangedPower: number,
+  meleePower: number
 };
 
 export type Monster = {
@@ -39,7 +40,7 @@ export type SelectedAdventurersContextType = {
   getAdventurerStatus: (id: number | undefined) => string;
   clearAdventurers: (adventurerGroup: string) => void;
   hireAdventurers: (adventurers: Adventurer[]) => void;
-  slayAdventurers: (adventurers: Adventurer[]) => void;
+  slayAdventurers: () => void;
   combatEngaged: (inCombat: boolean) => void;
 };
 

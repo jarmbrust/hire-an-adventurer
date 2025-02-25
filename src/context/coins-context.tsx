@@ -6,7 +6,7 @@ import { type CoinsContextType } from '@/app/lib/definitions';
 const CoinsContext = createContext<CoinsContextType | undefined>(undefined);
 
 export const CoinsProvider = ({ children }: { children: ReactNode }) => {
-  const [coinAmount, setCoinAmount] = useState<number>(100);
+  const [coinAmount, setCoinAmount] = useState<number>(70);
 
   const changeCoinAmount = (amount: number) => {
     setCoinAmount(amount);

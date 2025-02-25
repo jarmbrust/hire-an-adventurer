@@ -11,21 +11,21 @@
     },
     {
       "id": 2,
-      "name": "The Dragon",
+      "name": "Dragon",
       "flies": true,
       "health": "50",
       "description": "A dragon is a creature of legend. Ancient and powerful, it will fly in to devastate entire regions with its fire breath.",
       "image": "image_fx_dragon.jpeg",
-      "attackPower": 35
+      "attackPower": 33
     },
     {
       "id": 3,
-      "name": "The Minotaur",
+      "name": "Minotaur",
       "flies": false,
       "health": "40",
       "description": "Half human, half beast, the minotaur is a powerful combatant that will cleft it's enemies in twain with its mighty great-axe.",
       "image": "image_fx_minotaur.jpeg",
-      "attackPower": 30
+      "attackPower": 28
     },
     {
       "id": 4,
@@ -38,7 +38,7 @@
     },
     {
       "id": 5,
-      "name": "Horde ofGoblin Raiders",
+      "name": "Horde of Goblin Raiders",
       "flies": false,
       "health": "30",
       "description": "A goblin raiding party can be devastating to a settlement, and should not be taken lightly despite an individual goblin's small size.",

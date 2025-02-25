@@ -117,8 +117,8 @@ const CartPage = () => {
       <Button
         className="mt-4 mb-4"
         onClick={ handleHireAdventurers }
-        disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }
-        aria-disabled={ isLoading || !!errorMessage || selectedAdventurers.length === 0 }>
+        disabled={ isLoading || selectedAdventurers.length === 0 }
+        aria-disabled={ isLoading || selectedAdventurers.length === 0 }>
         Hire Adventurers
       </Button>
       { errorMessage && <p className="text-red-500 mt-4">{ errorMessage }</p> }
@@ -158,7 +158,7 @@ const CartPage = () => {
         onClick={ engageAdventurersInCombat }
         disabled={ hiredAdventurers.length === 0 }
         aria-disabled={ hiredAdventurers.length === 0 }>
-        Fight the Monsters!
+        Go to Combat Page!
       </Button>
     </>
   );

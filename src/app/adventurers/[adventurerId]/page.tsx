@@ -78,8 +78,14 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     if (hireButton) {
       return 'Selecting...';
     }
-    if (disableButton) {
-      return 'Adventurer already selected';
+    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Deceased') {
+      return 'Adventurer is deceased';
+    }
+    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
+      return 'Adventurer is already hired';
+    }
+    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Selected') {
+      return 'Adventurer is already selected';
     }
     return 'Choose this adventurer';
   }

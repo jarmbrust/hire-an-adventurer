@@ -11,10 +11,11 @@ import Modal from '@/app/ui/modal';
 import { type Monster } from '@/app/lib/definitions';
 
 const CombatPage = () => {
-  const { hiredAdventurers, adventurersInCombat, combatEngaged } = useSelectedAdventurers();
-  const [monsterId, setMonsterId] = useState<number>(0);
-  const [theMonster, setTheMonster] = useState<Monster>({ id: 0, name: '', flies: false, health: '', description: '', image: '', attackPower: 0 });
-  const [showModal, setShowModal] = useState(false);
+  const { hiredAdventurers, adventurersInCombat, combatEngaged, slayAdventurers, clearAdventurers } = useSelectedAdventurers();
+  const [theMonster, setTheMonster] = useState<Monster | null>(null);
+  const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
+  const [showResolutionModal, setShowResolutionModal] = useState(false);
+  const [monsterDefeated, setMonsterDefeated] = useState<boolean | null>(null);
 
   const fightMonsters = () => {
     const monsterNumber = Math.floor(Math.random() * 10 + 1);
@@ -41,27 +42,48 @@ const CombatPage = () => {
         randomMonsterId = 2
         break;
     }
-    setMonsterId(randomMonsterId);
+    const selectedMonster = monsters.find((m) => m.id === randomMonsterId) || null;
+    setTheMonster(selectedMonster);
   };
 
   useEffect(() => {
-    if (monsterId !== 0) {
-      const selectedMonster = monsters.find((m) => m.id === monsterId) || { id: 0, name: '', flies: false, health: '', description: '', image: '', attackPower: 0 };
-      setTheMonster(selectedMonster);
-      combatEngaged(true);
+    const resolveCombat = (partyAttackValue: number) => {
+      if (theMonster && partyAttackValue > theMonster.attackPower) {
+        setMonsterDefeated(true);
+        clearAdventurers('hired');
+      } else if (theMonster && partyAttackValue < theMonster.attackPower) {
+        setMonsterDefeated(false);
+        slayAdventurers();
+        clearAdventurers('hired');
+      }
+    };
+    if (theMonster) {
+      let partyAttackValue: number = 0;
+      if (theMonster.flies) {
+        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + adventurer.rangedPower, 0);
+      } else {
+        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + adventurer.meleePower, 0);
+      }
+      if (partyAttackValue && theMonster.attackPower) {
+        combatEngaged(true);
+        resolveCombat(partyAttackValue);
+        setShowResolutionModal(true);
+        combatEngaged(false);
+      }
     }
-  }, [monsterId, combatEngaged]);
+  }, [theMonster, hiredAdventurers, slayAdventurers, clearAdventurers, combatEngaged]);
 
   useEffect(() => {
     if (hiredAdventurers.length === 0 && !adventurersInCombat) {
-      setShowModal(true);
+      setShowNoneHiredModal(true);
     }
   }, [hiredAdventurers.length, adventurersInCombat]);
 
   return (
     <>
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
-      { showModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
+      { showNoneHiredModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
+      { showResolutionModal && <Modal message={ monsterDefeated ? `Your adventurers defeated the ${ theMonster?.name }, congratulations!` : `Your adventurers were defeated by the ${ theMonster?.name }!` } link="/adventurers" /> }
       <p className="flex justify-center mt-6 text-2xl">These are the adventurers you have hired:</p>
       { hiredAdventurers.map((adventurer) => (
         <div key={adventurer.id}>
@@ -81,13 +103,13 @@ const CombatPage = () => {
           &nbsp; or &nbsp;
           <Button
             disabled={ adventurersInCombat }
-            aria-disabled={adventurersInCombat}
+            aria-disabled={ adventurersInCombat }
             onClick={ fightMonsters }>
             Fight the monsters!
           </Button>
         </div>
 
-      {adventurersInCombat && theMonster.id !== 0 &&
+      {adventurersInCombat && theMonster &&
       <>
         <p className="flex justify-center mt-6 text-xl">{hiredAdventurers.length > 0 ? (
             "Ready for combat!"

@@ -52,8 +52,12 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
     setHiredAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
   };
 
-  const slayAdventurers = (adventurers: Adventurer[]) => {
-    setDeceasedAdventurers((prevAdventurers) => [...prevAdventurers, ...adventurers]);
+  const slayAdventurers = () => {
+    setDeceasedAdventurers((prevDeceasedAdventurers) => {
+      const slainAdventurers = [...prevDeceasedAdventurers, ...hiredAdventurers];
+      return slainAdventurers;
+    });
+    setHiredAdventurers([]);
   };
 
   const combatEngaged = (inCombat: boolean) => {
