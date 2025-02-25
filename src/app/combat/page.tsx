@@ -8,14 +8,16 @@ import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { monsters } from '@/monsters.json';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
-import { type Monster } from '@/app/lib/definitions';
+import combatResolutionText from '@/app/ui/combat-resolution-text';
+import { type Adventurer, type Monster } from '@/app/lib/definitions';
 
 const CombatPage = () => {
   const { hiredAdventurers, adventurersInCombat, combatEngaged, slayAdventurers, clearAdventurers } = useSelectedAdventurers();
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
   const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
-  const [monsterDefeated, setMonsterDefeated] = useState<boolean | null>(null);
+  const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
+  const [adventurersList, setAdventurersList] = useState<Adventurer[]>([]);
 
   const fightMonsters = () => {
     const monsterNumber = Math.floor(Math.random() * 10 + 1);
@@ -50,9 +52,11 @@ const CombatPage = () => {
     const resolveCombat = (partyAttackValue: number) => {
       if (theMonster && partyAttackValue > theMonster.attackPower) {
         setMonsterDefeated(true);
+        setAdventurersList(hiredAdventurers);
         clearAdventurers('hired');
       } else if (theMonster && partyAttackValue < theMonster.attackPower) {
         setMonsterDefeated(false);
+        setAdventurersList(hiredAdventurers);
         slayAdventurers();
         clearAdventurers('hired');
       }
@@ -83,7 +87,9 @@ const CombatPage = () => {
     <>
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
       { showNoneHiredModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
-      { showResolutionModal && <Modal message={ monsterDefeated ? `Your adventurers defeated the ${ theMonster?.name }, congratulations!` : `Your adventurers were defeated by the ${ theMonster?.name }!` } link="/adventurers" /> }
+      { showResolutionModal && <Modal message={
+          combatResolutionText(monsterDefeated, theMonster, adventurersList)
+        } link="/adventurers" /> }
       <p className="flex justify-center mt-6 text-2xl">These are the adventurers you have hired:</p>
       { hiredAdventurers.map((adventurer) => (
         <div key={adventurer.id}>
