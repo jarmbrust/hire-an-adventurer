@@ -2,7 +2,6 @@ import { type Adventurer, type Monster } from "@/app/lib/definitions";
 
 const combatResolutionText = (monsterDefeated: boolean, monster: Monster | null, adventurers: Adventurer[]) => {
   if (!monster) return '';
-  console.log(adventurers, adventurers.length);
   const pastTense = adventurers.length === 1 ? 'was' : 'were';
   const adventurerNames: string = adventurers.map((adventurer) => {
     if (adventurers.length === 1) {
