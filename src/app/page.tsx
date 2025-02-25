@@ -9,11 +9,11 @@ const Home = () => {
       </p>
       <p className="mt-4 mb-3">
         In this simulation, you start with 100 silver coins.  You can use this silver to hire adventurers
-        to fight monsters plaguing your village.   See how many monsters you can defeat before you either
+        to fight monsters plaguing your village.  See how many monsters you can defeat before you either
         run out of silver, or the pool of adventurers are all defeated!
       </p>
       <p className="mt-4 mb-3">
-        This program functions similar to a simple e-commerce site.  You load you your cart
+        This program functions similar to a simple e-commerce site.  You load your cart
         with adventurers to hire. You can add and remove adventurers from your cart.
         Hiring the adventurers will deduct from your stash of silver coins and you can hire more if 
         they are available and you have the silver.
@@ -22,11 +22,12 @@ const Home = () => {
         The game functions where once you have hired your adventurers on the cart page,
         you can then go to the combat page (you will be able to go back and hire more if you decide to).  
         When you are ready, fight the monster(s).  You will be informed weather or not your
-        selected group of adventurers successfully defeated the them.
+        selected group of adventurers successfully defeated the them.  Note that some monsters fly and must be 
+        fought with ranged attacks, and others are on terrestrial and must be fought with melee attacks. 
       </p>
       <p>
         As of this writing, the backend and database are simulated, so no progress is saved if 
-        you refresh the page. This will be rectified in a near-future version.
+        you refresh the page. This will be rectified in a near-future version or update.
       </p>
       <p className="mt-4 mb-3">
         To start, simply go to the Available Adventurers section -- the button is to the left.
