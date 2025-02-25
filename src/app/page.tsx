@@ -21,7 +21,7 @@ const Home = () => {
       <p className="mt-4 mb-3">
         The game functions as such: once you&apos;ve hired your adventurers on the cart page,
         you can then go to the combat page (you will be able to go back and hire more if you decide to).  
-        When you are ready, fight the monster(s).  You will be informed weather or not your
+        When you are ready, fight the monster(s).  You will be informed whether or not your
         selected group of adventurers were successful in defeating them.  Note that some monsters fly and must be 
         fought with ranged attacks, and others are on terrestrial and must be fought with melee attacks. 
       </p>
