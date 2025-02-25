@@ -6,13 +6,13 @@
     "profession": "Barbarian",
     "health": "Very Sturdy",
     "strength": "5",
-    "cunning": "2",
+    "cunning": "3",
     "intellect": "1",
-    "description": "Very strong with powerful melee attacks, but Torg cannot do much at range.",
+    "description": "Very strong with powerful melee attacks, Torg is also decently competent at ranged when he throws his axe.",
     "image": "image_fx_mighty_torg.jpeg",
-    "fee": 13,
-    "rangedPower": 2,
-    "meleePower": 20
+    "fee": 14,
+    "rangedPower": 8,
+    "meleePower": 18
   },
   {
     "id": 2,
@@ -22,9 +22,9 @@
     "strength": "3",
     "cunning": "3",
     "intellect": "3",
-    "description": "Swift and strong, Rena can pinpoint a target from great range, but is not as skilled in melee.",
+    "description": "Swift and strong, Rena is deadly with her bow, but is not as skilled in melee.",
     "image": "image_fx_ranger_rena.jpeg",
-    "fee": 16,
+    "fee": 15,
     "rangedPower": 20,
     "meleePower": 5
   },
@@ -36,11 +36,11 @@
     "strength": "1",
     "cunning": "3",
     "intellect": "5",
-    "description": "Physically weak, yet powerful and wise in the arcane. Archmage Claus is a master of magic with both ranged and melee spells.",
+    "description": "Physically weak, yet powerful and wise in the arcane. Archmage Claus is a master of magic and spell-casting.",
     "image": "image_fx_archmage_claus.jpeg",
-    "fee": 22,
-    "rangedPower": 15,
-    "meleePower": 15
+    "fee": 21,
+    "rangedPower": 18,
+    "meleePower": 12
   },
   {
     "id": 4,
@@ -52,12 +52,26 @@
     "intellect": "2",
     "description": "Elusive and cunning, Velma is a master of stealth and can competently fight in both melee and ranged.",
     "image": "image_fx_shadowstalker_velma.jpeg",
-    "fee": 11,
-    "rangedPower": 8,
+    "fee": 12,
+    "rangedPower": 10,
     "meleePower": 10
   },
   {
     "id": 5,
+    "name": "Sir Valan",
+    "profession": "Knight",
+    "health": "Very Sturdy",
+    "strength": "5",
+    "cunning": "2",
+    "intellect": "2",
+    "description": "Chivalrous and stalwart, Sir Valan is a master of melee combat, but is very limited at range.",
+    "image": "image_fx_sir_valan.jpeg",
+    "fee": 14,
+    "rangedPower": 3,
+    "meleePower": 20
+  },
+  {
+    "id": 6,
     "name": "Timid Edgar",
     "profession": "A regular guy",
     "health": "Very Frail",
