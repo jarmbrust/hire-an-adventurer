@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useScore } from '@/context/score-context';
-// importing the JSON directly file instead of calling the API since even though this will be stored in the DB
-// eventually, it is not based on a choice by the user, so will deal that that later.
-import { monsters } from '@/monsters.json';
+
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
-import combatResolutionText from '@/app/ui/combat-resolution-text';
+import CombatResolution from '@/app/ui/combat-resolution';
+import randomlySelectedMonsters from '@/app/lib/randomly-selected-monsters';
 import { type Adventurer, type Monster } from '@/app/lib/definitions';
 
 const CombatPage = () => {
@@ -21,33 +20,8 @@ const CombatPage = () => {
   const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
   const [adventurersList, setAdventurersList] = useState<Adventurer[]>([]);
 
-  const fightMonsters = () => {
-    const monsterNumber = Math.floor(Math.random() * 10 + 1);
-    let randomMonsterId = 0
-    switch (monsterNumber) {
-      case 1:
-      case 2:
-      case 3:
-        randomMonsterId = 1
-        break;
-      case 4:
-      case 5:
-        randomMonsterId = 5
-        break;
-      case 6:
-      case 7:
-        randomMonsterId = 3
-        break;
-      case 8:
-      case 9:
-        randomMonsterId = 4
-        break;
-      case 10:
-        randomMonsterId = 2
-        break;
-    }
-    const selectedMonster = monsters.find((m) => m.id === randomMonsterId) || null;
-    setTheMonster(selectedMonster);
+  const getTheMonsters = () => {
+    setTheMonster(randomlySelectedMonsters());
   };
 
   useEffect(() => {
@@ -91,14 +65,17 @@ const CombatPage = () => {
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
       { showNoneHiredModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
       { showResolutionModal && <Modal message={
-          combatResolutionText(monsterDefeated, theMonster, adventurersList)
-        } link="/adventurers" /> }
+         <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={adventurersList} />
+        } link="/adventurers" /> 
+      }
+
       <p className="flex justify-center mt-6 text-2xl">These are the adventurers you have hired:</p>
       { hiredAdventurers.map((adventurer) => (
         <div key={adventurer.id}>
           <p className="flex mt-4 text-lg justify-center font-bold">{ adventurer.name }</p>
         </div>
       )) }
+
       <div className="flex justify-center mt-6 text-2xl">Would you like to:</div>
         <div className="flex justify-center mt-6 text-2xl">
           <Link 
@@ -113,14 +90,14 @@ const CombatPage = () => {
           <Button
             disabled={ adventurersInCombat }
             aria-disabled={ adventurersInCombat }
-            onClick={ fightMonsters }>
+            onClick={ getTheMonsters }>
             Fight the monsters!
           </Button>
         </div>
 
       {adventurersInCombat && theMonster &&
       <>
-        <p className="flex justify-center mt-6 text-xl">{hiredAdventurers.length > 0 ? (
+        <p className="flex justify-center mt-6 text-xl">{ hiredAdventurers.length > 0 ? (
             "Ready for combat!"
           ) : (
             "You have not hired any adventurers yet."
@@ -129,7 +106,7 @@ const CombatPage = () => {
         <p className="flex mt-4 text-xl justify-center">Your adventurers:</p>
         {hiredAdventurers.map((adventurer) => (
           <div key={adventurer.id}>
-            <p className="flex font-bold mt-4 text-2xl justify-center">{adventurer.name}</p>
+            <p className="flex font-bold mt-4 text-2xl justify-center">{ adventurer.name }</p>
           </div>
         ))}
         <p className="flex mt-4 text-4xl justify-center">VS</p>

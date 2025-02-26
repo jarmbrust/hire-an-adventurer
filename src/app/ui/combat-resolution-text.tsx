@@ -1,6 +1,6 @@
 import { type Adventurer, type Monster } from "@/app/lib/definitions";
 
-const combatResolutionText = (monsterDefeated: boolean, monster: Monster | null, adventurers: Adventurer[]) => {
+const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null, adventurers: Adventurer[]) => {
   if (!monster) return '';
   const pastTense = adventurers.length === 1 ? 'was' : 'were';
   const adventurerNames: string = adventurers.map((adventurer) => {
@@ -14,22 +14,38 @@ const combatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
   }).join(', ');
 
   if (monsterDefeated && monster.flies) {
-    return `The ${monster.name} flew in to attack ${adventurerNames}, 
-      but was heroically defeated by them as their ranged power was too strong for it!`;
+    return (
+      <>
+        The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames}</strong>, 
+        but was heroically defeated by the adventurers!
+      </>
+    );
   }
   if (monsterDefeated && !monster.flies) {
-    return `The ${monster.name} charged in to attack ${adventurerNames},
-      but was heroically defeated by them as their melee power was too strong for it!`;
+    return (
+      <>
+        The <strong>{ monster.name }</strong> charged in to attack <strong>{ adventurerNames }</strong>,
+        but was heroically defeated by the adventurers!
+      </>
+    );
   }
   if (!monsterDefeated && monster.flies) {
-    return `The ${monster.name} flew in to attack ${adventurerNames}!
-      Tragically, ${adventurerNames} did not have the ranged power to slay this threat and ${pastTense} defeated!`;
+    return (
+      <>
+        The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames }</strong>!
+        Tragically, the adventurers did not have the ranged power to slay this threat and { pastTense } defeated!
+      </>
+    );
   }
   if (!monsterDefeated && !monster.flies) {
-    return `The ${monster.name} charged in to attack ${adventurerNames}!
-      Tragically, ${adventurerNames} did not have the melee power to slay this threat and ${pastTense} defeated!`;
+    return (
+      <>
+        The <strong>{ monster.name }</strong> charged in to attack <strong>{ adventurerNames}</strong>!
+        Tragically, the adventurers did not have the melee power to slay this threat and { pastTense } defeated!
+      </>
+    );
   }
-  return 'Error Occurred!!';
+  return <>Error Occurred!!</>;
 }
 
-export default combatResolutionText;
+export default CombatResolutionText;

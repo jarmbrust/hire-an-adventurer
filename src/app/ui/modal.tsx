@@ -5,7 +5,9 @@ import clsx from 'clsx';
 import { useTheme } from '@/context/theme-context';
 import Button from '@/app/ui/button';
 
-const Modal = ({ message, link }: { message: string, link: string }) => {
+import { ReactNode } from 'react';
+
+const Modal = ({ message, link }: { message: ReactNode, link: string }) => {
   const { theme } = useTheme();
 
   return (
@@ -25,7 +27,6 @@ const Modal = ({ message, link }: { message: string, link: string }) => {
             >
               <Button className="px-4 py-2">Close</Button>
             </Link>
-
           </div>
         </div>
       </div>

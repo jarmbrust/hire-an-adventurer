@@ -30,7 +30,7 @@
       "flies": true,
       "description": "While somewhat rare, flying monkeys can harass villages and towns across the area. Even though they are not very strong, they are still both agile and dangerous.",
       "image": "image_fx_flying_monkeys.jpeg",
-      "attackPower": 14
+      "attackPower": 12
     },
     {
       "id": 5,
