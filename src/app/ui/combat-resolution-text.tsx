@@ -34,7 +34,7 @@ const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
     return (
       <>
         The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames }</strong>!
-        <span className="mt-4">Tragically, the adventurer{ plural } { pastTense } defeated and { monster.victoryPhrase }!!</span>
+        <br />Tragically, the adventurer{ plural } { pastTense } defeated by being { monster.victoryPhrase }!!
       </>
     );
   }
@@ -42,7 +42,7 @@ const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
     return (
       <>
         The <strong>{ monster.name }</strong> charged in to attack <strong>{ adventurerNames}</strong>!
-        <span className="mt-4">Tragically, the adventurer{ plural } { pastTense } defeated and { monster.victoryPhrase }!!</span>
+        <br />Tragically, the adventurer{ plural } { pastTense } defeated by being { monster.victoryPhrase }!!
       </>
     );
   }

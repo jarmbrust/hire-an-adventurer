@@ -18,17 +18,18 @@ const CartPage = () => {
     clearAdventurers,
     hireAdventurers,
   } = useSelectedAdventurers();
-  const { coinAmount, changeCoinAmount } = useScore();
+  const { score, coinAmount, changeCoinAmount } = useScore();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);
-  const [showModal, setShowModal] = useState(false);
+  const [showNoAdventurersModal, setShowNoAdventurersModal] = useState(false);
+  const [outOfMoneyModal, setOutOfMoneyModal] = useState(false);
   const [adventurersHiredOrDeceased, setAdventurersHiredOrDeceased] = useState([...hiredAdventurers, ...deceasedAdventurers]);
   const router = useRouter();
 
   useEffect(() => {
     setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
-    if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowModal(true);
+    if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
   }, [selectedAdventurers, hiredAdventurers]);
 
   const handleHireAdventurers = () => {
@@ -37,6 +38,7 @@ const CartPage = () => {
     }
     if (coinAmount < totalFee) {
       setErrorMessage('Not enough coins');
+      setOutOfMoneyModal(true);
       return;
     }
     setIsLoading(true);
@@ -73,10 +75,20 @@ const CartPage = () => {
     router.push(combatPath());
   };
 
+  const tooLittleMoneyText = () => {
+    return (
+      <>
+        You are too low on silver to hire these adventurers, please choose less expensive adventurers or restart the game if too many are slain or you have too few coins.
+        <span className="block">Your current score is <strong>{score}</strong> and you have <strong>{coinAmount}</strong> silver left.</span>
+      </>
+    );
+  };
+
   return (
     <>
       <h2 className="text-3xl font-bold">Hiring Selected Adventurers</h2>
-      { showModal && <Modal message="No adventurers selected" link="/adventurers" /> }
+      { showNoAdventurersModal && <Modal message="No adventurers selected." link="/adventurers" /> }
+      { outOfMoneyModal && <Modal message={tooLittleMoneyText()} link="/adventurers" /> }
       <table id="adventurers-table" className="w-full mt-4 border-collapse">
         <thead>
           <tr className="text-2xl font-bold">

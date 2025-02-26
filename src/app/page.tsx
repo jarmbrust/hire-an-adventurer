@@ -8,7 +8,7 @@ const Home = () => {
         Hire some adventurers to put the problem to rest!
       </p>
       <p className="mt-4 mb-3">
-        In this simulation, you start with 100 silver coins.  You can use this silver to hire adventurers
+        In this simulation, you start with 200 silver coins.  You can use this silver to hire adventurers
         to fight monsters plaguing your village.  See how many monsters you can defeat before you either
         run out of silver, or the pool of adventurers are all defeated!
       </p>

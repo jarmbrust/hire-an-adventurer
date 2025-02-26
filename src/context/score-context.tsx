@@ -6,7 +6,7 @@ import { type ScoreContextType } from '@/app/lib/definitions';
 const ScoreContext = createContext<ScoreContextType | undefined>(undefined);
 
 export const ScoreProvider = ({ children }: { children: ReactNode }) => {
-  const [coinAmount, setCoinAmount] = useState<number>(100);
+  const [coinAmount, setCoinAmount] = useState<number>(200);
   const [score, setScore] = useState<number>(0);
 
   const changeCoinAmount = (amount: number) => {
