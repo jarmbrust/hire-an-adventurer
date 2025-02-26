@@ -12,7 +12,13 @@ import randomlySelectedMonsters from '@/app/lib/randomly-selected-monsters';
 import { type Adventurer, type Monster } from '@/app/lib/definitions';
 
 const CombatPage = () => {
-  const { hiredAdventurers, adventurersInCombat, combatEngaged, slayAdventurers, clearAdventurers } = useSelectedAdventurers();
+  const {
+    hiredAdventurers,
+    adventurersInCombat,
+    combatEngaged,
+    slayAdventurers,
+    adventurerVictory,
+  } = useSelectedAdventurers();
   const { increaseScore } = useScore();
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
   const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
@@ -29,13 +35,12 @@ const CombatPage = () => {
       if (theMonster && partyAttackValue > theMonster.attackPower) {
         setMonsterDefeated(true);
         setAdventurersList(hiredAdventurers);
-        clearAdventurers('hired');
+        adventurerVictory();
         increaseScore(theMonster.attackPower);
       } else if (theMonster && partyAttackValue < theMonster.attackPower) {
         setMonsterDefeated(false);
         setAdventurersList(hiredAdventurers);
         slayAdventurers();
-        clearAdventurers('hired');
       }
     };
     if (theMonster) {
@@ -52,7 +57,7 @@ const CombatPage = () => {
         combatEngaged(false);
       }
     }
-  }, [theMonster, hiredAdventurers, slayAdventurers, clearAdventurers, combatEngaged, increaseScore]);
+  }, [theMonster, hiredAdventurers, slayAdventurers, adventurerVictory, combatEngaged, increaseScore]);
 
   useEffect(() => {
     if (hiredAdventurers.length === 0 && !adventurersInCombat) {

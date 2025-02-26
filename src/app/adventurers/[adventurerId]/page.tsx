@@ -104,12 +104,12 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
           { buttonText() }
         </Button>
       </span>
-      {isLoading ?
+      { isLoading ?
         <Image 
           src="/images/loading-spinner2.gif"
           alt="placeholder"
-          width={75}
-          height={75}
+          width={ 75 }
+          height={ 75 }
         />
         :
         <AdventurerStats stats={adventurerInfo} />

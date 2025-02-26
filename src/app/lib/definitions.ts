@@ -19,6 +19,7 @@ export type Monster = {
   flies: boolean,
   description: string,
   image: string,
+  victoryPhrase: string,
   attackPower: number,
 };
 
@@ -40,6 +41,7 @@ export type SelectedAdventurersContextType = {
   clearAdventurers: (adventurerGroup: string) => void;
   hireAdventurers: (adventurers: Adventurer[]) => void;
   slayAdventurers: () => void;
+  adventurerVictory: () => void;
   combatEngaged: (inCombat: boolean) => void;
 };
 

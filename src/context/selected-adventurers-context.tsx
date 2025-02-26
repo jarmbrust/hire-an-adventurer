@@ -58,6 +58,12 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
       return slainAdventurers;
     });
     setHiredAdventurers([]);
+    setSelectedAdventurers([]);
+  };
+
+  const adventurerVictory = () => {
+    setSelectedAdventurers(hiredAdventurers);
+    setHiredAdventurers([]);
   };
 
   const combatEngaged = (inCombat: boolean) => {
@@ -77,6 +83,7 @@ export const SelectedAdventurersProvider = ({ children }: { children: ReactNode 
         clearAdventurers,
         hireAdventurers,
         slayAdventurers,
+        adventurerVictory,
         combatEngaged,
       }}
     >

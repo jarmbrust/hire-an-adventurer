@@ -3,6 +3,7 @@ import { type Adventurer, type Monster } from "@/app/lib/definitions";
 const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null, adventurers: Adventurer[]) => {
   if (!monster) return '';
   const pastTense = adventurers.length === 1 ? 'was' : 'were';
+  const plural = adventurers.length === 1 ? '' : 's';
   const adventurerNames: string = adventurers.map((adventurer) => {
     if (adventurers.length === 1) {
       return adventurer.name;
@@ -16,7 +17,7 @@ const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
   if (monsterDefeated && monster.flies) {
     return (
       <>
-        The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames}</strong>, 
+        The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames }</strong>, 
         but was heroically defeated by the adventurers!
       </>
     );
@@ -33,7 +34,7 @@ const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
     return (
       <>
         The <strong>{ monster.name }</strong> flew in to attack <strong>{ adventurerNames }</strong>!
-        Tragically, the adventurers did not have the ranged power to slay this threat and { pastTense } defeated!
+        <span className="mt-4">Tragically, the adventurer{ plural } { pastTense } defeated and { monster.victoryPhrase }!!</span>
       </>
     );
   }
@@ -41,7 +42,7 @@ const CombatResolutionText = (monsterDefeated: boolean, monster: Monster | null,
     return (
       <>
         The <strong>{ monster.name }</strong> charged in to attack <strong>{ adventurerNames}</strong>!
-        Tragically, the adventurers did not have the melee power to slay this threat and { pastTense } defeated!
+        <span className="mt-4">Tragically, the adventurer{ plural } { pastTense } defeated and { monster.victoryPhrase }!!</span>
       </>
     );
   }

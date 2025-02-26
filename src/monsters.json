@@ -6,6 +6,7 @@
       "flies": false,
       "description": "A giant rat is a larger cousin of what can be found in the sewers of castles and dungeons. Despite being the size of a large dog, it is fairly weak and relatively easy to defeat.",
       "image": "image_fx_giant_rat.jpeg",
+      "victoryPhrase": "nibbled to death",
       "attackPower": 4
     },
     {
@@ -14,7 +15,8 @@
       "flies": true,
       "description": "A dragon is a creature of legend. Ancient and powerful, it will fly in to devastate entire regions with its fire breath.",
       "image": "image_fx_dragon.jpeg",
-      "attackPower": 30
+      "victoryPhrase": "incinerated",
+      "attackPower": 32
     },
     {
       "id": 3,
@@ -22,6 +24,7 @@
       "flies": false,
       "description": "Half human, half beast, the minotaur is a powerful combatant that will cleft it's enemies in twain with its mighty great-axe.",
       "image": "image_fx_minotaur.jpeg",
+      "victoryPhrase": "slaughtered",
       "attackPower": 21
     },
     {
@@ -30,6 +33,7 @@
       "flies": true,
       "description": "While somewhat rare, flying monkeys can harass villages and towns across the area. Even though they are not very strong, they are still both agile and dangerous.",
       "image": "image_fx_flying_monkeys.jpeg",
+      "victoryPhrase": "torn apart",
       "attackPower": 12
     },
     {
@@ -38,6 +42,7 @@
       "flies": false,
       "description": "A goblin raiding party can be devastating to a settlement, and should not be taken lightly despite an individual goblin's small size.",
       "image": "image_fx_goblins.jpeg",
+      "victoryPhrase": "hacked to bits",
       "attackPower": 15
     },
     {
@@ -45,8 +50,28 @@
       "name": "Ravenous Flying Squirrel",
       "flies": true,
       "description": "The size of a very very large squirrel, but with a ferocious carnivorous appetite and quick attacks.",
+      "victoryPhrase": "devoured",
       "image": "image_fx_flying_squirrel.jpeg",
       "attackPower": 11
+    },
+    {
+      "id": 7,
+      "name": "Frost Giant",
+      "flies": false,
+      "description": "Standing at 18 feet tall, the frost giant is a fearsome creature that can freeze its enemies with its icy breath.",
+      "image": "image_fx_giant.jpeg",
+      "victoryPhrase": "frozen solid",
+      "attackPower": 35
+    }
+    ,
+    {
+      "id": 8,
+      "name": "Vorpal Bunny",
+      "flies": false,
+      "description": "That rabbit is dynamite!  It is surrounded by the slain bones of many brave adventurers!",
+      "image": "image_fx_giant.jpeg",
+      "victoryPhrase": "decapitated",
+      "attackPower": 40
     }
   ]
 }
