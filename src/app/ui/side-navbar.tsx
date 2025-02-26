@@ -31,7 +31,7 @@ export default function SideNavbar() {
           })}>
           <div className="flex flex-col items-center justify-end h-full">
             <p className="text-center text-sm absolute bottom-4 ">
-              &copy;James Armbrust 2025
+              &copy;2025 James Armbrust
             </p>
           </div>
         </div> 
