@@ -52,7 +52,7 @@
     "intellect": "2",
     "description": "Elusive and cunning, Velma is a master of stealth and can competently fight in both melee and ranged.",
     "image": "image_fx_shadowstalker_velma.jpeg",
-    "fee": 11,
+    "fee": 12,
     "rangedPower": 10,
     "meleePower": 10
   },

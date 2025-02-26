@@ -9,8 +9,8 @@ const Home = () => {
       </p>
       <p className="mt-4 mb-3">
         In this simulation, you start with 200 silver coins.  You can use this silver to hire adventurers
-        to fight monsters plaguing your village.  See how many monsters you can defeat before you either
-        run out of silver, or the pool of adventurers are all defeated!
+        to fight the monsters plaguing your village.  See how many monsters you can defeat and how high of 
+        a score you can get before you either run out of silver, or the pool of adventurers are all defeated!
       </p>
       <p className="mt-4 mb-3">
         This program functions similar to a simple e-commerce site.  You load your cart
