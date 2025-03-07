@@ -14,6 +14,7 @@ const CartPage = () => {
     selectedAdventurers,
     hiredAdventurers,
     deceasedAdventurers,
+    getAdventurerStatus,
     removeSelectedAdventurer,
     clearAdventurers,
     hireAdventurers,
@@ -55,20 +56,6 @@ const CartPage = () => {
     const fee = adventurer ? parseInt(adventurer.fee) : 0;
     setTotalFee((totalFee) => totalFee - fee);
     removeSelectedAdventurer(id);
-  };
-
-  const getAdventurerStatus = (id: number | undefined): string => {
-    if (!id) return 'Unknown';
-    if (deceasedAdventurers.find((adventurer) => adventurer.id === id)) {
-      return 'Deceased';
-    }
-    if (hiredAdventurers.find((adventurer) => adventurer.id === id)) {
-      return 'Hired';
-    }
-    if (selectedAdventurers.find((adventurer) => adventurer.id === id)) {
-      return 'Selected';
-    }
-    return 'Available'
   };
 
   const engageAdventurersInCombat = () => {
