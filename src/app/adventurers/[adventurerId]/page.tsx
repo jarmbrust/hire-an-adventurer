@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
@@ -10,9 +11,9 @@ import { adventurerAPIPath } from '@/app/lib/paths';
 
 const fetchAdventurerInfo = async (adventurerId: number) => {
 
-  // Simulate a 1 second delay to show the loading state
+  // Simulate a 0.5 second delay to show the loading state
   // for demo purposes only!
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const response = await fetch(adventurerAPIPath(adventurerId));
   if (!response.ok) {
@@ -24,6 +25,7 @@ const fetchAdventurerInfo = async (adventurerId: number) => {
 };
 
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
@@ -60,9 +62,9 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     setHireButton(true);
     setDisableButton(true);
     try {
-      // Simulate a 1 second delay to show the loading state
+      // Simulate a 0.5 second delay to show the loading state
       // for demo purposes only!
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       if (adventurerInfo) {
         selectAdventurer(adventurerInfo);
       }
@@ -71,6 +73,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     } finally {
       setHireButton(false);
       setDisableButton(false);
+      router.push('/adventurers');
     }
   }
 
