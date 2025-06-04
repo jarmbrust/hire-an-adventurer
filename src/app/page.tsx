@@ -33,7 +33,7 @@ const Home = () => {
         To start, simply go to the Available Adventurers section (the button is to the left on the navbar).
       </p>
       <p className="mt-6 mb-5">
-        * Note, this program was created using React 19 and Next.js, and the code can be located here:&nbsp;
+        * Note, this program was created using React 19 and Next.js 15, and the code can be located here:&nbsp;
         <a
           className="text-blue-600"
           href="https://github.com/jarmbrust/hire-an-adventurer" 

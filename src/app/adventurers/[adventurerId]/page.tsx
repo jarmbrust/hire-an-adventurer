@@ -30,7 +30,7 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-  const { selectAdventurer, getAdventurerStatus } = useSelectedAdventurers();
+  const { selectAdventurer, getAdventurerStatus, removeSelectedAdventurer } = useSelectedAdventurers();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,20 +52,22 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
   useEffect(() => {
     if (getAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||
-      getAdventurerStatus(adventurerInfo?.id) === 'Hired' ||
-      getAdventurerStatus(adventurerInfo?.id) === 'Selected' ) {
+      getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
       setDisableButton(true);
     };
   }, [getAdventurerStatus, adventurerInfo?.id]);
 
   const handleHireAdventurer = async () => {
+
     setHireButton(true);
     setDisableButton(true);
     try {
       // Simulate a 0.5 second delay to show the loading state
       // for demo purposes only!
       await new Promise(resolve => setTimeout(resolve, 500));
-      if (adventurerInfo) {
+      if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Selected') {
+        removeSelectedAdventurer(adventurerInfo.id);
+      } else if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Available') {
         selectAdventurer(adventurerInfo);
       }
     } catch (err) {
@@ -87,8 +89,8 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
       return 'Adventurer is already hired';
     }
-    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Selected') {
-      return 'Adventurer is already selected';
+    if (getAdventurerStatus(adventurerInfo?.id) === 'Selected') {
+      return 'Adventurer is selected (click again to de-select)';
     }
     return 'Choose this adventurer';
   }
