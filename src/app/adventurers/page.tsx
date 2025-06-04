@@ -31,6 +31,13 @@ const AdventurersListPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
 
+  const getStatusColor = (status: string) => ({
+    'text-blue-500': status === 'Selected',
+    'text-gray-500': status === 'Available',
+    'text-red-500': status === 'Deceased',
+    'text-green-500': status === 'Hired',
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       if (adventurerListInfo) {
@@ -58,7 +65,7 @@ const AdventurersListPage = () => {
             <Image 
               src="/images/loading-spinner2.gif"
               alt="placeholder"
-              width={ 75}
+              width={75}
               height={75}
             />
           </>
@@ -68,12 +75,7 @@ const AdventurersListPage = () => {
               <li key={adventurer.id} className="mb-4">
                 <Link href={ adventurerDetailsPath(adventurer.id) }>
                   <h3 className="text-xl font-bold">{ adventurer.name }
-                    <span className={clsx('italic', {
-                      'text-blue-500': getAdventurerStatus(adventurer.id) === 'Selected',
-                      'text-gray-500': getAdventurerStatus(adventurer.id) === 'Available',
-                      'text-red-500': getAdventurerStatus(adventurer.id) === 'Deceased',
-                      'text-green-500': getAdventurerStatus(adventurer.id) === 'Hired',
-                    })}>
+                    <span className={clsx('italic', getStatusColor(getAdventurerStatus(adventurer.id)))}>
                       { ` (${getAdventurerStatus(adventurer.id)})` }
                     </span>
                   </h3>
