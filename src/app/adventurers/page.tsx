@@ -10,6 +10,7 @@ import {
   adventurersListAPIPath,
   imageOfAdventurer,
 } from '@/app/lib/paths';
+import clsx from 'clsx';
 
 const fetchAdventurersList = async () => {
   // Simulate a 0.5 second delay to show the loading state
@@ -67,7 +68,12 @@ const AdventurersListPage = () => {
               <li key={adventurer.id} className="mb-4">
                 <Link href={ adventurerDetailsPath(adventurer.id) }>
                   <h3 className="text-xl font-bold">{ adventurer.name }
-                    <span className="italic text-gray-500">
+                    <span className={clsx('italic', {
+                      'text-blue-500': getAdventurerStatus(adventurer.id) === 'Selected',
+                      'text-gray-500': getAdventurerStatus(adventurer.id) === 'Available',
+                      'text-red-500': getAdventurerStatus(adventurer.id) === 'Deceased',
+                      'text-green-500': getAdventurerStatus(adventurer.id) === 'Hired',
+                    })}>
                       { ` (${getAdventurerStatus(adventurer.id)})` }
                     </span>
                   </h3>
