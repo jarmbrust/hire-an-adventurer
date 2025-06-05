@@ -13,17 +13,19 @@ import {
 import clsx from 'clsx';
 
 const fetchAdventurersList = async () => {
-  // Simulate a 0.5 second delay to show the loading state
-  // for demo purposes only!
+  // Simulate a 0.5 second delay to show the loading state for demo purposes only!
   await new Promise(resolve => setTimeout(resolve, 500));
-
-  const response = await fetch(adventurersListAPIPath());
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);    
+  try {
+    const response = await fetch(adventurersListAPIPath());
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);    
+    }
+    const data = await response.json();
+    return data.adventurers; // Note the .adventurers here
+  } catch (error) {
+    console.error('Error fetching adventurers:', error);
+    throw error;
   }
-
-  const adventurers = await response.json();
-  return adventurers;
 };
 
 const AdventurersListPage = () => {

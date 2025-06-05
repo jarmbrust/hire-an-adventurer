@@ -9,20 +9,20 @@ import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { adventurerAPIPath } from '@/app/lib/paths';
 
-const fetchAdventurerInfo = async (adventurerId: number) => {
+// const fetchAdventurerInfo = async (adventurerId: number) => {
 
-  // Simulate a 0.5 second delay to show the loading state
-  // for demo purposes only!
-  await new Promise(resolve => setTimeout(resolve, 500));
+//   // Simulate a 0.5 second delay to show the loading state
+//   // for demo purposes only!
+//   await new Promise(resolve => setTimeout(resolve, 500));
 
-  const response = await fetch(adventurerAPIPath(adventurerId));
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
+//   const response = await fetch(adventurerAPIPath(adventurerId));
+//   if (!response.ok) {
+//     throw new Error(`HTTP error! status: ${response.status}`);
+//   }
 
-  const adventurer = await response.json();
-  return adventurer;
-};
+//   const adventurer = await response.json();
+//   return adventurer;
+// };
 
 const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
   const router = useRouter();
@@ -31,24 +31,31 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
   const { selectAdventurer, getAdventurerStatus, removeSelectedAdventurer } = useSelectedAdventurers();
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
+    const fetchAdventurer = async () => {
       try {
-        const res = await params;
-        const advId = res.adventurerId;
-        const adventurer = await fetchAdventurerInfo(advId);
-        setAdventurerInfo(adventurer);
+        const response = await fetch(`/api/adventurers/${(await params).adventurerId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setAdventurerInfo(data);
       } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+        if (err instanceof Error) {
+          setError(err);
+          throw err;
+        }
       }
     };
 
-    fetchData();
+    fetchAdventurer();
   }, [params]);
+
+  if (error) {
+    throw error;
+  }
 
   useEffect(() => {
     if (getAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||

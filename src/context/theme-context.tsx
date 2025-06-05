@@ -25,7 +25,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <body className={`${theme} ${geistSans.variable} ${geistMono.variable} antialiased px-5 py-5`}>{children}</body>
+      <div className={`${theme} ${geistSans.variable} ${geistMono.variable} antialiased px-5 py-5`}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
