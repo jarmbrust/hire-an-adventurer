@@ -1,26 +1,24 @@
 import { NextResponse } from 'next/server';
-import adventurers from '@/adventurers.json';
+import { getAdventurerById } from '@/app/actions';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET({ params }: { params: { id: number } }) {
   try {
-    console.log('request:', request);
-    const adventurerId = parseInt(params.id, 10);
-    const adventurer = adventurers.adventurers.find((adv) => adv.id === adventurerId);
 
-    if (!adventurer) {
+    const adventurer = await getAdventurerById(params?.id);
+
+    if (!adventurer.length) {
       return NextResponse.json(
-        { error: `Adventurer with id ${adventurerId} not found` },
+        { message: 'Adventurer not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(adventurer);
+    return NextResponse.json({ adventurer });
+
   } catch (error) {
+    console.error('Database Error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch adventurer' },
+      { error: 'Failed to fetch adventurer from database' },
       { status: 500 }
     );
   }

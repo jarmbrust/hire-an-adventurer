@@ -2,15 +2,14 @@ export type Adventurer = {
   id: number,
   name: string,
   profession: string,
-  health: string,
   strength: string,
-  cunning: string,
-  intellect: string,
+  agility: string,
+  arcane: string,
   description: string,
   image: string,
-  fee: string,
-  rangedPower: number,
-  meleePower: number
+  fee: number,
+  successes: number,
+  defeats: number
 };
 
 export type Monster = {

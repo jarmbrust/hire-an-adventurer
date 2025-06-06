@@ -7,7 +7,7 @@ import Modal from "@/app/ui/modal";
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useScore } from '@/context/score-context';
 import Button from '@/app/ui/button';
-import { adventurerDetailsPath, combatPath } from '@/app/lib/paths';
+import { adventurerAPIPath, combatPath } from '@/app/lib/paths';
 
 const CartPage = () => {
   const {
@@ -29,7 +29,7 @@ const CartPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + parseInt(adventurer.fee), 0));
+    setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + adventurer.fee, 0));
     if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
   }, [selectedAdventurers, hiredAdventurers]);
 
@@ -53,7 +53,7 @@ const CartPage = () => {
 
   const handleRemoveAdventurer = (id: number) => {
     const adventurer = selectedAdventurers.find((adventurer) => adventurer.id === id);
-    const fee = adventurer ? parseInt(adventurer.fee) : 0;
+    const fee = adventurer ? adventurer.fee : 0;
     setTotalFee((totalFee) => totalFee - fee);
     removeSelectedAdventurer(id);
   };
@@ -88,7 +88,7 @@ const CartPage = () => {
           {selectedAdventurers.map((adventurer) => (
             <tr key={adventurer.id}>
               <td className="border border-zinc-500 px-4 py-2">
-                <Link href={ adventurerDetailsPath(adventurer.id || 0) }>
+                <Link href={ adventurerAPIPath(adventurer.id || 0) }>
                   <h3 className="text-lg font-bold">{ adventurer.name || '' }</h3>
                 </Link>
               </td>
@@ -138,7 +138,7 @@ const CartPage = () => {
           {adventurersHiredOrDeceased.map((adventurer) => (
             <tr key={adventurer.id}>
               <td className="border border-zinc-500 px-4 py-2">
-                <Link href={ adventurerDetailsPath(adventurer.id || 0) }>
+                <Link href={ adventurerAPIPath(adventurer.id || 0) }>
                   <h3 className="text-lg font-bold">{ adventurer.name || '' }</h3>
                 </Link>
               </td>

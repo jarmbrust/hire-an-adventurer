@@ -46,9 +46,9 @@ const CombatPage = () => {
     if (theMonster) {
       let partyAttackValue: number = 0;
       if (theMonster.flies) {
-        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + adventurer.rangedPower, 0);
+        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + ((Number(adventurer.agility) || 0) * 5) + ((Number(adventurer.arcane) || 0) * 3), 0);
       } else {
-        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + adventurer.meleePower, 0);
+        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + ((Number(adventurer.strength) || 0) * 5) + ((Number(adventurer.arcane) || 0) * 3), 0);
       }
       if (partyAttackValue && theMonster.attackPower) {
         combatEngaged(true);

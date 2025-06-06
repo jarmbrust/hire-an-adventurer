@@ -7,24 +7,10 @@ import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
-import { adventurerAPIPath } from '@/app/lib/paths';
+// import { adventurerAPIPath } from '@/app/lib/paths';
+import { getAdventurerById } from '@/app/actions';
 
-// const fetchAdventurerInfo = async (adventurerId: number) => {
-
-//   // Simulate a 0.5 second delay to show the loading state
-//   // for demo purposes only!
-//   await new Promise(resolve => setTimeout(resolve, 500));
-
-//   const response = await fetch(adventurerAPIPath(adventurerId));
-//   if (!response.ok) {
-//     throw new Error(`HTTP error! status: ${response.status}`);
-//   }
-
-//   const adventurer = await response.json();
-//   return adventurer;
-// };
-
-const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: number }> }) => {
+const AdventurerDetailsPage = ({ params }: { params: { adventurerId: number } }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
@@ -35,23 +21,23 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
 
   useEffect(() => {
     const fetchAdventurer = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(`/api/adventurers/${(await params).adventurerId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const result = await getAdventurerById(params.adventurerId);
+        if (!result) {
+          throw new Error('No adventurer found');
         }
-        const data = await response.json();
-        setAdventurerInfo(data);
+        setAdventurerInfo(result);
       } catch (err) {
-        if (err instanceof Error) {
-          setError(err);
-          throw err;
-        }
+        console.error(err);
+        setError(err instanceof Error ? err : new Error('Failed to fetch adventurer'));
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchAdventurer();
-  }, [params]);
+  }, [params.adventurerId]);
 
   if (error) {
     throw error;
@@ -69,9 +55,6 @@ const AdventurerDetailsPage = ({ params }: { params: Promise<{ adventurerId: num
     setHireButton(true);
     setDisableButton(true);
     try {
-      // Simulate a 0.5 second delay to show the loading state
-      // for demo purposes only!
-      await new Promise(resolve => setTimeout(resolve, 500));
       if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Selected') {
         removeSelectedAdventurer(adventurerInfo.id);
       } else if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Available') {
