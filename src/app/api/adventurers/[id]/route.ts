@@ -6,7 +6,7 @@ export async function GET({ params }: { params: { id: number } }) {
 
     const adventurer = await getAdventurerById(params?.id);
 
-    if (!adventurer.length) {
+    if (!adventurer) {
       return NextResponse.json(
         { message: 'Adventurer not found' },
         { status: 404 }
