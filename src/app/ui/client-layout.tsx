@@ -4,12 +4,12 @@ import SideNavbar from "@/app/ui/side-navbar";
 import Header from "@/app/ui/header";
 import { SelectedAdventurersProvider } from "@/context/selected-adventurers-context";
 import { ThemeProvider } from "@/context/theme-context";
-import { ScoreProvider } from "@/context/score-context";
+// import { ScoreProvider } from "@/context/score-context";
 
 export default function ClientLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ThemeProvider>
-      <ScoreProvider>
+      {/* <ScoreProvider> */}
         <SelectedAdventurersProvider>
           <div className="flex h-screen flex-col md:flex-row md:overflow-hidden w-full">
             <div className="w-full flex-none md:w-64">
@@ -23,7 +23,7 @@ export default function ClientLayout({ children }: Readonly<{ children: React.Re
             </div>
           </div>
         </SelectedAdventurersProvider>
-      </ScoreProvider>
+      {/* </ScoreProvider> */}
     </ThemeProvider>
   );
 }

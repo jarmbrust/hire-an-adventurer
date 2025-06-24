@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import ClientLayout from "@/app/ui/client-layout";
+import type { Metadata } from 'next';
+import './globals.css';
+import ClientLayout from '@/app/ui/client-layout';
 import { Geist } from 'next/font/google';
+import StoreProvider from '@/app/store-provider';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -21,7 +22,12 @@ export default function RootLayout({
     <html lang="en" className={geist.className}>
       <body className="min-h-screen antialiased">
         <main>
-          <ClientLayout>{children}</ClientLayout>
+          
+            <StoreProvider>
+              <ClientLayout>
+              {children}
+              </ClientLayout>
+            </StoreProvider>
         </main>
       </body>
     </html>

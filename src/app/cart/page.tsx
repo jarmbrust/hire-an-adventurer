@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Modal from "@/app/ui/modal";
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
-import { useScore } from '@/context/score-context';
+import { useAppStore } from '@/app/lib/hooks';
+import { initializeStore, deductCoins } from '@/app/lib/features/score/score-slice';
 import Button from '@/app/ui/button';
 import { adventurerAPIPath, combatPath } from '@/app/lib/paths';
 
@@ -19,7 +20,6 @@ const CartPage = () => {
     clearAdventurers,
     hireAdventurers,
   } = useSelectedAdventurers();
-  const { score, coinAmount, changeCoinAmount } = useScore();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);
@@ -27,6 +27,21 @@ const CartPage = () => {
   const [outOfMoneyModal, setOutOfMoneyModal] = useState(false);
   const [adventurersHiredOrDeceased, setAdventurersHiredOrDeceased] = useState([...hiredAdventurers, ...deceasedAdventurers]);
   const router = useRouter();
+
+ // Initialize the store with the product information
+  const store = useAppStore();
+  const score = store.getState().score;
+  const scoreValue = score.score.value;
+  const coinAmount = score.score.coins; 
+  const initialized = useRef(false)
+  if (!initialized.current) {
+    store.dispatch(initializeStore());
+    initialized.current = true
+  }
+  // const name = useAppSelector(state => state.product.name)
+  // const dispatch = useAppDispatch()
+
+
 
   useEffect(() => {
     setTotalFee(selectedAdventurers.reduce((acc, adventurer) => acc + adventurer.fee, 0));
@@ -37,13 +52,13 @@ const CartPage = () => {
     if (isLoading) {
       return;
     }
-    if (coinAmount < totalFee) {
+    if (store.getState().score.score.coins < totalFee) {
       setErrorMessage('Not enough coins');
       setOutOfMoneyModal(true);
       return;
     }
     setIsLoading(true);
-    changeCoinAmount(coinAmount - totalFee);
+    store.dispatch(deductCoins(totalFee));
     hireAdventurers(selectedAdventurers);
     clearAdventurers('selected');
     setIsLoading(false);
@@ -66,7 +81,7 @@ const CartPage = () => {
     return (
       <>
         You are too low on silver to hire these adventurers, please choose less expensive adventurers or restart the game if too many are slain or you have too few coins.
-        <span className="block">Your current score is <strong>{score}</strong> and you have <strong>{coinAmount}</strong> silver left.</span>
+        <span className="block">Your current score is <strong>{ scoreValue  }</strong> and you have <strong>{ coinAmount }</strong> silver left.</span>
       </>
     );
   };

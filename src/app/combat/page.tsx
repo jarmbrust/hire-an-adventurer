@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
-import { useScore } from '@/context/score-context';
-
+import { increaseScore } from '@/app/lib/features/score/score-slice';
+import { useAppStore } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
@@ -19,12 +19,13 @@ const CombatPage = () => {
     slayAdventurers,
     adventurerVictory,
   } = useSelectedAdventurers();
-  const { increaseScore } = useScore();
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
   const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
   const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
   const [adventurersList, setAdventurersList] = useState<Adventurer[]>([]);
+
+  const store = useAppStore();
 
   const getTheMonsters = () => {
     setTheMonster(randomlySelectedMonsters());
@@ -36,7 +37,8 @@ const CombatPage = () => {
         setMonsterDefeated(true);
         setAdventurersList(hiredAdventurers);
         adventurerVictory();
-        increaseScore(theMonster.attackPower);
+        console.log("Monster defeated!", theMonster.attackPower);
+        store.dispatch(increaseScore(theMonster.attackPower))
       } else if (theMonster && partyAttackValue < theMonster.attackPower) {
         setMonsterDefeated(false);
         setAdventurersList(hiredAdventurers);
@@ -57,7 +59,7 @@ const CombatPage = () => {
         combatEngaged(false);
       }
     }
-  }, [theMonster, hiredAdventurers, slayAdventurers, adventurerVictory, combatEngaged, increaseScore]);
+  }, [theMonster, hiredAdventurers, slayAdventurers, adventurerVictory, combatEngaged, store]);
 
   useEffect(() => {
     if (hiredAdventurers.length === 0 && !adventurersInCombat) {
