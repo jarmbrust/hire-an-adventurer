@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { clsx } from 'clsx';
 import NavLinks from '@/app/ui/nav-links';
 import InnLogo from '@/app/ui/inn-logo';
-import { useTheme } from '@/context/theme-context';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { useAppSelector } from '@/app/lib/hooks';
+import { selectTheme } from '@/app/lib/features/theme/theme-slice';
+import { type Theme } from '@/app/lib/definitions';
 
 export default function SideNavbar() {
-  const { theme } = useTheme();
+  const theme: Theme = useAppSelector(selectTheme);
   const { adventurersInCombat } = useSelectedAdventurers();
 
   return (

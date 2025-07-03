@@ -9,13 +9,15 @@ import {
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from '@/context/theme-context';
 import {
   adventurersListPath,
   cartPath,
   homePath,
 } from '@/app/lib/paths';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { useAppSelector } from '@/app/lib/hooks';
+import { selectTheme } from '@/app/lib/features/theme/theme-slice';
+import { type Theme } from '@/app/lib/definitions';
 
 const links = [
   {
@@ -41,7 +43,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const { theme } = useTheme();
+  const theme: Theme = useAppSelector(selectTheme);
   const pathname = usePathname();
   const { adventurersInCombat } = useSelectedAdventurers();
 

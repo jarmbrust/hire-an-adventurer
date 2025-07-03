@@ -22,12 +22,10 @@ export type Monster = {
   attackPower: number,
 };
 
-export type Theme = 'light' | 'dark';
-
-export type ThemeContextType = {
-  theme: Theme;
-  toggleTheme: () => void;
-};
+// export type ThemeContextType = {
+//   theme: Theme;
+//   toggleTheme: () => void;
+// };
 
 export type SelectedAdventurersContextType = {
   selectedAdventurers: Adventurer[];
@@ -49,4 +47,11 @@ export type ScoreContextType = {
   score: number;
   changeCoinAmount: (amount: number) => void;
   increaseScore: (amount: number) => void;
+};
+
+export type Theme = 'light' | 'dark';
+
+export type RootState = {
+  theme: { theme: Theme };
+  score: { score: { value: number; coins: number } };
 };

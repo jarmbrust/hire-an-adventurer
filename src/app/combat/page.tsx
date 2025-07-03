@@ -37,7 +37,6 @@ const CombatPage = () => {
         setMonsterDefeated(true);
         setAdventurersList(hiredAdventurers);
         adventurerVictory();
-        console.log("Monster defeated!", theMonster.attackPower);
         store.dispatch(increaseScore(theMonster.attackPower))
       } else if (theMonster && partyAttackValue < theMonster.attackPower) {
         setMonsterDefeated(false);
