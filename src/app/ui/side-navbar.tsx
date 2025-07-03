@@ -7,10 +7,9 @@ import InnLogo from '@/app/ui/inn-logo';
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
-import { type Theme } from '@/app/lib/definitions';
 
 export default function SideNavbar() {
-  const theme: Theme = useAppSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
   const { adventurersInCombat } = useSelectedAdventurers();
 
   return (

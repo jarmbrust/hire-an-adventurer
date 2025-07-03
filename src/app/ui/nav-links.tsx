@@ -17,7 +17,6 @@ import {
 import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
-import { type Theme } from '@/app/lib/definitions';
 
 const links = [
   {
@@ -43,7 +42,7 @@ const links = [
 ];
 
 export default function NavLinks() {
-  const theme: Theme = useAppSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
   const pathname = usePathname();
   const { adventurersInCombat } = useSelectedAdventurers();
 

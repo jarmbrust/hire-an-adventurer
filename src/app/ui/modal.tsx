@@ -1,16 +1,14 @@
 'use client'
 
+import { ReactNode } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 import Button from '@/app/ui/button';
 
-import { ReactNode } from 'react';
-import { type Theme } from '@/app/lib/definitions';
-
 const Modal = ({ message, link }: { message: ReactNode, link: string }) => {
-    const theme: Theme = useAppSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">

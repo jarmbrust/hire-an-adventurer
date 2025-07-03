@@ -1,12 +1,12 @@
 import Image from "next/image";
 import clsx from "clsx";
-import { type Adventurer, type Theme } from "@/app/lib/definitions";
+import { type Adventurer } from "@/app/lib/definitions";
 import { imageOfAdventurer } from "@/app/lib/paths";
 import { selectTheme } from "@/app/lib/features/theme/theme-slice";
 import { useAppSelector } from "@/app/lib/hooks";
 
 const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
-  const theme: Theme = useAppSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
 
   if (!stats) {
     return null;

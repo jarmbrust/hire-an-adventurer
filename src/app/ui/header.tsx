@@ -11,7 +11,7 @@ import { Theme } from '../lib/definitions';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const theme: Theme = useAppSelector(selectTheme);
+  const theme: Theme = useAppSelector((state) => selectTheme(state));
   const scoreValue = useSelector((store: { score: { score: { value: number } } }) => 
     store.score.score.value);
   
