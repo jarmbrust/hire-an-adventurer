@@ -1,18 +1,13 @@
 'use client';
 
-import {
-  SunIcon,
-  MoonIcon
-} from '@heroicons/react/24/outline';
-import { useDispatch, useSelector } from 'react-redux'
-import { selectTheme, toggleTheme } from '../lib/features/theme/theme-slice';
-import { useAppSelector } from '@/app/lib/hooks';
-import { Theme } from '../lib/definitions';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { selectTheme, toggleTheme } from '@/app/lib/features/theme/theme-slice';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks';
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const theme: Theme = useAppSelector((state) => selectTheme(state));
-  const scoreValue = useSelector((store: { score: { score: { value: number } } }) => 
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
+  const scoreValue = useAppSelector(( store: { score: { score: { value: number } } }) => 
     store.score.score.value);
   
   const handleToggleTheme = () => {
