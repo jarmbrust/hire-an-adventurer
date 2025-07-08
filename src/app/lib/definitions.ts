@@ -10,7 +10,11 @@ export type Adventurer = {
   fee: number,
   successes: number,
   defeats: number
+  status: AdventurerStatuses;
+  victoryPhrase: string;
 };
+
+export type AdventurerStatuses = 'Available' | 'Selected' | 'Hired' | 'Combat' | 'Injured' | 'Deceased' | 'Unknown';
 
 export type Monster = {
   id: number,

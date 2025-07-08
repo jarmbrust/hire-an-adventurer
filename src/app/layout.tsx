@@ -18,14 +18,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en" className={geist.className}>
       <body className="min-h-screen antialiased">
-        <main className={`flex min-h-screen flex-col`}>
+        <main className="flex flex-col">
           <StoreProvider>
             <ClientLayout>
-            {children}
+              {children}
             </ClientLayout>
           </StoreProvider>
         </main>
