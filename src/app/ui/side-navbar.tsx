@@ -4,19 +4,20 @@ import Link from 'next/link';
 import { clsx } from 'clsx';
 import NavLinks from '@/app/ui/nav-links';
 import InnLogo from '@/app/ui/inn-logo';
-import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { getCombatEngaged } from '@/app/lib/features/adventurer/adventurer-slice';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 
 export default function SideNavbar() {
   const theme = useAppSelector(selectTheme);
-  const { adventurersInCombat } = useSelectedAdventurers();
+
+  console.log('get is getCombatEngaged():', getCombatEngaged());
 
   return (
     <div className="flex h-full flex-col px-3 py-1 md:px-2">
       <Link
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-zinc-600 p-4 md:h-40"
-        onClick={ adventurersInCombat ? (e) => e.preventDefault() : undefined }
+        onClick={ getCombatEngaged() ? (e) => e.preventDefault() : undefined }
         href="/"
       >
         <div className="w-32 text-white md:w-40">

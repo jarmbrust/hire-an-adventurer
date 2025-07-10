@@ -1,6 +1,7 @@
-"use server";
-import { neon } from "@neondatabase/serverless";
-import { Adventurer } from "@/app/lib/definitions";
+'use server';
+
+import { neon } from '@neondatabase/serverless';
+import { Adventurer } from '@/app/lib/definitions';
 
 export async function getAllAdventurers() {
     if (!process.env.DATABASE_URL) {

@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from "next/image";
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
+import { getAdventurerStatus, initializeAdventurers} from '@/app/lib/features/adventurer/adventurer-slice';
 import { Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
@@ -28,9 +29,10 @@ const fetchAdventurersList = async () => {
 };
 
 const AdventurersListPage = () => {
-  // const { getAdventurerStatus } = useSelectedAdventurers();
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
+
+  const dispatch = useDispatch();
 
   const getStatusColor = (status: string) => ({
     'text-blue-500': status === 'Selected',
@@ -47,7 +49,9 @@ const AdventurersListPage = () => {
       setIsLoading(true);
       try {
         const adventurers = await fetchAdventurersList();
+        console.log('Fetched Adventurers:', adventurers);
         setAdventurerListInfo(adventurers);
+        dispatch(initializeAdventurers(adventurers));
       } catch (err) {
         console.error(err);
       } finally {
@@ -55,7 +59,7 @@ const AdventurersListPage = () => {
       }
     };
     fetchData();
-  }, [adventurerListInfo]);
+  }, [ dispatch , adventurerListInfo ]);
 
   return (
     <>

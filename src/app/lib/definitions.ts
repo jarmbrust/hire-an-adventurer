@@ -31,20 +31,20 @@ export type Monster = {
 //   toggleTheme: () => void;
 // };
 
-export type SelectedAdventurersContextType = {
-  selectedAdventurers: Adventurer[];
-  hiredAdventurers: Adventurer[];
-  deceasedAdventurers: Adventurer[];
-  adventurersInCombat: boolean;
-  selectAdventurer: (adventurer: Adventurer) => void;
-  removeSelectedAdventurer: (id: number) => void;
-  getAdventurerStatus: (id: number | undefined) => string;
-  clearAdventurers: (adventurerGroup: string) => void;
-  hireAdventurers: (adventurers: Adventurer[]) => void;
-  slayAdventurers: () => void;
-  adventurerVictory: () => void;
-  combatEngaged: (inCombat: boolean) => void;
-};
+// export type SelectedAdventurersContextType = {
+//   selectedAdventurers: Adventurer[];
+//   hiredAdventurers: Adventurer[];
+//   deceasedAdventurers: Adventurer[];
+//   adventurersInCombat: boolean;
+//   selectAdventurer: (adventurer: Adventurer) => void;
+//   removeSelectedAdventurer: (id: number) => void;
+//   getAdventurerStatus: (id: number | undefined) => string;
+//   clearAdventurers: (adventurerGroup: string) => void;
+//   hireAdventurers: (adventurers: Adventurer[]) => void;
+//   slayAdventurers: () => void;
+//   adventurerVictory: () => void;
+//   combatEngaged: (inCombat: boolean) => void;
+// };
 
 export type ScoreContextType = {
   coinAmount: number;
