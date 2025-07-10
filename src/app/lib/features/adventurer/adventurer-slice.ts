@@ -10,7 +10,7 @@ const initialState: AdventurerState = {
 };
 
 export const adventurerSlice = createSlice({
-  name: 'adventurer',
+  name: 'adventurers',
   initialState,
   reducers: {
     addAdventurer: (state, action) => {
@@ -19,7 +19,6 @@ export const adventurerSlice = createSlice({
     updateAdventurerStatus: (state, action) => {
       const index = state.adventurers.findIndex(adventurer => adventurer.id === action.payload.id);
       if (index !== -1) {
-        // state.adventurers[index] = { ...state.adventurers[index], ...action.payload };
         state.adventurers[index].status = action.payload.status;
       }
     },
@@ -29,16 +28,15 @@ export const adventurerSlice = createSlice({
   },
 });
 
-export const getAdventurerStatus = (state: { adventurer: AdventurerState }) => 
-  state.adventurer.adventurers.map(adventurer => ({
-    id: adventurer.id,
-    name: adventurer.name,
-    status: adventurer.status,
-  })
-);
-export const getAdventurerById = (state: { adventurer: AdventurerState }, id: number) => 
+export const getAdventurerStatus = (id: number | undefined): string => {
+  if (!id) return 'Unknown';
+  const adventurer = initialState.adventurers.find(adventurer => adventurer.id === id);
+  if (!adventurer) return 'Unknown';
+  return adventurer.status;
+};
+export const getAdventurerById = (state: { adventurer: AdventurerState }, id: number): Adventurer | undefined =>
   state.adventurer.adventurers.find(adventurer => adventurer.id === id);
-export const getAdventurers = (state: { adventurer: AdventurerState }) => state.adventurer.adventurers;
-export const adventurerActions = adventurerSlice.actions;
+export const getAdventurers = (state: { adventurers: AdventurerState }): Adventurer[] => state.adventurers.adventurers;
+export const { updateAdventurerStatus } = adventurerSlice.actions;
 
 export default adventurerSlice.reducer;

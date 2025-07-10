@@ -3,10 +3,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { getAdventurerStatus, updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
 import { getAdventurerById } from '@/app/actions';
 
 const AdventurerDetailsPage = (params: { adventurerId: string })  => {
@@ -17,8 +18,10 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-  const { selectAdventurer, getAdventurerStatus, removeSelectedAdventurer } = useSelectedAdventurers();
+
   const [error, setError] = useState<Error | null>(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchAdventurer = async () => {
@@ -49,7 +52,7 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
       getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
       setDisableButton(true);
     };
-  }, [getAdventurerStatus, adventurerInfo?.id]);
+  }, [adventurerInfo?.id]);
 
   const handleHireAdventurer = async () => {
 
@@ -57,9 +60,9 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
     setDisableButton(true);
     try {
       if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Selected') {
-        removeSelectedAdventurer(adventurerInfo.id);
+        dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Available' } }));
       } else if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Available') {
-        selectAdventurer(adventurerInfo);
+        dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Selected' } }));
       }
     } catch (err) {
       console.error(err);

@@ -14,17 +14,26 @@ export const scoreSlice = createSlice({
       console.log('increaseScore action payload (score):', action.payload);
       state.score.value  += action.payload;
     },
-    coinAmount:  (state: { score: { value: number, coins: number } }, action: { payload: number }) => {
-      state.score.coins = action.payload;
-    },
-    deductCoins: (state: { score: { value: number, coins: number } }, action: { payload: number }) => {
-      state.score.coins -= action.payload;
+    modifyCoinAmount: (state: { score: { value: number, coins: number } }, action: { payload: { coins: number, type: string } }) => {
+      if (action.payload.type === 'deductCoins') {
+        const newCoinAmount = state.score.coins - action.payload.coins;
+        // Prevent negative coin amounts
+        // Handing the error message in the calling component
+        if (newCoinAmount < 0) {
+          console.warn('Attempted to modify coins below zero. Operation ignored.');
+          return;
+        }
+        state.score.coins = newCoinAmount;
+      } else if (action.payload.type === 'addCoins') {
+        state.score.coins = state.score.coins + action.payload.coins;
+      }
     }
   }
 });
 
 export const selectScore = (state: { score: { value: number } }) => state.score;
 export const selectCoins = (state: { coins: { value: number } }) => state.coins;
-export const { initializeStore, increaseScore, coinAmount, deductCoins } = scoreSlice.actions;
+export const getCoinAmount = (state: { score: { coins: number } }) => state.score.coins;
+export const { initializeStore, increaseScore, modifyCoinAmount } = scoreSlice.actions;
 
 export default scoreSlice.reducer;

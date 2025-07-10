@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from "next/image";
 import { useEffect, useState } from 'react';
-import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
+import { getAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
 import { Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
@@ -28,7 +28,7 @@ const fetchAdventurersList = async () => {
 };
 
 const AdventurersListPage = () => {
-  const { getAdventurerStatus } = useSelectedAdventurers();
+  // const { getAdventurerStatus } = useSelectedAdventurers();
   const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
 
