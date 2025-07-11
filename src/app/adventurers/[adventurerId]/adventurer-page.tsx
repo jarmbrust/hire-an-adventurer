@@ -7,12 +7,12 @@ import { useDispatch } from 'react-redux';
 import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-import { getAdventurerStatus, updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
+import { updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
 import { getAdventurerById } from '@/app/actions';
 
 const AdventurerDetailsPage = (params: { adventurerId: string })  => {
 
-  const adventurerId = params.adventurerId ? parseInt(params.adventurerId, 10) : 0;
+  
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
@@ -24,13 +24,17 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const adventurerId = params.adventurerId ? parseInt(params.adventurerId, 10) : 0;
+    console.log('Adventurer ID:', adventurerId);
     const fetchAdventurer = async () => {
       setIsLoading(true);
       try {
         const result = await getAdventurerById(adventurerId);
+        console.log('Fetched Adventurer:', result);
         if (!result) {
           throw new Error('No adventurer found');
         }
+        result.status = result.status || 'Available';
         setAdventurerInfo(result);
       } catch (error) {
         console.error(error);
@@ -41,27 +45,32 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
     };
 
     fetchAdventurer();
-  }, [adventurerId]);
+  }, [params]);
 
   if (error) {
     throw error;
   }
 
   useEffect(() => {
-    if (getAdventurerStatus(adventurerInfo?.id) === 'Deceased' ||
-      getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
+    if (adventurerInfo?.condition === 'Dead'
+      || adventurerInfo?.condition === 'Injured'
+      || adventurerInfo?.status === 'Hired'
+    ) {
       setDisableButton(true);
     };
-  }, [adventurerInfo?.id]);
+  }, [adventurerInfo]);
 
   const handleHireAdventurer = async () => {
-
+    console.log('handleHireAdventurer called');
     setHireButton(true);
     setDisableButton(true);
+    console.log('handleHireAdventurer called with:', adventurerInfo, 'and status:', adventurerInfo?.status);
     try {
-      if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Selected') {
+      console.log('Hiring adventurer!!!!!:', adventurerInfo?.id);
+      if (adventurerInfo?.status === 'Selected') {
         dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Available' } }));
-      } else if (adventurerInfo && getAdventurerStatus(adventurerInfo.id) === 'Available') {
+      } else if (adventurerInfo?.status === 'Available') {
+        console.log('selecting adventurer:', adventurerInfo.id);
         dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Selected' } }));
       }
     } catch (err) {
@@ -77,13 +86,16 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
     if (hireButton) {
       return 'Selecting...';
     }
-    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Deceased') {
+    if (disableButton && adventurerInfo?.condition === 'Dead') {
       return 'Adventurer is deceased';
     }
-    if (disableButton && getAdventurerStatus(adventurerInfo?.id) === 'Hired') {
+    if (disableButton && adventurerInfo?.condition === 'Injured') {
+      return 'Adventurer is injured';
+    }
+    if (disableButton && adventurerInfo?.status === 'Hired') {
       return 'Adventurer is already hired';
     }
-    if (getAdventurerStatus(adventurerInfo?.id) === 'Selected') {
+    if (adventurerInfo?.status === 'Selected') {
       return 'Adventurer is selected (click again to de-select)';
     }
     return 'Choose this adventurer';

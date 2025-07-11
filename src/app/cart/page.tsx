@@ -19,10 +19,6 @@ const CartPage = () => {
   const scoreValue = score.score.value;
   const coinAmount = score.score.coins; 
   const initialized = useRef(false)
-  if (!initialized.current) {
-    store.dispatch(initializeStore());
-    initialized.current = true
-  }
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,16 +33,24 @@ const CartPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!initialized.current) {
+      store.dispatch(initializeStore());
+      initialized.current = true
+    }
+
     setCurrentAdventurers(store.getState().adventurers);
   }, [store]);
 
+
   useEffect(() => {
-    setSelectedAdventurers(
-      getAdventurers({ adventurers: currentAdventurers })
-        .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Selected'));
+  setSelectedAdventurers(
+    getAdventurers({ adventurers: currentAdventurers })
+      .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Selected'));
+    console.log('Selected Adventurers:', selectedAdventurers);
     setHiredAdventurers(
       getAdventurers({ adventurers: currentAdventurers })
         .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Hired'));
+    console.log('Hired Adventurers:', hiredAdventurers);
     setTotalFee(selectedAdventurers.reduce((acc: number, adventurer: Adventurer) => acc + adventurer.fee, 0));
     if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
   }, [currentAdventurers, selectedAdventurers, hiredAdventurers]);

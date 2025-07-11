@@ -8,7 +8,10 @@ export async function getAllAdventurers() {
       throw new Error('DATABASE_URL is not defined');
     }
     const sql = neon(process.env.DATABASE_URL);
-    const data = await sql`SELECT id, name, image FROM adventurers`;
+    const data = await sql`
+      SELECT id, name, image, profession, description,
+      strength, agility, arcane, fee, successes, defeats,
+      victory_phrase, condition FROM adventurers`;
     return data;
 }
 

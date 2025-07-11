@@ -4,8 +4,8 @@ import Link from 'next/link';
 import Image from "next/image";
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getAdventurerStatus, initializeAdventurers} from '@/app/lib/features/adventurer/adventurer-slice';
-import { Adventurer } from '@/app/lib/definitions';
+import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
+import { type Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
   adventurerDetailsPath,
@@ -15,6 +15,7 @@ import {
 import clsx from 'clsx';
 
 const fetchAdventurersList = async () => {
+  console.log('Fetching adventurers list from API...');
   try {
     const response = await fetch(adventurersListAPIPath());
     if (!response.ok) {
@@ -43,12 +44,22 @@ const AdventurersListPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (adventurerListInfo) {
-        return;
-      }
+      // if (adventurerListInfo) {
+      //   return;
+      // }
       setIsLoading(true);
       try {
         const adventurers = await fetchAdventurersList();
+        if (!adventurers || adventurers.length === 0) {
+          console.error('No adventurers found');
+          return;
+        }
+        adventurers.forEach((adventurer: Adventurer) => {
+          // Ensure each adventurer has a status, defaulting to 'Available' if not set
+          if (!adventurer.status) {
+            adventurer.status = 'Available';
+          }
+        });
         console.log('Fetched Adventurers:', adventurers);
         setAdventurerListInfo(adventurers);
         dispatch(initializeAdventurers(adventurers));
@@ -59,7 +70,7 @@ const AdventurersListPage = () => {
       }
     };
     fetchData();
-  }, [ dispatch , adventurerListInfo ]);
+  }, [ dispatch ]);
 
   return (
     <>
@@ -79,8 +90,8 @@ const AdventurersListPage = () => {
             <li key={`adventurer-${adventurer.id}`} className="mb-4">
               <Link href={ adventurerDetailsPath(adventurer.id) }>
                 <h3 className="text-xl font-bold">{ adventurer.name }
-                  <span className={clsx('italic', getStatusColor(getAdventurerStatus(adventurer.id)))}>
-                    { ` (${getAdventurerStatus(adventurer.id)})` }
+                  <span className={clsx('italic', getStatusColor(adventurer.status))}>
+                    { ` (${adventurer.status})` }
                   </span>
                 </h3>
                 <Image 

@@ -3,12 +3,12 @@ import type { Adventurer } from '@/app/lib/definitions';
 
 interface AdventurerState {
   adventurers: Adventurer[];
-  inCombat: boolean;
+  // inCombat: boolean;
 }
 
 const initialState: AdventurerState = {
   adventurers: [],
-  inCombat: false,
+  // inCombat: false,
 };
 
 export const adventurerSlice = createSlice({
@@ -19,23 +19,30 @@ export const adventurerSlice = createSlice({
       state.adventurers.push(action.payload);
     },
     updateAdventurerStatus: (state, action) => {
-      const index = state.adventurers.findIndex(adventurer => adventurer.id === action.payload.id);
+      const index = state.adventurers.findIndex(adventurer => adventurer.id === action.payload.payload.id);
+      console.log('updateAdventurerStatus called with index', index, 'and status:', action.payload.payload.status, 
+        'and adventurer:', state.adventurers[index], 'and adventurers:', state.adventurers);
       if (index !== -1) {
-        state.adventurers[index].status = action.payload.status;
+        state.adventurers[index].status = action.payload.payload.status;
       }
     },
     initializeAdventurers: (state, action) => {
-      state.adventurers = action.payload;
+      if (!state.adventurers || state.adventurers.length === 0) {
+        console.log('Initializing adventurers state with payload:', action.payload);
+        state.adventurers = action.payload;
+      }
     },
-    combatEngaged: (state, action) => {
-      state.inCombat = action.payload;
-    }
+    // combatEngaged: (state, action) => {
+    //   state.adventurers.status = action.payload;
+    // }
   },
 });
 
 export const getAdventurerStatus = (id: number | undefined): string => {
+  console.log('getAdventurerStatus called with id:', id);
   if (!id) return 'Unknown';
   const adventurer = initialState.adventurers.find(adventurer => adventurer.id === id);
+  console.log('Found adventurer:', adventurer);
   if (!adventurer) return 'Unknown';
   return adventurer.status;
 };
@@ -43,11 +50,11 @@ export const getAdventurerStatus = (id: number | undefined): string => {
 // TODO: might not need this function
 export const getAdventurerByStatus = (status: string): Adventurer[] =>
   initialState.adventurers.filter(adventurer => adventurer.status === status);
-export const getCombatEngaged = (): boolean => initialState.inCombat;
+export const getCombatEngaged = (): boolean => initialState.adventurers.some(adventurer => adventurer.status === 'Combat');
 
 // export const getAdventurerById = (state: { adventurers: AdventurerState }, id: number): Adventurer | undefined =>
 //   state.adventurers.adventurers.find(adventurer => adventurer.id === id);
 export const getAdventurers = (state: { adventurers: AdventurerState }): Adventurer[] => state.adventurers.adventurers;
-export const { updateAdventurerStatus, initializeAdventurers, combatEngaged } = adventurerSlice.actions;
+export const { updateAdventurerStatus, initializeAdventurers } = adventurerSlice.actions;
 
 export default adventurerSlice.reducer;

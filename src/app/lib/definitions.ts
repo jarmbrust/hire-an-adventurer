@@ -1,29 +1,31 @@
 export type Adventurer = {
-  id: number,
-  name: string,
-  profession: string,
-  strength: string,
-  agility: string,
-  arcane: string,
-  description: string,
-  image: string,
-  fee: number,
-  successes: number,
-  defeats: number
-  status: AdventurerStatuses;
+  id: number;
+  name: string;
+  profession: string;
+  strength: string;
+  agility: string;
+  arcane: string;
+  description: string;
+  image: string;
+  fee: number;
+  successes: number;
+  defeats: number;
   victoryPhrase: string;
+  condition: AdventurerCondition;
+  status: AdventurerStatuses;
 };
 
-export type AdventurerStatuses = 'Available' | 'Selected' | 'Hired' | 'Combat' | 'Injured' | 'Deceased' | 'Unknown';
+export type AdventurerStatuses = 'Available' | 'Selected' | 'Hired' | 'Combat' | 'Unknown';
+export type AdventurerCondition = 'Healthy' | 'Fatigued' | 'Injured' | 'Dead' | 'Unknown';
 
 export type Monster = {
-  id: number,
-  name: string,
-  flies: boolean,
-  description: string,
-  image: string,
-  victoryPhrase: string,
-  attackPower: number,
+  id: number;
+  name: string;
+  flies: boolean;
+  description: string;
+  image: string;
+  victoryPhrase: string;
+  attackPower: number;
 };
 
 // export type ThemeContextType = {
