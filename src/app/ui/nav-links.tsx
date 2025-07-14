@@ -14,7 +14,6 @@ import {
   cartPath,
   homePath,
 } from '@/app/lib/paths';
-// import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { getCombatEngaged } from '@/app/lib/features/adventurer/adventurer-slice';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';

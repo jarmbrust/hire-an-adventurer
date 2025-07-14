@@ -2,38 +2,47 @@
 
 import Link from 'next/link';
 import Image from "next/image";
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
 import { type Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
   adventurerDetailsPath,
-  adventurersListAPIPath,
+  // adventurersListAPIPath,
   imageOfAdventurer,
 } from '@/app/lib/paths';
+import { useGetAdventurersQuery } from '@/app/api/api-slice';
 import clsx from 'clsx';
 
-const fetchAdventurersList = async () => {
-  console.log('Fetching adventurers list from API...');
-  try {
-    const response = await fetch(adventurersListAPIPath());
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);    
-    }
-    const data = await response.json();
-    return data.adventurers;
-  } catch (error) {
-    console.error('Error fetching adventurers:', error);
-    throw error;
-  }
-};
-
 const AdventurersListPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
 
-  const dispatch = useDispatch();
+
+  interface UseGetAdventurersQueryResult {
+    data: { adventurers: Adventurer[] };
+    isLoading: boolean;
+    error: Error;
+  }
+  const { data: adventurers, isLoading, error } = useGetAdventurersQuery() as UseGetAdventurersQueryResult;
+
+  
+  useEffect(() => {
+    console.log('Adventurers fetched:', adventurers);
+    // console.log(adventurers[1]);
+    const adventurerArray = adventurers?.adventurers ?? adventurers;
+    if (adventurerArray?.length > 0) {
+      // const adventurerArray = Object.values(adventurers);
+       console.log(adventurerArray[1]);
+      console.log('Adventurer array:', adventurerArray);
+      setAdventurerListInfo(
+        adventurerArray.map(adventurer => ({
+          ...adventurer,
+          status: adventurer.status || 'Available',
+        }))
+      );
+    }
+  }, [adventurers]);
 
   const getStatusColor = (status: string) => ({
     'text-blue-500': status === 'Selected',
@@ -41,36 +50,6 @@ const AdventurersListPage = () => {
     'text-red-500': status === 'Deceased',
     'text-green-500': status === 'Hired',
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // if (adventurerListInfo) {
-      //   return;
-      // }
-      setIsLoading(true);
-      try {
-        const adventurers = await fetchAdventurersList();
-        if (!adventurers || adventurers.length === 0) {
-          console.error('No adventurers found');
-          return;
-        }
-        adventurers.forEach((adventurer: Adventurer) => {
-          // Ensure each adventurer has a status, defaulting to 'Available' if not set
-          if (!adventurer.status) {
-            adventurer.status = 'Available';
-          }
-        });
-        console.log('Fetched Adventurers:', adventurers);
-        setAdventurerListInfo(adventurers);
-        dispatch(initializeAdventurers(adventurers));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [ dispatch ]);
 
   return (
     <>

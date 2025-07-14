@@ -6,7 +6,8 @@ export const scoreSlice = createSlice({
     score: { value: 0, coins: 200 }
   },
   reducers: {
-    initializeStore: (state: { score: { value: number; coins: number } }) => {
+    initializeScores: (state: { score: { value: number; coins: number } }) => {
+      console.log('initializeStore called, resetting score and coins');
       state.score.value = 0;
       state.score.coins = 200; // Reset coins to initial value
     },
@@ -34,6 +35,6 @@ export const scoreSlice = createSlice({
 export const selectScore = (state: { score: { value: number } }) => state.score;
 export const selectCoins = (state: { coins: { value: number } }) => state.coins;
 export const getCoinAmount = (state: { score: { coins: number } }) => state.score.coins;
-export const { initializeStore, increaseScore, modifyCoinAmount } = scoreSlice.actions;
+export const { initializeScores, increaseScore, modifyCoinAmount } = scoreSlice.actions;
 
 export default scoreSlice.reducer;

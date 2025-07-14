@@ -3,12 +3,10 @@ import type { Adventurer } from '@/app/lib/definitions';
 
 interface AdventurerState {
   adventurers: Adventurer[];
-  // inCombat: boolean;
 }
 
 const initialState: AdventurerState = {
   adventurers: [],
-  // inCombat: false,
 };
 
 export const adventurerSlice = createSlice({
@@ -26,15 +24,19 @@ export const adventurerSlice = createSlice({
         state.adventurers[index].status = action.payload.payload.status;
       }
     },
-    initializeAdventurers: (state, action) => {
-      if (!state.adventurers || state.adventurers.length === 0) {
-        console.log('Initializing adventurers state with payload:', action.payload);
-        state.adventurers = action.payload;
-      }
-    },
-    // combatEngaged: (state, action) => {
-    //   state.adventurers.status = action.payload;
-    // }
+    // initializeAdventurers: (state, action) => {
+    //   console.log('initializeAdventurers called with payload:', action.payload);
+    //   if (!action.payload || !Array.isArray(action.payload)) {
+    //     console.error('Invalid payload for initializeAdventurers:', action.payload);
+    //     return;
+    //   }
+      // state.adventurers = action.payload.map(adventurer => ({
+      //   ...adventurer,
+      //   status: adventurer.status || 'Available', // Default status if not provided
+      // }));
+      // console.log('Adventurers initialized:', state.adventurers);
+    // },
+
   },
 });
 
@@ -55,6 +57,6 @@ export const getCombatEngaged = (): boolean => initialState.adventurers.some(adv
 // export const getAdventurerById = (state: { adventurers: AdventurerState }, id: number): Adventurer | undefined =>
 //   state.adventurers.adventurers.find(adventurer => adventurer.id === id);
 export const getAdventurers = (state: { adventurers: AdventurerState }): Adventurer[] => state.adventurers.adventurers;
-export const { updateAdventurerStatus, initializeAdventurers } = adventurerSlice.actions;
+export const { updateAdventurerStatus } = adventurerSlice.actions;
 
 export default adventurerSlice.reducer;
