@@ -24,18 +24,18 @@ export const adventurerSlice = createSlice({
         state.adventurers[index].status = action.payload.payload.status;
       }
     },
-    // initializeAdventurers: (state, action) => {
-    //   console.log('initializeAdventurers called with payload:', action.payload);
-    //   if (!action.payload || !Array.isArray(action.payload)) {
-    //     console.error('Invalid payload for initializeAdventurers:', action.payload);
-    //     return;
-    //   }
-      // state.adventurers = action.payload.map(adventurer => ({
-      //   ...adventurer,
-      //   status: adventurer.status || 'Available', // Default status if not provided
-      // }));
-      // console.log('Adventurers initialized:', state.adventurers);
-    // },
+    initializeAdventurers: (state, action) => {
+      console.log('initializeAdventurers called with payload:', action.payload);
+      if (!action.payload || !Array.isArray(action.payload)) {
+        console.error('Invalid payload for initializeAdventurers:', action.payload);
+        return;
+      }
+      state.adventurers = action.payload.map(adventurer => ({
+        ...adventurer,
+        // status: adventurer.status || 'Available',
+      }));
+      console.log('Adventurers initialized:', state.adventurers);
+    },
 
   },
 });
@@ -57,6 +57,6 @@ export const getCombatEngaged = (): boolean => initialState.adventurers.some(adv
 // export const getAdventurerById = (state: { adventurers: AdventurerState }, id: number): Adventurer | undefined =>
 //   state.adventurers.adventurers.find(adventurer => adventurer.id === id);
 export const getAdventurers = (state: { adventurers: AdventurerState }): Adventurer[] => state.adventurers.adventurers;
-export const { updateAdventurerStatus } = adventurerSlice.actions;
+export const { updateAdventurerStatus, initializeAdventurers } = adventurerSlice.actions;
 
 export default adventurerSlice.reducer;

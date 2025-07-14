@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from "next/image";
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { type Adventurer } from '@/app/lib/definitions';
 import {
@@ -12,35 +12,35 @@ import {
   imageOfAdventurer,
 } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
+import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
 import clsx from 'clsx';
 
 const AdventurersListPage = () => {
-  // const [isLoading, setIsLoading] = useState(false);
   const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
-
 
   interface UseGetAdventurersQueryResult {
     data: { adventurers: Adventurer[] };
     isLoading: boolean;
     error: Error;
   }
-  const { data: adventurers, isLoading, error } = useGetAdventurersQuery() as UseGetAdventurersQueryResult;
+  const { 
+    data: adventurers,
+    isLoading, 
+    /** error */
+  } = useGetAdventurersQuery() as UseGetAdventurersQueryResult;
+  const dispatch = useDispatch();
 
-  
   useEffect(() => {
-    console.log('Adventurers fetched:', adventurers);
-    // console.log(adventurers[1]);
     const adventurerArray = adventurers?.adventurers ?? adventurers;
+    console.log('Adventurers fetched:', adventurerArray);
     if (adventurerArray?.length > 0) {
-      // const adventurerArray = Object.values(adventurers);
-       console.log(adventurerArray[1]);
-      console.log('Adventurer array:', adventurerArray);
       setAdventurerListInfo(
         adventurerArray.map(adventurer => ({
           ...adventurer,
           status: adventurer.status || 'Available',
         }))
       );
+      dispatch(initializeAdventurers(adventurerArray));
     }
   }, [adventurers]);
 
