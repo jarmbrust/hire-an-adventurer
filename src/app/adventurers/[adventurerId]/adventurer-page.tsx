@@ -3,49 +3,46 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
 import Button from '@/app/ui/button';
-import { type Adventurer } from '@/app/lib/definitions';
+import { type Adventurer, type AdventurerStatuses } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-// import { updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
-// import { getAdventurerById } from '@/app/actions';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import { useAppDispatch } from '@/app/lib/hooks';
 
-
 const AdventurerDetailsPage = (params: { adventurerId: number })  => {
-
   const router = useRouter();
-  // const [isLoading, setIsLoading] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
-  const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
-
   const { data, isLoading } = useGetAdventurersQuery();
   const dispatch = useAppDispatch();
 
-
   useEffect(() => {
     const adventurers: Adventurer[] = data?.adventurers ?? [];
-    const adventurer = adventurers.find((a) => a.id === params.adventurerId);
+    const adventurer = adventurers.find((a) => a.id === Number(params.adventurerId));
     if (adventurer) {
       setAdventurerInfo(adventurer);
     }
   }, [data?.adventurers, params.adventurerId]);
 
+  const returnToAdventurersList = () => {
+    router.push('/adventurers');
+  };
 
-  const handleOptimisticUpdate = (updatedAdventurer: Adventurer) => {
+  const handleStatusChange = (adventurerId: number, newStatus: AdventurerStatuses) => {
+    if (adventurerId <= 0 || !adventurerInfo) {
+      console.error('Invalid adventurer ID or adventurer info:', adventurerId, adventurerInfo);
+      return;
+    }
     dispatch(
       api.util.updateQueryData('getAdventurers', undefined, (draft) => {
-        // draft is the cached array of adventurers
-        const idx: number = draft.adventurers.findIndex(a => a.id === updatedAdventurer.id);
+        const idx: number = draft.adventurers.findIndex(a => a.id === adventurerId);
         if (idx !== -1) {
-          draft.adventurers[idx] = { ...draft.adventurers[idx], ...updatedAdventurer };
+          draft.adventurers[idx].status = newStatus;
         }
       })
     );
+    returnToAdventurersList();
   };
-
 
   useEffect(() => {
     if (adventurerInfo?.condition === 'Fatigued'
@@ -56,36 +53,16 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
     };
   }, [adventurerInfo]);
 
-  const handleHireAdventurer = async () => {
-    console.log('handleHireAdventurer called');
-    setHireButton(true);
-    setDisableButton(true);
+  // const handleHireAdventurer = async () => {
 
-    console.log('handleHireAdventurer called with:', adventurerInfo, 'and status:', adventurerInfo?.status);
-    try {
-      console.log('Hiring adventurer!!!!!:', adventurerInfo?.id);
-      if (adventurerInfo?.status === 'Selected') {
-        console.log('de-selecting adventurer:', adventurerInfo.id);
-        handleOptimisticUpdate({ ...adventurerInfo, status: 'Available' });
-        // dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Available' } }));
-      } else if (adventurerInfo?.status === 'Available') {
-        console.log('selecting adventurer:', adventurerInfo.id);
-        handleOptimisticUpdate({ ...adventurerInfo, status: 'Selected' });
-        // dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Selected' } }));
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setHireButton(false);
-      setDisableButton(false);
-      router.push('/adventurers');
-    }
-  }
+    // } finally {
+    //   setHireButton(false);
+    //   setDisableButton(false);
+    //   router.push('/adventurers');
+    // }
+  // }
 
   const buttonText = () => {
-    if (hireButton) {
-      return 'Selecting...';
-    }
     if (disableButton && adventurerInfo?.condition === 'Fatigued') {
       return 'Adventurer is fatigued';
     }
@@ -109,7 +86,9 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
         </h1>
         <Button
           className="mt-4 mb-4 w-full"
-          onClick={ handleHireAdventurer }
+          onClick={() => handleStatusChange(
+            adventurerInfo?.id ?? 0, adventurerInfo?.status === 'Selected' ? 'Available' : 'Selected'
+          )}
           disabled={ isLoading || disableButton }
           aria-disabled={ isLoading || disableButton }>
           { buttonText() }
@@ -127,7 +106,7 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
       }
       <Button
         className="mt-4 mb-4"
-        onClick={ handleHireAdventurer }
+        onClick={ () => handleStatusChange(adventurerInfo?.id ?? 0, adventurerInfo?.status === 'Selected' ? 'Available' : 'Selected')}
         disabled={ isLoading || disableButton }
         aria-disabled={ isLoading || disableButton }>
         { buttonText() }

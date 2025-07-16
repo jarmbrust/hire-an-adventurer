@@ -23,24 +23,9 @@ const AdventurersListPage = () => {
   //   isLoading: boolean;
   //   error: Error;
   // }
-  const { data, isLoading, error } = useGetAdventurersQuery();
+  const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
   const adventurers = data?.adventurers ?? [];
   console.log('Adventurers fetched:', adventurers);
-
-
-  // useEffect(() => {
-  //   const adventurerArray = adventurers?.adventurers ?? adventurers;
-  //   console.log('Adventurers fetched:', adventurerArray);
-  //   if (adventurerArray?.length > 0) {
-  //     setAdventurerListInfo(
-  //       adventurerArray.map(adventurer => ({
-  //         ...adventurer,
-  //         status: adventurer.status || 'Available',
-  //       }))
-  //     );
-  //     dispatch(initializeAdventurers(adventurerArray));
-  //   }
-  // }, [adventurers, dispatch]);
 
   const getStatusColor = (status: string) => ({
     'text-blue-500': status === 'Selected',
