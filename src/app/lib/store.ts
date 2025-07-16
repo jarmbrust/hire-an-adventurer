@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { scoreSlice } from '@/app/lib/features/score/score-slice';
-import { adventurerSlice } from '@/app/lib/features/adventurer/adventurer-slice';
+// import { adventurerSlice } from '@/app/lib/features/adventurer/adventurer-slice';
 import { api } from '@/app/api/api-slice';
 import themeReducer from '@/app/lib/features/theme/theme-slice';
 
@@ -9,7 +9,7 @@ export const makeStore = () => {
     reducer: {
       score: scoreSlice.reducer,
       theme: themeReducer,
-      adventurers: adventurerSlice.reducer,
+      // adventurers: adventurerSlice.reducer,
       api: api.reducer,
     },
     middleware: (getDefaultMiddleware) =>

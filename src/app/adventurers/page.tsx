@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import Image from "next/image";
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { type Adventurer } from '@/app/lib/definitions';
+// import { useDispatch } from 'react-redux';
+// import { /* useEffect, */ useState } from 'react';
+// import { type Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
   adventurerDetailsPath,
@@ -12,37 +12,35 @@ import {
   imageOfAdventurer,
 } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
-import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
+// import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
 import clsx from 'clsx';
 
 const AdventurersListPage = () => {
-  const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
+  // const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
 
-  interface UseGetAdventurersQueryResult {
-    data: { adventurers: Adventurer[] };
-    isLoading: boolean;
-    error: Error;
-  }
-  const { 
-    data: adventurers,
-    isLoading, 
-    /** error */
-  } = useGetAdventurersQuery() as UseGetAdventurersQueryResult;
-  const dispatch = useDispatch();
+  // interface UseGetAdventurersQueryResult {
+  //   data: { adventurers: Adventurer[] };
+  //   isLoading: boolean;
+  //   error: Error;
+  // }
+  const { data, isLoading, error } = useGetAdventurersQuery();
+  const adventurers = data?.adventurers ?? [];
+  console.log('Adventurers fetched:', adventurers);
 
-  useEffect(() => {
-    const adventurerArray = adventurers?.adventurers ?? adventurers;
-    console.log('Adventurers fetched:', adventurerArray);
-    if (adventurerArray?.length > 0) {
-      setAdventurerListInfo(
-        adventurerArray.map(adventurer => ({
-          ...adventurer,
-          status: adventurer.status || 'Available',
-        }))
-      );
-      dispatch(initializeAdventurers(adventurerArray));
-    }
-  }, [adventurers]);
+
+  // useEffect(() => {
+  //   const adventurerArray = adventurers?.adventurers ?? adventurers;
+  //   console.log('Adventurers fetched:', adventurerArray);
+  //   if (adventurerArray?.length > 0) {
+  //     setAdventurerListInfo(
+  //       adventurerArray.map(adventurer => ({
+  //         ...adventurer,
+  //         status: adventurer.status || 'Available',
+  //       }))
+  //     );
+  //     dispatch(initializeAdventurers(adventurerArray));
+  //   }
+  // }, [adventurers, dispatch]);
 
   const getStatusColor = (status: string) => ({
     'text-blue-500': status === 'Selected',
@@ -65,7 +63,7 @@ const AdventurersListPage = () => {
             />
           </li>
          ) : (
-          adventurerListInfo?.map((adventurer) => (
+          adventurers.map((adventurer) => (
             <li key={`adventurer-${adventurer.id}`} className="mb-4">
               <Link href={ adventurerDetailsPath(adventurer.id) }>
                 <h3 className="text-xl font-bold">{ adventurer.name }

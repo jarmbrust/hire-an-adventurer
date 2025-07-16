@@ -30,10 +30,7 @@ export const adventurerSlice = createSlice({
         console.error('Invalid payload for initializeAdventurers:', action.payload);
         return;
       }
-      state.adventurers = action.payload.map(adventurer => ({
-        ...adventurer,
-        // status: adventurer.status || 'Available',
-      }));
+      state.adventurers = action.payload;
       console.log('Adventurers initialized:', state.adventurers);
     },
 

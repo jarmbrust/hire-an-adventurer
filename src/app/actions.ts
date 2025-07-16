@@ -11,7 +11,7 @@ export async function getAllAdventurers() {
     const data = await sql`
       SELECT id, name, image, profession, description,
       strength, agility, arcane, fee, successes, defeats,
-      victory_phrase, condition FROM adventurers`;
+      victory_phrase, condition, status FROM adventurers`;
     return data;
 }
 

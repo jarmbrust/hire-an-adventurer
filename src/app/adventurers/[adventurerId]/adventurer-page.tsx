@@ -3,56 +3,52 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import Button from '@/app/ui/button';
 import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-import { updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
-import { getAdventurerById } from '@/app/actions';
+// import { updateAdventurerStatus } from '@/app/lib/features/adventurer/adventurer-slice';
+// import { getAdventurerById } from '@/app/actions';
+import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
+import { useAppDispatch } from '@/app/lib/hooks';
 
-const AdventurerDetailsPage = (params: { adventurerId: string })  => {
 
-  
+const AdventurerDetailsPage = (params: { adventurerId: number })  => {
+
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
   const [hireButton, setHireButton] = useState(false);
   const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
 
-  const [error, setError] = useState<Error | null>(null);
+  const { data, isLoading } = useGetAdventurersQuery();
+  const dispatch = useAppDispatch();
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const adventurerId = params.adventurerId ? parseInt(params.adventurerId, 10) : 0;
-    console.log('Adventurer ID:', adventurerId);
-    const fetchAdventurer = async () => {
-      setIsLoading(true);
-      try {
-        const result = await getAdventurerById(adventurerId);
-        console.log('Fetched Adventurer:', result);
-        if (!result) {
-          throw new Error('No adventurer found');
+    const adventurers: Adventurer[] = data?.adventurers ?? [];
+    const adventurer = adventurers.find((a) => a.id === params.adventurerId);
+    if (adventurer) {
+      setAdventurerInfo(adventurer);
+    }
+  }, [data?.adventurers, params.adventurerId]);
+
+
+  const handleOptimisticUpdate = (updatedAdventurer: Adventurer) => {
+    dispatch(
+      api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+        // draft is the cached array of adventurers
+        const idx: number = draft.adventurers.findIndex(a => a.id === updatedAdventurer.id);
+        if (idx !== -1) {
+          draft.adventurers[idx] = { ...draft.adventurers[idx], ...updatedAdventurer };
         }
-        result.status = result.status || 'Available';
-        setAdventurerInfo(result);
-      } catch (error) {
-        console.error(error);
-        setError(error instanceof Error ? error : new Error('Failed to fetch adventurer'));
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      })
+    );
+  };
 
-    fetchAdventurer();
-  }, [params]);
-
-  if (error) {
-    throw error;
-  }
 
   useEffect(() => {
-    if (adventurerInfo?.condition === 'Dead'
+    if (adventurerInfo?.condition === 'Fatigued'
       || adventurerInfo?.condition === 'Injured'
       || adventurerInfo?.status === 'Hired'
     ) {
@@ -64,14 +60,18 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
     console.log('handleHireAdventurer called');
     setHireButton(true);
     setDisableButton(true);
+
     console.log('handleHireAdventurer called with:', adventurerInfo, 'and status:', adventurerInfo?.status);
     try {
       console.log('Hiring adventurer!!!!!:', adventurerInfo?.id);
       if (adventurerInfo?.status === 'Selected') {
-        dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Available' } }));
+        console.log('de-selecting adventurer:', adventurerInfo.id);
+        handleOptimisticUpdate({ ...adventurerInfo, status: 'Available' });
+        // dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Available' } }));
       } else if (adventurerInfo?.status === 'Available') {
         console.log('selecting adventurer:', adventurerInfo.id);
-        dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Selected' } }));
+        handleOptimisticUpdate({ ...adventurerInfo, status: 'Selected' });
+        // dispatch(updateAdventurerStatus({ payload: { id: adventurerInfo.id, status: 'Selected' } }));
       }
     } catch (err) {
       console.error(err);
@@ -86,8 +86,8 @@ const AdventurerDetailsPage = (params: { adventurerId: string })  => {
     if (hireButton) {
       return 'Selecting...';
     }
-    if (disableButton && adventurerInfo?.condition === 'Dead') {
-      return 'Adventurer is deceased';
+    if (disableButton && adventurerInfo?.condition === 'Fatigued') {
+      return 'Adventurer is fatigued';
     }
     if (disableButton && adventurerInfo?.condition === 'Injured') {
       return 'Adventurer is injured';
