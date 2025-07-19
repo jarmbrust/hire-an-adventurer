@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import Modal from "@/app/ui/modal";
-import { getAdventurerStatus, updateAdventurerStatus, getAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
-import { useAppStore } from '@/app/lib/hooks';
-import { initializeStore, modifyCoinAmount } from '@/app/lib/features/score/score-slice';
+import { useAppDispatch, useAppStore } from '@/app/lib/hooks';
+
+import { modifyCoinAmount } from '@/app/lib/features/score/score-slice';
+import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import Button from '@/app/ui/button';
 import { adventurerAPIPath, combatPath } from '@/app/lib/paths';
-import { type Adventurer } from '@/app/lib/definitions';
+import { AdventurerStatuses, type Adventurer } from '@/app/lib/definitions';
 
 const CartPage = () => {
  // Initialize the store with the default information
@@ -18,63 +18,78 @@ const CartPage = () => {
   const score = store.getState().score;
   const scoreValue = score.score.value;
   const coinAmount = score.score.coins; 
-  const initialized = useRef(false)
+  const { data, isLoading, /*error*/} = useGetAdventurersQuery();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [totalFee, setTotalFee] = useState(0);
   const [showNoAdventurersModal, setShowNoAdventurersModal] = useState(false);
   const [outOfMoneyModal, setOutOfMoneyModal] = useState(false);
-  const [currentAdventurers, setCurrentAdventurers] = useState(store.getState().adventurers);
   const [selectedAdventurers, setSelectedAdventurers] = useState<Adventurer[]>([]);
   const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
-  // const [adventurersHiredOrDeceased, setAdventurersHiredOrDeceased] = useState([...hiredAdventurers, ...deceasedAdventurers]);
+
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!initialized.current) {
-      store.dispatch(initializeStore());
-      initialized.current = true
+    const adventurers = data?.adventurers ?? [];
+    if (adventurers.length <= 0) {
+      setShowNoAdventurersModal(true);
+      return;
     }
-
-    setCurrentAdventurers(store.getState().adventurers);
-  }, [store]);
-
-
-  useEffect(() => {
-  setSelectedAdventurers(
-    getAdventurers({ adventurers: currentAdventurers })
-      .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Selected'));
-    console.log('Selected Adventurers:', selectedAdventurers);
+    setSelectedAdventurers(
+      adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Selected)
+    );
     setHiredAdventurers(
-      getAdventurers({ adventurers: currentAdventurers })
-        .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Hired'));
-    console.log('Hired Adventurers:', hiredAdventurers);
-    setTotalFee(selectedAdventurers.reduce((acc: number, adventurer: Adventurer) => acc + adventurer.fee, 0));
-    if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
-  }, [currentAdventurers, selectedAdventurers, hiredAdventurers]);
+      adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired)
+    );
+  }, [ data?.adventurers ]);
+
+  // useEffect(() => {
+
+  //   setTotalFee(selectedAdventurers.reduce((acc: number, adventurer: Adventurer) => acc + adventurer.fee, 0));
+  //   if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
+  // }, [ selectedAdventurers, hiredAdventurers ]);
 
   const handleHireAdventurers = () => {
     if (isLoading) {
       return;
     }
-    setIsLoading(true);
-    if(!verifyEnoughCoins()) {
-      setIsLoading(false);
+    if(!hasEnoughCoins()) {
+      return;
     } else {
+      updateAdventurerStatus(selectedAdventurers[0].id, AdventurerStatuses.Hired);
       dispatch(modifyCoinAmount({ coins: -totalFee, type: 'deductCoins' }));
-      const selectedAdventurers = getAdventurers({ adventurers: store.getState().adventurers })
-        .filter((adventurer: Adventurer) => getAdventurerStatus(adventurer.id) === 'Selected');
-      dispatch(updateAdventurerStatus({ payload: { adventurers: selectedAdventurers, status: 'Hired' } }));
+      setHiredAdventurers((prev) => [...prev, ...selectedAdventurers]);
+      setSelectedAdventurers([]);
+      setTotalFee(0);
+      setErrorMessage('');
+      setOutOfMoneyModal(false);
+      setShowNoAdventurersModal(false);
     }
-    setIsLoading(false);
   };
 
-  const verifyEnoughCoins = () => {
+  const updateAdventurerStatus = async (adventurerId: number, newStatus: AdventurerStatuses) => {
+    const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+      selectedAdventurers.forEach((adventurer: Adventurer) => {
+        const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
+        if (idx !== -1 && adventurer.id === adventurerId) {
+          draft.adventurers[idx].status = newStatus;
+        }
+      });
+    });
+    // TODO: should handle errors
+    dispatch(updateAdventurer);
+  };
+
+  const handleRemoveAdventurer = (id: number) => {
+    updateAdventurerStatus(id, 'Selected');
+    dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
+  };
+
+  const hasEnoughCoins = () => {
     if (totalFee > coinAmount) {
       setOutOfMoneyModal(true);
-      setErrorMessage('Not enough coins to hire adventurers.');
+      setErrorMessage('Not enough coins to hire these adventurers.');
       return false;
     }
     setOutOfMoneyModal(false);
@@ -82,20 +97,7 @@ const CartPage = () => {
     return true;
   };
 
-  const handleRemoveAdventurer = (id: number) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    const unHiredAdventurer = getAdventurers({ adventurers: store.getState().adventurers })
-      .find((adventurer: Adventurer) => adventurer.id === id);
-    if (unHiredAdventurer) {
-      dispatch(updateAdventurerStatus({ payload: { id: unHiredAdventurer.id, status: 'Available' } }));
-      const fee = unHiredAdventurer ? unHiredAdventurer.fee : 0;
-      setTotalFee((totalFee) => totalFee - fee);
-    }
-    setIsLoading(false);
-  };
+
 
   const engageAdventurersInCombat = () => {
     router.push(combatPath());
@@ -185,7 +187,7 @@ const CartPage = () => {
                 { adventurer.profession || '' }
               </td>
               <td className="border border-zinc-500 px-4 py-2"> 
-                { getAdventurerStatus(adventurer.id) }
+                { adventurer.status || '' }
               </td>
             </tr>
           ))}

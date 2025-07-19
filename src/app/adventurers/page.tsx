@@ -2,9 +2,6 @@
 
 import Link from 'next/link';
 import Image from "next/image";
-// import { useDispatch } from 'react-redux';
-// import { /* useEffect, */ useState } from 'react';
-// import { type Adventurer } from '@/app/lib/definitions';
 import {
   // adventurerAPIPath,
   adventurerDetailsPath,
@@ -12,17 +9,9 @@ import {
   imageOfAdventurer,
 } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
-// import { initializeAdventurers } from '@/app/lib/features/adventurer/adventurer-slice';
 import clsx from 'clsx';
 
 const AdventurersListPage = () => {
-  // const [adventurerListInfo, setAdventurerListInfo] = useState<Adventurer[] | null>(null);
-
-  // interface UseGetAdventurersQueryResult {
-  //   data: { adventurers: Adventurer[] };
-  //   isLoading: boolean;
-  //   error: Error;
-  // }
   const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
   const adventurers = data?.adventurers ?? [];
   console.log('Adventurers fetched:', adventurers);

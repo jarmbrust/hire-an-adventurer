@@ -15,7 +15,14 @@ export type Adventurer = {
   status: AdventurerStatuses;
 };
 
-export type AdventurerStatuses = 'Available' | 'Selected' | 'Hired' | 'Combat' | 'Unknown';
+export const AdventurerStatuses = {
+  Selected: 'Selected',
+  Available: 'Available',
+  Deceased: 'Deceased',
+  Hired: 'Hired',
+} as const;
+
+export type AdventurerStatuses = typeof AdventurerStatuses[keyof typeof AdventurerStatuses];
 export type AdventurerCondition = 'Healthy' | 'Fatigued' | 'Injured' | 'Dead' | 'Unknown';
 
 export type Monster = {
@@ -27,26 +34,6 @@ export type Monster = {
   victoryPhrase: string;
   attackPower: number;
 };
-
-// export type ThemeContextType = {
-//   theme: Theme;
-//   toggleTheme: () => void;
-// };
-
-// export type SelectedAdventurersContextType = {
-//   selectedAdventurers: Adventurer[];
-//   hiredAdventurers: Adventurer[];
-//   deceasedAdventurers: Adventurer[];
-//   adventurersInCombat: boolean;
-//   selectAdventurer: (adventurer: Adventurer) => void;
-//   removeSelectedAdventurer: (id: number) => void;
-//   getAdventurerStatus: (id: number | undefined) => string;
-//   clearAdventurers: (adventurerGroup: string) => void;
-//   hireAdventurers: (adventurers: Adventurer[]) => void;
-//   slayAdventurers: () => void;
-//   adventurerVictory: () => void;
-//   combatEngaged: (inCombat: boolean) => void;
-// };
 
 export type ScoreContextType = {
   coinAmount: number;

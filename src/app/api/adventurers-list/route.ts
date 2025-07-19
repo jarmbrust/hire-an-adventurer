@@ -29,3 +29,27 @@ export async function GET() {
     );
   }
 }
+
+export async function POST() {
+  try {
+    if(!process.env.DATABASE_URL) {
+      return NextResponse.json(
+        { error: 'DATABASE_URL is not defined' },
+        { status: 500 }
+      );
+    }
+
+    // Handle POST request logic here, if needed
+    return NextResponse.json(
+      { message: 'POST request received' },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to handle POST request' },
+      { status: 500 }
+    );
+  }
+}
