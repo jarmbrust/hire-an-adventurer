@@ -36,19 +36,15 @@ const CartPage = () => {
       setShowNoAdventurersModal(true);
       return;
     }
-    setSelectedAdventurers(
-      adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Selected)
-    );
-    setHiredAdventurers(
-      adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired)
-    );
+    const selected = adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Selected);
+    const hired = adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired);
+    if (selected.length === 0 && hired.length === 0) {
+      setShowNoAdventurersModal(true);
+    } else {
+      setSelectedAdventurers(selected);
+      setHiredAdventurers(hired);
+    }
   }, [ data?.adventurers ]);
-
-  // useEffect(() => {
-
-  //   setTotalFee(selectedAdventurers.reduce((acc: number, adventurer: Adventurer) => acc + adventurer.fee, 0));
-  //   if (selectedAdventurers.length === 0 && hiredAdventurers.length === 0) setShowNoAdventurersModal(true);
-  // }, [ selectedAdventurers, hiredAdventurers ]);
 
   const handleHireAdventurers = () => {
     if (isLoading) {
