@@ -1,77 +1,90 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useSelectedAdventurers } from '@/context/selected-adventurers-context';
 import { increaseScore } from '@/app/lib/features/score/score-slice';
-import { useAppStore } from '@/app/lib/hooks';
+import { useAppDispatch } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
 import randomlySelectedMonsters from '@/app/lib/randomly-selected-monsters';
-import { type Adventurer, type Monster } from '@/app/lib/definitions';
+import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
+import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
+import { adventurersVictorious, adventurerConditionAssignment } from '@/app/combat/combat-functions';
 
 const CombatPage = () => {
-  const {
-    hiredAdventurers,
-    adventurersInCombat,
-    combatEngaged,
-    slayAdventurers,
-    adventurerVictory,
-  } = useSelectedAdventurers();
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
   const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
   const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
-  const [adventurersList, setAdventurersList] = useState<Adventurer[]>([]);
+  const [combatEngaged, setCombatEngaged] = useState<boolean>(false);
+  const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
 
-  const store = useAppStore();
-
+  const dispatch = useAppDispatch();
+  // TODO: should handle errors
+  const { data, /*isLoading, /*error*/} = useGetAdventurersQuery();
+  
   const getTheMonsters = () => {
     setTheMonster(randomlySelectedMonsters());
   };
 
   useEffect(() => {
-    const resolveCombat = (partyAttackValue: number) => {
-      if (theMonster && partyAttackValue > theMonster.attackPower) {
-        setMonsterDefeated(true);
-        setAdventurersList(hiredAdventurers);
-        adventurerVictory();
-        store.dispatch(increaseScore(theMonster.attackPower))
-      } else if (theMonster && partyAttackValue < theMonster.attackPower) {
-        setMonsterDefeated(false);
-        setAdventurersList(hiredAdventurers);
-        slayAdventurers();
-      }
+    const getHiredAdventurers = () => {
+      const adventurers = data?.adventurers ?? [];
+      return adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired);
     };
-    if (theMonster) {
-      let partyAttackValue: number = 0;
-      if (theMonster.flies) {
-        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + ((Number(adventurer.agility) || 0) * 5) + ((Number(adventurer.arcane) || 0) * 3), 0);
-      } else {
-        partyAttackValue = hiredAdventurers.reduce((total, adventurer) => total + ((Number(adventurer.strength) || 0) * 5) + ((Number(adventurer.arcane) || 0) * 3), 0);
-      }
-      if (partyAttackValue && theMonster.attackPower) {
-        combatEngaged(true);
-        resolveCombat(partyAttackValue);
-        setShowResolutionModal(true);
-        combatEngaged(false);
-      }
+
+    setHiredAdventurers(getHiredAdventurers());
+    if (hiredAdventurers.length === 0) {
+      setShowNoneHiredModal(true);
+    } else {
+      setShowNoneHiredModal(false);
     }
-  }, [theMonster, hiredAdventurers, slayAdventurers, adventurerVictory, combatEngaged, store]);
+  }, [data?.adventurers, hiredAdventurers.length]);
+
+  const updateAdventurerStatus = useCallback(async (adventurerId: number, newStatus: AdventurerStatuses) => {
+    const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+      hiredAdventurers.forEach((adventurer: Adventurer) => {
+        const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
+        if (idx !== -1 && adventurer.id === adventurerId) {
+          draft.adventurers[idx].status = newStatus;
+        }
+      });
+    });
+    // TODO: should handle errors
+    dispatch(updateAdventurer);
+  }, [dispatch, hiredAdventurers]);
 
   useEffect(() => {
-    if (hiredAdventurers.length === 0 && !adventurersInCombat) {
-      setShowNoneHiredModal(true);
+    if (showNoneHiredModal) {
+      return;
     }
-  }, [hiredAdventurers.length, adventurersInCombat]);
+    if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
+      setCombatEngaged(true);
+      const adventurersWin = adventurersVictorious(theMonster, hiredAdventurers);
+      if (adventurersWin) {
+        setMonsterDefeated(true);
+        dispatch(increaseScore(theMonster.attackPower));
+        hiredAdventurers.forEach(adventurer => {
+          adventurer.status = AdventurerStatuses.Available;
+        });
+      } else {
+        setMonsterDefeated(false);
+        adventurerConditionAssignment(hiredAdventurers, true);
+      }
+      updateAdventurerStatus(hiredAdventurers[0].id, AdventurerStatuses.Available);
+      setHiredAdventurers([]);
+      setCombatEngaged(false);
+      setShowResolutionModal(true);
+    }
+  }, [hiredAdventurers, theMonster, showNoneHiredModal, combatEngaged, dispatch, updateAdventurerStatus]);
 
   return (
     <>
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
       { showNoneHiredModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
       { showResolutionModal && <Modal message={
-         <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={adventurersList} />
+         <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={hiredAdventurers} />
         } link="/adventurers" /> 
       }
 
@@ -87,21 +100,21 @@ const CombatPage = () => {
           <Link 
             href="/adventurers">
             <Button
-              disabled={ adventurersInCombat }
-              aria-disabled={ adventurersInCombat }>
+              disabled={ combatEngaged }
+              aria-disabled={ combatEngaged }>
               Hire More Adventurers
             </Button>
           </Link>
           &nbsp; or &nbsp;
           <Button
-            disabled={ adventurersInCombat }
-            aria-disabled={ adventurersInCombat }
+            disabled={ combatEngaged }
+            aria-disabled={ combatEngaged }
             onClick={ getTheMonsters }>
             Fight the monsters!
           </Button>
         </div>
 
-      {adventurersInCombat && theMonster &&
+      {combatEngaged && theMonster &&
       <>
         <p className="flex justify-center mt-6 text-xl">{ hiredAdventurers.length > 0 ? (
             "Ready for combat!"

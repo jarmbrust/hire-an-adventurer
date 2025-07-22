@@ -11,7 +11,7 @@ export type Adventurer = {
   successes: number;
   defeats: number;
   victoryPhrase: string;
-  condition: AdventurerCondition;
+  condition: AdventurerConditions;
   status: AdventurerStatuses;
 };
 
@@ -21,9 +21,15 @@ export const AdventurerStatuses = {
   Deceased: 'Deceased',
   Hired: 'Hired',
 } as const;
-
 export type AdventurerStatuses = typeof AdventurerStatuses[keyof typeof AdventurerStatuses];
-export type AdventurerCondition = 'Healthy' | 'Fatigued' | 'Injured' | 'Dead' | 'Unknown';
+
+export const AdventurerConditions = {
+  Healthy: 'Healthy',
+  Fatigued: 'Fatigued',
+  Injured: 'Injured',
+  Dead: 'Dead',
+} as const;
+export type AdventurerConditions = typeof AdventurerConditions[keyof typeof AdventurerConditions];
 
 export type Monster = {
   id: number;

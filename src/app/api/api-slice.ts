@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Adventurer } from '@/app/lib/definitions';
+import { Adventurer, AdventurerStatuses } from '@/app/lib/definitions';
 
 export const api = createApi({
   reducerPath: 'api',
@@ -8,7 +8,14 @@ export const api = createApi({
     getAdventurers: builder.query<{ adventurers: Adventurer[] }, void>({
       query: () => 'adventurers-list',
     }),
+    setAdventurerStatus: builder.mutation<void, { id: number; status: AdventurerStatuses }>({
+      query: ({ id, status }) => ({
+        url: `adventurers/${id}`,
+        method: 'PATCH',
+        body: { status },
+      }),
+    }),
   }),
 });
-console.log('API slice created', api);
+
 export const { useGetAdventurersQuery } = api;

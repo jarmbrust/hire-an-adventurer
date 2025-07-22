@@ -79,7 +79,7 @@ const CartPage = () => {
   };
 
   const handleRemoveAdventurer = (id: number) => {
-    updateAdventurerStatus(id, 'Selected');
+    updateAdventurerStatus(id, AdventurerStatuses.Selected);
     dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
   };
 
@@ -93,8 +93,6 @@ const CartPage = () => {
     setErrorMessage('');
     return true;
   };
-
-
 
   const engageAdventurersInCombat = () => {
     router.push(combatPath());

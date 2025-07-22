@@ -38,7 +38,7 @@ const AdventurerStats = ({stats}: {stats: Adventurer | null}) => {
       <p><span className="font-bold">Arcane:</span> {stats?.arcane}</p>
       <p><span className="font-bold">Description:</span> {stats?.description}</p>
       <p><span className="font-bold">Victories:</span> {stats?.successes}</p>
-      <p><span className="font-bold">Deaths:</span> {stats?.defeats}</p>
+      <p><span className="font-bold">Condition:</span> {stats?.condition}</p>
       <p><span className="font-bold">Fee:</span> {stats?.fee} {feeText}</p>
     </div>
   );
