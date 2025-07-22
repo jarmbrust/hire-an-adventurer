@@ -17,7 +17,8 @@ const CartPage = () => {
   const store = useAppStore();
   const score = store.getState().score;
   const scoreValue = score.score.value;
-  const coinAmount = score.score.coins; 
+  const coinAmount = score.score.coins;
+  // TODO: should handle errors
   const { data, isLoading, /*error*/} = useGetAdventurersQuery();
 
   const [errorMessage, setErrorMessage] = useState('');

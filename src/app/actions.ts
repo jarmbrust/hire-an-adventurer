@@ -49,26 +49,50 @@ export async function getAdventurerByName(name: string) {
 //   return result;
 // };
 
-// export async function modifyMultipleAdventurerStatuses(ids: number[], status: string) {
-//   if (!process.env.DATABASE_URL) {
-//     throw new Error('DATABASE_URL is not defined');
-//   }
-//   const sql = neon(process.env.DATABASE_URL);
-//   if (ids.length === 0) {
-//     throw new Error('No adventurer IDs provided');
-//   }
-//   const idList = ids.map(id => sql`${id}`)
-//   const result = await sql`
-//     UPDATE adventurers SET status = ${status} WHERE id IN (${idList.join(',')})
-//   `;
-//   const rowCount = result.length;
+export async function modifyMultipleAdventurersStatus(ids: number[], status: string) {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is not defined');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  if (ids.length === 0) {
+    throw new Error('No adventurer IDs provided');
+  }
+  const idList = ids.map(id => sql`${id}`)
+  const result = await sql`
+    UPDATE adventurers SET status = ${status} WHERE id IN (${idList.join(',')})
+  `;
+  const rowCount = result.length;
 
-//   if (rowCount === 0) {
-//     throw new Error(`No adventurers found with IDs: ${ids.join(', ')}`);
-//   }
-//   if (rowCount !== ids.length) {
-//     throw new Error(`Not all adventurers were updated. Expected ${ids.length}, but updated ${rowCount}`);
-//   }
-//   console.log(`Updated ${rowCount} adventurers to status '${status}'`);
-//   return result;
-// };
+  if (rowCount === 0) {
+    throw new Error(`No adventurers found with IDs: ${ids.join(', ')}`);
+  }
+  if (rowCount !== ids.length) {
+    throw new Error(`Not all adventurers were updated. Expected ${ids.length}, but updated ${rowCount}`);
+  }
+  console.log(`Updated ${rowCount} adventurers to status '${status}'`);
+  return result;
+};
+
+export async function modifyMultipleAdventurersCondition(ids: number[], condition: string) {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is not defined');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  if (ids.length === 0) {
+    throw new Error('No adventurer IDs provided');
+  }
+  const idList = ids.map(id => sql`${id}`)
+  const result = await sql`
+    UPDATE adventurers SET condition = ${condition} WHERE id IN (${idList.join(',')})
+  `;
+  const rowCount = result.length;
+
+  if (rowCount === 0) {
+    throw new Error(`No adventurers found with IDs: ${ids.join(', ')}`);
+  }
+  if (rowCount !== ids.length) {
+    throw new Error(`Not all adventurers were updated. Expected ${ids.length}, but updated ${rowCount}`);
+  }
+  console.log(`Updated ${rowCount} adventurers to status '${status}'`);
+  return result;
+};
