@@ -1,6 +1,7 @@
 import {
   Adventurer,
   AdventurerConditions,
+  AdventurerStatuses,
   Monster
 } from '@/app/lib/definitions';
 
@@ -20,7 +21,7 @@ export const adventurersVictorious = (theMonster: Monster, hiredAdventurers: Adv
   return partyAttackValue > theMonster.attackPower ? true : false; 
 };
 
-export const adventurerConditionAssignment = (adventurers: Adventurer[], adventurersDefeated: boolean) => {
+export const adventurerConditionAssignment = (adventurers: Adventurer[], adventurersDefeated: boolean): Adventurer[] => {
   if (adventurersDefeated) {
     adventurers.forEach(adventurer => {
       const modifier = adventurerConditionModifier(adventurer.condition);
@@ -33,6 +34,13 @@ export const adventurerConditionAssignment = (adventurers: Adventurer[], adventu
   }
   return adventurers;
 };
+
+export const adventurerStatusAssignment = (adventurer: Adventurer, newStatus: AdventurerStatuses) => {
+  return {
+    ...adventurer,
+    status: newStatus
+  }
+}
 
 const adventurerConditionModifier = (currentCondition: AdventurerConditions) => {
   if (currentCondition === AdventurerConditions.Healthy) {

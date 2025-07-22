@@ -10,7 +10,11 @@ import CombatResolution from '@/app/ui/combat-resolution';
 import randomlySelectedMonsters from '@/app/lib/randomly-selected-monsters';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
-import { adventurersVictorious, adventurerConditionAssignment } from '@/app/combat/combat-functions';
+import { 
+  adventurersVictorious,
+  adventurerConditionAssignment,
+  adventurerStatusAssignment
+} from '@/app/combat/combat-functions';
 
 const CombatPage = () => {
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
@@ -42,18 +46,18 @@ const CombatPage = () => {
     }
   }, [data?.adventurers, hiredAdventurers.length]);
 
-  const updateAdventurerStatus = useCallback(async (adventurerId: number, newStatus: AdventurerStatuses) => {
-    const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+  const resetAdventurerStatus = useCallback(async (newStatus: AdventurerStatuses) => {
+    const updatedAdventurers = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       hiredAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
-        if (idx !== -1 && adventurer.id === adventurerId) {
+        if (idx !== -1) {
           draft.adventurers[idx].status = newStatus;
         }
       });
     });
     // TODO: should handle errors
-    dispatch(updateAdventurer);
-  }, [dispatch, hiredAdventurers]);
+    dispatch(updatedAdventurers);
+  }, [hiredAdventurers, dispatch]);
 
   useEffect(() => {
     if (showNoneHiredModal) {
@@ -62,22 +66,23 @@ const CombatPage = () => {
     if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
       setCombatEngaged(true);
       const adventurersWin = adventurersVictorious(theMonster, hiredAdventurers);
+      let updatedAdventurers: Adventurer[] = [];
       if (adventurersWin) {
         setMonsterDefeated(true);
         dispatch(increaseScore(theMonster.attackPower));
         hiredAdventurers.forEach(adventurer => {
-          adventurer.status = AdventurerStatuses.Available;
+          updatedAdventurers.push(adventurerStatusAssignment(adventurer, AdventurerStatuses.Available));
         });
       } else {
         setMonsterDefeated(false);
-        adventurerConditionAssignment(hiredAdventurers, true);
+        updatedAdventurers = [...updatedAdventurers, ...adventurerConditionAssignment(hiredAdventurers, true)]
       }
-      updateAdventurerStatus(hiredAdventurers[0].id, AdventurerStatuses.Available);
+      resetAdventurerStatus(AdventurerStatuses.Available);
       setHiredAdventurers([]);
       setCombatEngaged(false);
       setShowResolutionModal(true);
     }
-  }, [hiredAdventurers, theMonster, showNoneHiredModal, combatEngaged, dispatch, updateAdventurerStatus]);
+  }, [showNoneHiredModal, hiredAdventurers, theMonster, combatEngaged, resetAdventurerStatus, dispatch]);
 
   return (
     <>

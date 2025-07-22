@@ -14,7 +14,6 @@ import {
   cartPath,
   homePath,
 } from '@/app/lib/paths';
-import { getCombatEngaged } from '@/app/lib/features/adventurer/adventurer-slice';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 
@@ -52,7 +51,7 @@ export default function NavLinks() {
           <Link
             key={ link.name }
             href={ link.href }
-            onClick={ getCombatEngaged() ? (e) => e.preventDefault() : undefined }
+            // onClick={ getCombatEngaged() ? (e) => e.preventDefault() : undefined }
             className={ clsx(
               'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm '
               + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
