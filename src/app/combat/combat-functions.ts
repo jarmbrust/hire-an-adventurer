@@ -22,17 +22,24 @@ export const adventurersVictorious = (theMonster: Monster, hiredAdventurers: Adv
 };
 
 export const adventurerConditionAssignment = (adventurers: Adventurer[], adventurersDefeated: boolean): Adventurer[] => {
+  const modifiedAdventurers: Adventurer[] = [];
   if (adventurersDefeated) {
     adventurers.forEach(adventurer => {
       const modifier = adventurerConditionModifier(adventurer.condition);
-      adventurer.condition = adventurerAfflictions(modifier);
+      modifiedAdventurers.push({
+        ...adventurer,
+        condition: adventurerAfflictions(modifier)
+      });
     });
   } else {
     adventurers.forEach(adventurer => {
-      adventurer.condition = AdventurerConditions.Healthy;
+       modifiedAdventurers.push({
+        ...adventurer,
+        condition: AdventurerConditions.Healthy
+      });
     });
   }
-  return adventurers;
+  return modifiedAdventurers;
 };
 
 export const adventurerStatusAssignment = (adventurer: Adventurer, newStatus: AdventurerStatuses) => {
@@ -58,6 +65,7 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
   // There can be a possible +2 to the affliction based onm the the condition
   // of the adventurer when they entered combat.
   // Results: 1-3: Fatigued, 4-6: Injured, 7-8: Dead
+  console.log('Modifier:', modifier);
   const conditionNumber = Math.floor(Math.random() * 6) + 1 + modifier;
   console.log('Condition Number:', conditionNumber);
   switch (conditionNumber) {

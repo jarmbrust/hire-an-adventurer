@@ -18,7 +18,7 @@ import {
 
 const CombatPage = () => {
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
-  const [showNoneHiredModal, setShowNoneHiredModal] = useState(false);
+  const [showNoAdventurersModal, setShowNoAdventurersModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
   const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
   const [combatEngaged, setCombatEngaged] = useState<boolean>(false);
@@ -40,18 +40,18 @@ const CombatPage = () => {
 
     setHiredAdventurers(getHiredAdventurers());
     if (hiredAdventurers.length === 0) {
-      setShowNoneHiredModal(true);
+      setShowNoAdventurersModal(true);
     } else {
-      setShowNoneHiredModal(false);
+      setShowNoAdventurersModal(false);
     }
   }, [data?.adventurers, hiredAdventurers.length]);
 
-  const resetAdventurerStatus = useCallback(async (newStatus: AdventurerStatuses) => {
+  const resetAdventurerStatus = useCallback(async () => {
     const updatedAdventurers = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       hiredAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
         if (idx !== -1) {
-          draft.adventurers[idx].status = newStatus;
+          draft.adventurers[idx].status = AdventurerStatuses.Available;
         }
       });
     });
@@ -59,8 +59,22 @@ const CombatPage = () => {
     dispatch(updatedAdventurers);
   }, [hiredAdventurers, dispatch]);
 
+
+  const updateAdventurerCondition = useCallback(async (updatedAdventurers: Adventurer[]) => {
+    dispatch(api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+      updatedAdventurers.forEach((adventurer: Adventurer) => {
+        const idx = draft.adventurers.findIndex(a => a.id === adventurer.id);
+        if (idx !== -1) {
+          draft.adventurers[idx].condition = adventurer.condition;
+        }
+      });
+    }));
+    // to persist on the backend
+    // await dispatch(api.endpoints.setAdventurerCondition.initiate({ id, condition }));
+  }, [dispatch]);
+
   useEffect(() => {
-    if (showNoneHiredModal) {
+    if (showNoAdventurersModal) {
       return;
     }
     if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
@@ -75,19 +89,20 @@ const CombatPage = () => {
         });
       } else {
         setMonsterDefeated(false);
-        updatedAdventurers = [...updatedAdventurers, ...adventurerConditionAssignment(hiredAdventurers, true)]
+        updatedAdventurers = adventurerConditionAssignment(hiredAdventurers, true);
       }
-      resetAdventurerStatus(AdventurerStatuses.Available);
+      resetAdventurerStatus();
+      updateAdventurerCondition(updatedAdventurers);
       setHiredAdventurers([]);
       setCombatEngaged(false);
       setShowResolutionModal(true);
     }
-  }, [showNoneHiredModal, hiredAdventurers, theMonster, combatEngaged, resetAdventurerStatus, dispatch]);
+  }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, resetAdventurerStatus, dispatch, updateAdventurerCondition]);
 
   return (
     <>
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
-      { showNoneHiredModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
+      { showNoAdventurersModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
       { showResolutionModal && <Modal message={
          <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={hiredAdventurers} />
         } link="/adventurers" /> 
