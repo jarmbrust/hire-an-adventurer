@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Modal from "@/app/ui/modal";
@@ -30,18 +30,6 @@ const CartPage = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-
-
-  // }, [selectedAdventurers, totalFee]);
-
-  // const selectAdventurer = (adventurer: Adventurer) => {
-  //   if (isLoading) {
-  //     return;
-  //   }
-  //   setSelectedAdventurers(adventurers => [...adventurers, adventurer]);
-  //   updateAdventurerStatus(AdventurerStatuses.Selected, adventurer.id);
-  //   setTotalFee(totalFee => totalFee + adventurer.fee);
-  // }
 
   const aggregateTotalFee = (selected: Adventurer[]) => {
     return selected.reduce((sum, adventurer) => sum + adventurer.fee, 0);
@@ -82,24 +70,31 @@ const CartPage = () => {
     }
   };
 
-  const updateAdventurerStatus = async (newStatus: AdventurerStatuses, id?: number) => {
+  const updateAdventurerStatus = async (newStatus: AdventurerStatuses, id: number | null = null) => {
     const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
-      selectedAdventurers.forEach((adventurer: Adventurer) => {
-        const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
+      if (id) {
+        const idx: number = draft.adventurers.findIndex(a => a.id === id);
         if (idx !== -1) {
           draft.adventurers[idx].status = newStatus
-          // setTotalFee(totalFee => totalFee + adventurer.fee);
-          // console.log('Adventurer fee:', adventurer.fee, totalFee);
         }
-      });
+      } else {
+        selectedAdventurers.forEach((adventurer: Adventurer) => {
+          const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
+          if (idx !== -1) {
+            draft.adventurers[idx].status = newStatus
+          }
+        });
+      }
     });
     // TODO: should handle errors
     dispatch(updateAdventurer);
   };
 
   const handleRemoveAdventurer = (id: number) => {
-    updateAdventurerStatus(AdventurerStatuses.Selected, id);
-    dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
+    setSelectedAdventurers((prev) => prev.filter((adventurer: Adventurer) => adventurer.id !== id));
+    updateAdventurerStatus(AdventurerStatuses.Available, id);
+    const adventurerFee = selectedAdventurers.find((adventurer: Adventurer) => adventurer.id === id)?.fee ?? 0;
+    setTotalFee(totalFee - adventurerFee);
   };
 
   const hasEnoughCoins = () => {
@@ -136,7 +131,7 @@ const CartPage = () => {
           <tr className="text-2xl font-bold">
             <th className="border border-zinc-500 px-4 py-2">Name</th>
             <th className="border border-zinc-500 px-4 py-2">Fee</th>
-            <th className="border border-zinc-500 px-4 py-2">Remove Adv.</th>
+            <th className="border border-zinc-500 px-4 py-2">Remove Adventurer</th>
           </tr>
         </thead>
         <tbody>

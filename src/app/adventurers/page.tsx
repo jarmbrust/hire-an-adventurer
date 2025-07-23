@@ -14,7 +14,6 @@ import clsx from 'clsx';
 const AdventurersListPage = () => {
   const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
   const adventurers = data?.adventurers ?? [];
-  console.log('Adventurers fetched:', adventurers);
 
   const getStatusColor = (status: string) => ({
     'text-blue-500': status === 'Selected',
