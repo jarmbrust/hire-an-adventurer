@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Modal from "@/app/ui/modal";
@@ -31,6 +31,22 @@ const CartPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+
+  // }, [selectedAdventurers, totalFee]);
+
+  // const selectAdventurer = (adventurer: Adventurer) => {
+  //   if (isLoading) {
+  //     return;
+  //   }
+  //   setSelectedAdventurers(adventurers => [...adventurers, adventurer]);
+  //   updateAdventurerStatus(AdventurerStatuses.Selected, adventurer.id);
+  //   setTotalFee(totalFee => totalFee + adventurer.fee);
+  // }
+
+  const aggregateTotalFee = (selected: Adventurer[]) => {
+    return selected.reduce((sum, adventurer) => sum + adventurer.fee, 0);
+  };
+
   useEffect(() => {
     const adventurers = data?.adventurers ?? [];
     if (adventurers.length <= 0) {
@@ -42,10 +58,11 @@ const CartPage = () => {
     if (selected.length === 0 && hired.length === 0) {
       setShowNoAdventurersModal(true);
     } else {
+      setTotalFee(aggregateTotalFee(selected));
       setSelectedAdventurers(selected);
       setHiredAdventurers(hired);
     }
-  }, [ data?.adventurers ]);
+  }, [data?.adventurers]);
 
   const handleHireAdventurers = () => {
     if (isLoading) {
@@ -54,23 +71,25 @@ const CartPage = () => {
     if(!hasEnoughCoins()) {
       return;
     } else {
-      updateAdventurerStatus(selectedAdventurers[0].id, AdventurerStatuses.Hired);
-      dispatch(modifyCoinAmount({ coins: -totalFee, type: 'deductCoins' }));
+      updateAdventurerStatus(AdventurerStatuses.Hired);
+      dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
       setHiredAdventurers((prev) => [...prev, ...selectedAdventurers]);
       setSelectedAdventurers([]);
       setTotalFee(0);
       setErrorMessage('');
-      setOutOfMoneyModal(false);
-      setShowNoAdventurersModal(false);
+      // setOutOfMoneyModal(false);
+      // setShowNoAdventurersModal(false);
     }
   };
 
-  const updateAdventurerStatus = async (adventurerId: number, newStatus: AdventurerStatuses) => {
+  const updateAdventurerStatus = async (newStatus: AdventurerStatuses, id?: number) => {
     const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       selectedAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
-        if (idx !== -1 && adventurer.id === adventurerId) {
-          draft.adventurers[idx].status = newStatus;
+        if (idx !== -1) {
+          draft.adventurers[idx].status = newStatus
+          // setTotalFee(totalFee => totalFee + adventurer.fee);
+          // console.log('Adventurer fee:', adventurer.fee, totalFee);
         }
       });
     });
@@ -79,7 +98,7 @@ const CartPage = () => {
   };
 
   const handleRemoveAdventurer = (id: number) => {
-    updateAdventurerStatus(id, AdventurerStatuses.Selected);
+    updateAdventurerStatus(AdventurerStatuses.Selected, id);
     dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
   };
 
