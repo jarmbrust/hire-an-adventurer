@@ -31,6 +31,7 @@ const AboutPage = () => {
           <li>A top 10 leaderboard.</li>
           <li>A resting and healing mechanic for adventurers.</li>
           <li>Fine-tuning on the combat mechanics.</li>
+          <li>Sorting adventurers by various abilities.</li>
           <li>Modifying adventurer stats based on fatigue or injury.</li>
           <li>More monsters and adventurers!</li>
         </ul>

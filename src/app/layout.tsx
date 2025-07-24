@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={geist.className}>
+    <html lang="en" className={`${geist.className} h-screen`}>
       <body className="min-h-screen antialiased">
         <main className="flex flex-col">
           <StoreProvider>

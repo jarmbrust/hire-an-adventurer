@@ -23,7 +23,7 @@ const Header = () => {
             : <MoonIcon className="w-6 mt-0 ml-4 mr-4" onClick={ handleToggleTheme } />
           }</span>
         </div>
-      <h1 className="flex text-4xl justify-center font-semibold">Hire an Adventurer</h1>
+      <h1 className="flex text-4xl justify-center font-semibold pl-6 pr-6 pb-3">Hire an Adventurer</h1>
       <p className="flex text-sm justify-center mt-0">Score: { scoreValue }</p>
     </div>
   );
