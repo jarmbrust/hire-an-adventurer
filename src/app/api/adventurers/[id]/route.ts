@@ -3,7 +3,7 @@ import { getAdventurerById } from '@/app/actions';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const adventurer = await getAdventurerById(Number(params?.id || 0));
+    const adventurer = await getAdventurerById(Number(params.id));
     if (!adventurer) {
       return NextResponse.json(
         { message: 'Adventurer not found' },
@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
 export async function PATCH({ params }: { params: { id: string } }) {
 
-  const adventurer = await getAdventurerById(Number(params?.id || 0));
+  const adventurer = await getAdventurerById(Number(params.id));
   if (!adventurer) {
     return NextResponse.json(
       { message: 'Adventurer not found' },
