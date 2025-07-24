@@ -22,7 +22,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 };
 
-export async function PATCH({ params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
 
   const adventurer = await getAdventurerById(Number(params.id));
   if (!adventurer) {
