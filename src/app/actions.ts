@@ -43,17 +43,6 @@ export async function getAdventurerByName(name: string) {
     return data;
 };
 
-// export async function modifyAdventurerStatus(id: number, status: string) {
-//   if (!process.env.DATABASE_URL) {
-//     throw new Error('DATABASE_URL is not defined');
-//   }
-//   const sql = neon(process.env.DATABASE_URL);
-//   const result = await sql`
-//     UPDATE adventurers SET status = ${status} WHERE id = ${id}
-//   `;
-//   return result;
-// };
-
 export async function modifyMultipleAdventurersStatus(ids: number[], status: string) {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is not defined');
@@ -108,7 +97,7 @@ export async function getMonsterById(id: number): Promise<Monster> {
   }
   const sql = neon(process.env.DATABASE_URL);
   const result = await sql`
-    SELECT id, name, flies, image, description, victory_phrase,
+    SELECT id, name, flies, image, description, victory_phrase AS "victoryPhrase",
     attack_power FROM monsters WHERE id = ${id}
   `;
   if (!result?.[0]) {
@@ -123,7 +112,7 @@ export async function getMonsterByName(name: string): Promise<Monster> {
   }
   const sql = neon(process.env.DATABASE_URL);
   const result = await sql`
-    SELECT id, name, flies, image, description, victory_phrase, 
+    SELECT id, name, flies, image, description, victory_phrase AS "victoryPhrase", 
     attack_power FROM monsters WHERE name = ${name}
   `;
   if (!result?.[0]) {

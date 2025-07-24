@@ -7,43 +7,49 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 export const useAppStore = useStore.withTypes<AppStore>();
 
+// Randomly selects a monster.  Currently there are 8 possible monsters.
+// 1 = giant rat, 2 = dragon, 3 = minotaur, 4 = flying monkeys, 5 = goblins, 
+// 6 = flying squirrel, 7 = vorpal bunny, 8 = frost giant
+// TODO: Add more monsters and maybe select by name.
 export const useRandomlySelectedMonster = () => {
   const monsterNumber = Math.floor(Math.random() * 20 + 1);
   let randomMonsterId = 0;
+  console.log('Monster Number:', monsterNumber);
   switch (monsterNumber) {
     case 1:
     case 2:
     case 3:
     case 4:
-    case 5:
-      randomMonsterId = 1;
+      randomMonsterId = 1; // giant rat
       break;
+    case 5:
     case 6:
     case 7:
-    case 8:
-      randomMonsterId = 5;
+      randomMonsterId = 5; // goblins
       break;
+    case 8:
     case 9:
     case 10:
-    case 11:
-      randomMonsterId = 4
+      randomMonsterId = 4 // flying monkeys
       break;
+    case 11:
     case 12:
     case 13:
+      randomMonsterId = 6; // flying squirrel
+      break;
     case 14:
     case 15:
-      randomMonsterId = 6;
-      break;
+      randomMonsterId = 3; // minotaur
     case 16:
     case 17:
-      randomMonsterId = 7;
+      randomMonsterId = 8; // frost giant
       break;
     case 18:
     case 19:
-      randomMonsterId = 2;
+      randomMonsterId = 2; // dragon
       break;
     case 20:
-      randomMonsterId = 8;
+      randomMonsterId = 7; // vorpal bunny
       break;
   }
 

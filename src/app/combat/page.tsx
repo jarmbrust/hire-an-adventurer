@@ -7,17 +7,20 @@ import { useAppDispatch } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
-import { useRandomlySelectedMonster } from '@/app/lib/hooks';
+// import { useRandomlySelectedMonster } from '@/app/lib/hooks';
+import { getRandomMonsterId } from '@/app/lib/utils';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
-import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
+import { useGetAdventurersQuery, api, useGetMonstersQuery } from '@/app/api/api-slice';
 import { 
   adventurersVictorious,
   adventurerConditionAssignment,
   adventurerStatusAssignment
 } from '@/app/combat/combat-functions';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const CombatPage = () => {
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
+  const [randomMonsterId, setRandomMonsterId] = useState<number | null>(null);
   const [showNoAdventurersModal, setShowNoAdventurersModal] = useState(false);
   const [showResolutionModal, setShowResolutionModal] = useState(false);
   const [monsterDefeated, setMonsterDefeated] = useState<boolean>(false);
@@ -27,13 +30,26 @@ const CombatPage = () => {
   const dispatch = useAppDispatch();
   // TODO: should handle errors
   const { data, /*isLoading, /*error*/} = useGetAdventurersQuery();
-  const { selectedMonster, /* isLoading, error */ } = useRandomlySelectedMonster();
+  // const { selectedMonster, /* isLoading, error */ } = useRandomlySelectedMonster();
+
+  const { data: monsterData, /*isLoading: monsterLoading, error: monsterError*/ } = useGetMonstersQuery(
+    randomMonsterId !== null ? { id: randomMonsterId } : skipToken
+  );
 
   const getTheMonsters = () => {
-    setTheMonster(selectedMonster);
+    setRandomMonsterId(getRandomMonsterId());
   };
 
   useEffect(() => {
+    if (monsterData?.monster) {
+      setTheMonster(monsterData.monster);
+    }
+    console.log('in use effect: monsterData:', monsterData);
+  }, [monsterData]);
+
+
+  useEffect(() => {
+    console.log('in use effect: data.adventurers:', data?.adventurers);
     const getHiredAdventurers = () => {
       const adventurers = data?.adventurers ?? [];
       return adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired);
@@ -45,9 +61,9 @@ const CombatPage = () => {
     } else {
       setShowNoAdventurersModal(false);
     }
-  }, [data?.adventurers, hiredAdventurers.length]);
+  }, [data, hiredAdventurers.length]);
 
-  const resetAdventurerStatus = useCallback(async () => {
+  const resetAdventurerStatus = (async () => {
     const updatedAdventurers = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       hiredAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
@@ -58,10 +74,11 @@ const CombatPage = () => {
     });
     // TODO: should handle errors
     dispatch(updatedAdventurers);
-  }, [hiredAdventurers, dispatch]);
+  });
+  // }, [hiredAdventurers, dispatch]);
 
 
-  const updateAdventurerCondition = useCallback(async (updatedAdventurers: Adventurer[]) => {
+  const updateAdventurerCondition =  (updatedAdventurers: Adventurer[]) => {
     dispatch(api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       updatedAdventurers.forEach((adventurer: Adventurer) => {
         const idx = draft.adventurers.findIndex(a => a.id === adventurer.id);
@@ -72,12 +89,14 @@ const CombatPage = () => {
     }));
     // to persist on the backend
     // await dispatch(api.endpoints.setAdventurerCondition.initiate({ id, condition }));
-  }, [dispatch]);
+  // }, [dispatch]);
+  };
 
-  useEffect(() => {
-    if (showNoAdventurersModal) {
-      return;
-    }
+  // useEffect(() => {
+  //   console.log('in use effect')
+  //   if (showNoAdventurersModal) {
+  //     return;
+  //   }
     if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
       setCombatEngaged(true);
       const adventurersWin = adventurersVictorious(theMonster, hiredAdventurers);
@@ -98,7 +117,7 @@ const CombatPage = () => {
       setCombatEngaged(false);
       setShowResolutionModal(true);
     }
-  }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, resetAdventurerStatus, dispatch, updateAdventurerCondition]);
+  // }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, resetAdventurerStatus, dispatch, updateAdventurerCondition]);
 
   return (
     <>

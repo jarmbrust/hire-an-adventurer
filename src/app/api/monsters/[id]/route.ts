@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getMonsterById } from '@/app/actions';
 
-export async function GET({ params }: { params: { id: number } }) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const monster = await getMonsterById(params?.id);
+    const monster = await getMonsterById(Number(params.id));
+    console.log('Monster:', monster);
     if (!monster) {
       return NextResponse.json(
         { message: 'Monster not found' },

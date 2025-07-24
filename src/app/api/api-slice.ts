@@ -26,7 +26,7 @@ export const api = createApi({
 });
 
 export const monsterApi = createApi({
-  reducerPath: 'api',
+  reducerPath: 'monsterApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: (builder) => ({
     getMonsters: builder.query<{ monster: Monster }, { id: number }>({
