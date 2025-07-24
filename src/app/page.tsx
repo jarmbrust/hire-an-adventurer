@@ -15,17 +15,6 @@ const HomePage = async () => {
       <p className="mt-4 mb-3">
         To start, simply go to the Available Adventurers section (the button is to the left on the navbar).
       </p>
-      <p className="mt-6 mb-5">
-        * Note, this program was created using React 19 and Next.js 15, and the code can be located here:&nbsp;
-        <a
-          className="text-blue-600"
-          href="https://github.com/jarmbrust/hire-an-adventurer" 
-          target="_blank"
-        >
-          https://github.com/jarmbrust/hire-an-adventurer
-        </a>.
-        The images were generated from Google&apos;s ImageFX. 
-      </p>
     </>
   );
 };

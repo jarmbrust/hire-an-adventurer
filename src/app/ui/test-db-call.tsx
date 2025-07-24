@@ -66,4 +66,5 @@
 //   "image" varchar(40),
 //   "victory_phrase" varchar(120),
 //   "attack_power" integer
+//   "kills" integer
 // )

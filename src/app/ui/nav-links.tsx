@@ -5,13 +5,16 @@ import {
   UsersIcon,
   ShoppingCartIcon,
   FireIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  aboutPath,
   adventurersListPath,
   cartPath,
+  combatPath,
   homePath,
 } from '@/app/lib/paths';
 import { useAppSelector } from '@/app/lib/hooks';
@@ -35,8 +38,13 @@ const links = [
   },
   {
     name: 'Combat',
-    href: '/combat',
+    href: combatPath(),
     icon: FireIcon,
+  },
+    {
+    name: 'About',
+    href: aboutPath(),
+    icon: QuestionMarkCircleIcon,
   }
 ];
 
