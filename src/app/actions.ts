@@ -98,7 +98,7 @@ export async function getMonsterById(id: number): Promise<Monster> {
   const sql = neon(process.env.DATABASE_URL);
   const result = await sql`
     SELECT id, name, flies, image, description, victory_phrase AS "victoryPhrase",
-    attack_power FROM monsters WHERE id = ${id}
+    attack_power AS "attackPower" FROM monsters WHERE id = ${id}
   `;
   if (!result?.[0]) {
     throw new Error(`Monster with id ${id} not found`);
@@ -113,7 +113,7 @@ export async function getMonsterByName(name: string): Promise<Monster> {
   const sql = neon(process.env.DATABASE_URL);
   const result = await sql`
     SELECT id, name, flies, image, description, victory_phrase AS "victoryPhrase", 
-    attack_power FROM monsters WHERE name = ${name}
+    attack_power AS "attackPower" FROM monsters WHERE name = ${name}
   `;
   if (!result?.[0]) {
     throw new Error(`Monster ${name} not found`);

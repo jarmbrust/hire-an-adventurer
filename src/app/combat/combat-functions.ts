@@ -18,6 +18,8 @@ export const adventurersVictorious = (theMonster: Monster, hiredAdventurers: Adv
     partyAttackValue = hiredAdventurers.reduce((total, adventurer) => 
       total + ((Number(adventurer.strength) || 0) * strengthMultiplier) + ((Number(adventurer.arcane) || 0) * arcaneMultiplier), 0);
   }
+  console.log('partyAttackValue:', partyAttackValue);
+  console.log('theMonsterAttackPower:', theMonster.attackPower);
   return partyAttackValue > theMonster.attackPower ? true : false; 
 };
 

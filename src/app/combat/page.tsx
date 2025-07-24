@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { increaseScore } from '@/app/lib/features/score/score-slice';
 import { useAppDispatch } from '@/app/lib/hooks';

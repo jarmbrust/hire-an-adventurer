@@ -7,10 +7,7 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 export const useAppStore = useStore.withTypes<AppStore>();
 
-// Randomly selects a monster.  Currently there are 8 possible monsters.
-// 1 = giant rat, 2 = dragon, 3 = minotaur, 4 = flying monkeys, 5 = goblins, 
-// 6 = flying squirrel, 7 = vorpal bunny, 8 = frost giant
-// TODO: Add more monsters and maybe select by name.
+
 export const useRandomlySelectedMonster = () => {
   const monsterNumber = Math.floor(Math.random() * 20 + 1);
   let randomMonsterId = 0;
