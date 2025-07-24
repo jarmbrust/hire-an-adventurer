@@ -55,9 +55,9 @@ const adventurerConditionModifier = (currentCondition: AdventurerConditions): nu
   if (currentCondition === AdventurerConditions.Healthy) {
     return 0;
   } else if (currentCondition === AdventurerConditions.Fatigued) {
-    return 1;
-  } else if (currentCondition === AdventurerConditions.Injured) {
     return 2;
+  } else if (currentCondition === AdventurerConditions.Injured) {
+    return 4;
   }
   throw new Error(`Unknown adventurer condition: ${currentCondition}`);
 };
@@ -66,7 +66,7 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
   // Randomly select an affliction for the adventurer, can be from 1 to 6.
   // There can be a possible +2 to the affliction based onm the the condition
   // of the adventurer when they entered combat.
-  // Results: 1-3: Fatigued, 4-6: Injured, 7-8: Dead
+  // Results: 1-3: Fatigued, 4-6: Injured, 7-10: Dead
   console.log('Modifier:', modifier);
   const conditionNumber = Math.floor(Math.random() * 6 + 1) + modifier;
   console.log('Condition Number:', conditionNumber);
@@ -81,6 +81,8 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
       return AdventurerConditions.Injured;
     case 7:
     case 8:
+    case 9:
+    case 10:
       return AdventurerConditions.Dead;
     default:
       return AdventurerConditions.Fatigued;

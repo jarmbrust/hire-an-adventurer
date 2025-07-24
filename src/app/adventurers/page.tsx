@@ -8,18 +8,37 @@ import {
 } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
 import clsx from 'clsx';
-import { Adventurer } from '@/app/lib/definitions';
+import { type Adventurer, AdventurerConditions, AdventurerStatuses } from '@/app/lib/definitions';
 
 const AdventurersListPage = () => {
   const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
   const adventurers = data?.adventurers ?? [];
 
-  const getStatusColor = (status: string) => ({
-    'text-blue-500': status === 'Selected',
-    'text-gray-500': status === 'Available',
-    'text-red-500': status === 'Deceased',
-    'text-green-500': status === 'Hired',
+  const getStatusColor = (adventurer: Adventurer) => ({
+    'text-blue-500': adventurer.status === AdventurerStatuses.Selected,
+    'text-gray-500': adventurer.status === AdventurerStatuses.Available,
+    'text-yellow-500': adventurer.condition === AdventurerConditions.Fatigued,
+    'text-orange-500': adventurer.condition === AdventurerConditions.Injured,
+    'text-red-500': adventurer.condition === AdventurerConditions.Dead,
+    'text-green-500': adventurer.status === AdventurerStatuses.Hired,
   });
+
+  const getAdventurerStatusCondition = (adventurer: Adventurer) => {
+    if (adventurer.status === AdventurerStatuses.Hired) {
+      return 'Hired';
+    }
+    if (adventurer.status === AdventurerStatuses.Selected) {
+      return 'Selected';
+    }
+    if (adventurer.condition === AdventurerConditions.Injured 
+      || adventurer.condition === AdventurerConditions.Fatigued) {
+      return `${adventurer.status} but ${adventurer.condition}`;
+    }
+    if (adventurer.condition === AdventurerConditions.Dead) {
+      return 'Dead';
+    }
+    return 'Available';
+  };
 
   return (
     <>
@@ -39,9 +58,9 @@ const AdventurersListPage = () => {
             <li key={`adventurer-${adventurer.id}`} className="mb-4">
               <Link href={ adventurerDetailsPath(adventurer.id) }>
                 <h3 className="text-xl font-bold">{ adventurer.name }
-                  <span className={clsx('italic', getStatusColor(adventurer.status))}>
-                    { ` (${adventurer.status})` }
-                  </span>
+                  <div className={clsx('italic', getStatusColor(adventurer))}>
+                    { ` (${getAdventurerStatusCondition(adventurer)})` }
+                  </div>
                 </h3>
                 <Image 
                   src={ imageOfAdventurer(adventurer.image) }

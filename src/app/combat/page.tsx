@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { increaseScore } from '@/app/lib/features/score/score-slice';
 import { useAppDispatch } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
-// import { useRandomlySelectedMonster } from '@/app/lib/hooks';
 import { getRandomMonsterId } from '@/app/lib/utils';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
 import { useGetAdventurersQuery, api, useGetMonstersQuery } from '@/app/api/api-slice';
@@ -30,8 +29,6 @@ const CombatPage = () => {
   const dispatch = useAppDispatch();
   // TODO: should handle errors
   const { data, /*isLoading, /*error*/} = useGetAdventurersQuery();
-  // const { selectedMonster, /* isLoading, error */ } = useRandomlySelectedMonster();
-
   const { data: monsterData, /*isLoading: monsterLoading, error: monsterError*/ } = useGetMonstersQuery(
     randomMonsterId !== null ? { id: randomMonsterId } : skipToken
   );
@@ -44,12 +41,9 @@ const CombatPage = () => {
     if (monsterData?.monster) {
       setTheMonster(monsterData.monster);
     }
-    console.log('in use effect: monsterData:', monsterData);
   }, [monsterData]);
 
-
   useEffect(() => {
-    console.log('in use effect: data.adventurers:', data?.adventurers);
     const getHiredAdventurers = () => {
       const adventurers = data?.adventurers ?? [];
       return adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired);
@@ -63,7 +57,7 @@ const CombatPage = () => {
     }
   }, [data, hiredAdventurers.length]);
 
-  const resetAdventurerStatus = (async () => {
+  const resetAdventurerStatus = useCallback(async () => {
     const updatedAdventurers = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       hiredAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
@@ -74,11 +68,9 @@ const CombatPage = () => {
     });
     // TODO: should handle errors
     dispatch(updatedAdventurers);
-  });
-  // }, [hiredAdventurers, dispatch]);
+  }, [hiredAdventurers, dispatch]);
 
-
-  const updateAdventurerCondition =  (updatedAdventurers: Adventurer[]) => {
+  const updateAdventurerCondition = useCallback(async (updatedAdventurers: Adventurer[]) => {
     dispatch(api.util.updateQueryData('getAdventurers', undefined, (draft) => {
       updatedAdventurers.forEach((adventurer: Adventurer) => {
         const idx = draft.adventurers.findIndex(a => a.id === adventurer.id);
@@ -87,16 +79,12 @@ const CombatPage = () => {
         }
       });
     }));
-    // to persist on the backend
-    // await dispatch(api.endpoints.setAdventurerCondition.initiate({ id, condition }));
-  // }, [dispatch]);
-  };
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   console.log('in use effect')
-  //   if (showNoAdventurersModal) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (showNoAdventurersModal) {
+      return;
+    }
     if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
       setCombatEngaged(true);
       const adventurersWin = adventurersVictorious(theMonster, hiredAdventurers);
@@ -117,7 +105,7 @@ const CombatPage = () => {
       setCombatEngaged(false);
       setShowResolutionModal(true);
     }
-  // }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, resetAdventurerStatus, dispatch, updateAdventurerCondition]);
+  }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, monsterDefeated, dispatch, resetAdventurerStatus, updateAdventurerCondition]);
 
   return (
     <>

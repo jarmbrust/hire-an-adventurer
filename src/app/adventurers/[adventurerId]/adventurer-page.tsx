@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Button from '@/app/ui/button';
-import { type Adventurer, AdventurerStatuses } from '@/app/lib/definitions';
+import { type Adventurer, AdventurerConditions, AdventurerStatuses } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import { useAppDispatch } from '@/app/lib/hooks';
@@ -45,29 +45,20 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
   };
 
   useEffect(() => {
-    if (adventurerInfo?.condition === 'Fatigued'
-      || adventurerInfo?.condition === 'Injured'
-      || adventurerInfo?.status === AdventurerStatuses.Hired
-    ) {
+    if (adventurerInfo?.condition === AdventurerConditions.Dead || adventurerInfo?.status === AdventurerStatuses.Hired) {
       setDisableButton(true);
     };
   }, [adventurerInfo]);
 
-  // const handleHireAdventurer = async () => {
-
-    // } finally {
-    //   setHireButton(false);
-    //   setDisableButton(false);
-    //   router.push('/adventurers');
-    // }
-  // }
-
   const buttonText = () => {
-    if (disableButton && adventurerInfo?.condition === 'Fatigued') {
+    if (adventurerInfo?.condition === AdventurerConditions.Fatigued) {
       return 'Adventurer is fatigued';
     }
-    if (disableButton && adventurerInfo?.condition === 'Injured') {
+    if (adventurerInfo?.condition === AdventurerConditions.Injured) {
       return 'Adventurer is injured';
+    }
+    if (disableButton && adventurerInfo?.condition === AdventurerConditions.Dead) {
+      return 'Adventurer is dead';
     }
     if (disableButton && adventurerInfo?.status === AdventurerStatuses.Hired) {
       return 'Adventurer is already hired';
