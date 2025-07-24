@@ -39,7 +39,6 @@ const SelectedAdventurers = () => {
     } else {
       setTotalFee(aggregateTotalFee(selected));
       setSelectedAdventurers(selected);
-      // setHiredAdventurers(hired);
     }
   }, [data?.adventurers]);
 
@@ -70,12 +69,9 @@ const SelectedAdventurers = () => {
     } else {
       updateAdventurerStatus(AdventurerStatuses.Hired);
       dispatch(modifyCoinAmount({ coins: totalFee, type: 'deductCoins' }));
-      // setHiredAdventurers((prev) => [...prev, ...selectedAdventurers]);
       setSelectedAdventurers([]);
       setTotalFee(0);
       setErrorMessage('');
-      // setOutOfMoneyModal(false);
-      // setShowNoAdventurersModal(false);
     }
   };
 
@@ -122,7 +118,7 @@ const SelectedAdventurers = () => {
         </thead>
         <tbody>
           {selectedAdventurers.map((adventurer: Adventurer) => (
-            <tr key={adventurer.id}>
+            <tr key={ adventurer.id }>
               <td className="border border-zinc-500 px-4 py-2">
                 <Link href={ adventurerAPIPath(adventurer.id || 0) }>
                   <h3 className="text-lg font-bold">{ adventurer.name || '' }</h3>

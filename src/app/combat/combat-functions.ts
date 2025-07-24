@@ -42,14 +42,14 @@ export const adventurerConditionAssignment = (adventurers: Adventurer[], adventu
   return modifiedAdventurers;
 };
 
-export const adventurerStatusAssignment = (adventurer: Adventurer, newStatus: AdventurerStatuses) => {
+export const adventurerStatusAssignment = (adventurer: Adventurer, newStatus: AdventurerStatuses): Adventurer => {
   return {
     ...adventurer,
     status: newStatus
   }
 }
 
-const adventurerConditionModifier = (currentCondition: AdventurerConditions) => {
+const adventurerConditionModifier = (currentCondition: AdventurerConditions): number => {
   if (currentCondition === AdventurerConditions.Healthy) {
     return 0;
   } else if (currentCondition === AdventurerConditions.Fatigued) {
@@ -66,7 +66,7 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
   // of the adventurer when they entered combat.
   // Results: 1-3: Fatigued, 4-6: Injured, 7-8: Dead
   console.log('Modifier:', modifier);
-  const conditionNumber = Math.floor(Math.random() * 6) + 1 + modifier;
+  const conditionNumber = Math.floor(Math.random() * 6 + 1) + modifier;
   console.log('Condition Number:', conditionNumber);
   switch (conditionNumber) {
     case 1:

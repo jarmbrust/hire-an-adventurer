@@ -3,13 +3,12 @@
 import Link from 'next/link';
 import Image from "next/image";
 import {
-  // adventurerAPIPath,
   adventurerDetailsPath,
-  // adventurersListAPIPath,
   imageOfAdventurer,
 } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
 import clsx from 'clsx';
+import { Adventurer } from '@/app/lib/definitions';
 
 const AdventurersListPage = () => {
   const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
@@ -36,7 +35,7 @@ const AdventurersListPage = () => {
             />
           </li>
          ) : (
-          adventurers.map((adventurer) => (
+          adventurers.map((adventurer: Adventurer) => (
             <li key={`adventurer-${adventurer.id}`} className="mb-4">
               <Link href={ adventurerDetailsPath(adventurer.id) }>
                 <h3 className="text-xl font-bold">{ adventurer.name }

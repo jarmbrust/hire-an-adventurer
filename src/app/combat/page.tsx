@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
-import randomlySelectedMonsters from '@/app/lib/randomly-selected-monsters';
+import { useRandomlySelectedMonster } from '@/app/lib/hooks';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import { 
@@ -27,9 +27,10 @@ const CombatPage = () => {
   const dispatch = useAppDispatch();
   // TODO: should handle errors
   const { data, /*isLoading, /*error*/} = useGetAdventurersQuery();
-  
+  const { selectedMonster, /* isLoading, error */ } = useRandomlySelectedMonster();
+
   const getTheMonsters = () => {
-    setTheMonster(randomlySelectedMonsters());
+    setTheMonster(selectedMonster);
   };
 
   useEffect(() => {

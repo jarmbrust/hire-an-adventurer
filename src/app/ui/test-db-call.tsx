@@ -40,17 +40,30 @@
 // }
 
 
-
 // CREATE TABLE "public"."adventurers" (
 //   "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-//   "name" varchar(30),
+//   "name" varchar(40),
+//   "image" varchar(30),
 //   "profession" varchar(30),
+//   "description" varchar(200),
 //   "strength" integer,
 //   "agility" integer,
-//   "intellect" integer,
-//   "description" varchar(400),
+//   "arcane" integer,
 //   "fee" integer,
+//   "successes" integer,
+//   "defeats" integer,
+//   "victory_phrase" varchar(120),
+//   "condition" varchar(20),
+//   "status" varchar(20)
+// )
+
+
+// CREATE TABLE "public"."monsters" (
+//   "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+//   "name" varchar(40),
+//   "flies" boolean,
+//   "description" varchar(200),
 //   "image" varchar(40),
-//   "successful_missions" integer,
-//   "deaths" integer
+//   "victory_phrase" varchar(120),
+//   "attack_power" integer
 // )
