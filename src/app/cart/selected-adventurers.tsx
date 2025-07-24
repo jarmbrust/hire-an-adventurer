@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Button from '@/app/ui/button';
 import Modal from "@/app/ui/modal";
 import { Adventurer, AdventurerStatuses } from '@/app/lib/definitions';
-import { adventurerAPIPath } from '@/app/lib/paths';
+import { adventurerDetailsPath } from '@/app/lib/paths';
 import { modifyCoinAmount } from '@/app/lib/features/score/score-slice';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import { useAppDispatch, useAppStore } from '@/app/lib/hooks';
@@ -120,7 +120,7 @@ const SelectedAdventurers = () => {
           {selectedAdventurers.map((adventurer: Adventurer) => (
             <tr key={ adventurer.id }>
               <td className="border border-zinc-500 px-4 py-2">
-                <Link href={ adventurerAPIPath(adventurer.id || 0) }>
+                <Link href={ adventurerDetailsPath(adventurer.id || 0) }>
                   <h3 className="text-lg font-bold">{ adventurer.name || '' }</h3>
                 </Link>
               </td>

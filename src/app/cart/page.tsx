@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/app/ui/button';
 import SelectedAdventurers from '@/app/cart/selected-adventurers';
-import { adventurerAPIPath, combatPath } from '@/app/lib/paths';
+import { adventurerDetailsPath, combatPath } from '@/app/lib/paths';
 import { useGetAdventurersQuery } from '@/app/api/api-slice';
 import { AdventurerStatuses, type Adventurer } from '@/app/lib/definitions';
 
@@ -44,8 +44,8 @@ const CartPage = () => {
           {hiredAdventurers.map((adventurer) => (
             <tr key={adventurer.id}>
               <td className="border border-zinc-500 px-4 py-2">
-                <Link href={ adventurerAPIPath(adventurer.id || 0) }>
-                  <h4 className="text-lg font-bold">{ adventurer.name || '' }</h4>
+                <Link href={ adventurerDetailsPath(adventurer.id) }>
+                  <h4 className="text-lg font-bold">{ adventurer.name }</h4>
                 </Link>
               </td>
               <td className="border border-zinc-500 px-4 py-2">
