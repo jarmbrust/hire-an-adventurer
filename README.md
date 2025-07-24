@@ -11,7 +11,8 @@ Good luck!
 
 ## Technical
 
-This was created with React 19 with Next.js as the framework.  Styling is done with Tailwind, and the backend is simulated at this time by doing api calls but getting the information from JSON files (I have plans to rectify this at some point coming up).
+This was created with React 19 and Next.js 15.  Styling is done with Tailwind, and PostgreSQL for the database.
 
 This site is designed to be responsive for mobile.
 
+It is still being expanded on, more notes in the "About" section of the app.
