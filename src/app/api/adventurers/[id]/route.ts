@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getAdventurerById } from '@/app/actions';
 
-export async function GET(request: Request, { params }: { params: { id: number } }) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const adventurer = await getAdventurerById(params?.id);
+    const adventurer = await getAdventurerById(Number(params?.id || 0));
     if (!adventurer) {
       return NextResponse.json(
         { message: 'Adventurer not found' },
@@ -22,9 +22,9 @@ export async function GET(request: Request, { params }: { params: { id: number }
   }
 };
 
-export async function PATCH({ params }: { params: { id: number } }) {
+export async function PATCH({ params }: { params: { id: string } }) {
 
-  const adventurer = await getAdventurerById(params?.id);
+  const adventurer = await getAdventurerById(Number(params?.id || 0));
   if (!adventurer) {
     return NextResponse.json(
       { message: 'Adventurer not found' },
