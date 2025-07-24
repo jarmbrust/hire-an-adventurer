@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAdventurerById } from '@/app/actions';
 
-export async function GET({ params }: { params: { id: number } }) {
+export async function GET(request: Request, { params }: { params: { id: number } }) {
   try {
     const adventurer = await getAdventurerById(params?.id);
     if (!adventurer) {
