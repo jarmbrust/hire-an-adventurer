@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getAdventurerById } from '@/app/actions';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const adventurerId = Number(id);
     const adventurer = await getAdventurerById(adventurerId);
     if (!adventurer) {
@@ -23,9 +23,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }:  { params: Promise<{ id: string }> }): Promise<NextResponse> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const adventurerId = Number(id);
     const adventurer = await getAdventurerById(adventurerId);
     if (!adventurer) {

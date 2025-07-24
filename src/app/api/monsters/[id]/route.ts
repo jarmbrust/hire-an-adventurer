@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getMonsterById } from '@/app/actions';
 
-export async function GET(request: Request, context: { params: { id: string } }) {
-  const id = Number(context.params.id);
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
+  const { id } = await params;
+  const monsterId = Number(id);
   try {
-    const monster = await getMonsterById(id);
-    console.log('Monster:', monster);
+    const monster = await getMonsterById(monsterId);
     if (!monster) {
       return NextResponse.json(
         { message: 'Monster not found' },
