@@ -3,7 +3,9 @@ import { getAdventurerById } from '@/app/actions';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const adventurer = await getAdventurerById(Number(params.id));
+    const { id } = params;
+    const adventurerId = Number(id);
+    const adventurer = await getAdventurerById(adventurerId);
     if (!adventurer) {
       return NextResponse.json(
         { message: 'Adventurer not found' },
@@ -12,7 +14,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
 
     return NextResponse.json({ adventurer });
-
   } catch (error) {
     console.error('Database Error:', error);
     return NextResponse.json(
@@ -20,20 +21,21 @@ export async function GET(request: Request, { params }: { params: { id: string }
       { status: 500 }
     );
   }
-};
+}
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-
-  const adventurer = await getAdventurerById(Number(params.id));
-  if (!adventurer) {
-    return NextResponse.json(
-      { message: 'Adventurer not found' },
-      { status: 404 }
-    );
-  }
-
   try {
-    if(!process.env.DATABASE_URL) {
+    const { id } = params;
+    const adventurerId = Number(id);
+    const adventurer = await getAdventurerById(adventurerId);
+    if (!adventurer) {
+      return NextResponse.json(
+        { message: 'Adventurer not found' },
+        { status: 404 }
+      );
+    }
+
+    if (!process.env.DATABASE_URL) {
       return NextResponse.json(
         { error: 'DATABASE_URL is not defined' },
         { status: 500 }
@@ -53,4 +55,4 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       { status: 500 }
     );
   }
-};
+}
