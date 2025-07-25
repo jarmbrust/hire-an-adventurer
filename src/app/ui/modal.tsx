@@ -1,13 +1,14 @@
 'use client'
 
 import { ReactNode } from 'react';
-import Link from 'next/link';
 import clsx from 'clsx';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 import Button from '@/app/ui/button';
+import { useRouter } from 'next/navigation';
 
 const Modal = ({ message, link }: { message: ReactNode, link: string }) => {
+  const router = useRouter();
   const theme = useAppSelector(selectTheme);
 
   return (
@@ -22,11 +23,19 @@ const Modal = ({ message, link }: { message: ReactNode, link: string }) => {
             <p className="text-lg text-gray-500">{ message }</p>
           </div>
           <div className="flex justify-center mt-4">
-            <Link
-              href={ link }
+            <Button 
+              className={clsx(
+                'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm '
+                + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
+                {
+                  'bg-gray-500 text-gray-600': theme === 'light',
+                  'bg-gray-700 text-gray-300': theme === 'dark',
+                },
+              )}
+              onClick={() => router.push(link)}
             >
-              <Button className="px-4 py-2">Close</Button>
-            </Link>
+              Close              
+            </Button>
           </div>
         </div>
       </div>

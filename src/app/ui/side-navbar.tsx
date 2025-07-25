@@ -1,25 +1,26 @@
 'use client';
 
-import Link from 'next/link';
 import { clsx } from 'clsx';
 import NavLinks from '@/app/ui/nav-links';
 import InnLogo from '@/app/ui/inn-logo';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
+import Button from '@/app/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function SideNavbar() {
+  const router = useRouter();
   const theme = useAppSelector(selectTheme);
   return (
     <div className="flex h-full flex-col px-3 py-1 md:px-2">
-      <Link
+      <Button
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-zinc-600 p-4 md:h-40"
-        // onClick={ getCombatEngaged() ? (e) => e.preventDefault() : undefined }
-        href="/"
+        onClick={() => router.push('/')} 
       >
         <div className="w-32 text-white md:w-40">
           <InnLogo />
         </div>
-      </Link>
+      </Button>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <NavLinks />
         <div className={clsx("hidden h-auto w-full grow rounded-md bg-gray-50 md:block",

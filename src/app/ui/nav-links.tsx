@@ -9,8 +9,8 @@ import {
   // TrophyIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Button from '@/app/ui/button';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   aboutPath,
   adventurersListPath,
@@ -22,7 +22,7 @@ import {
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 
-const links = [
+const routes = [
   {
     name: 'Home',
     href: homePath(),
@@ -55,34 +55,36 @@ const links = [
   }
 ];
 
-export default function NavLinks() {
+const NavLinks = () => {
+  const router = useRouter();
   const theme = useAppSelector(selectTheme);
   const pathname = usePathname();
   return (
     <>
-      {links.map((link) => {
-        const LinkIcon = link.icon;
+      {routes.map((route) => {
+        const ButtonIcon = route.icon;
         return (
-          <Link
-            key={ link.name }
-            href={ link.href }
-            // onClick={ getCombatEngaged() ? (e) => e.preventDefault() : undefined }
+          <Button
+            key={ route.name }
+            onClick={() => router.push(route.href)}
             className={ clsx(
               'flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm '
               + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
               {
-                'bg-gray-400 text-gray-600': pathname === link.href && theme === 'light',
-                'bg-gray-700 text-gray-300': pathname === link.href && theme === 'dark',
-                'bg-gray-300 text-gray-600': pathname !== link.href && theme === 'light',
-                'bg-gray-600 text-gray-300': pathname !== link.href && theme === 'dark',
+                'bg-gray-500 text-gray-600': pathname === route.href && theme === 'light',
+                'bg-gray-700 text-gray-300': pathname === route.href && theme === 'dark',
+                'bg-gray-400 text-gray-600': pathname !== route.href && theme === 'light',
+                'bg-gray-600 text-gray-300': pathname !== route.href && theme === 'dark',
               },
             ) }
           >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{ link.name }</p>
-          </Link>
+            <ButtonIcon className="w-6" />
+            <p className="hidden md:block">{ route.name }</p>
+          </Button>
         );
       })}
     </>
   );
 }
+
+export default NavLinks;
