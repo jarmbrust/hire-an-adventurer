@@ -2,7 +2,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { scoreSlice } from '@/app/lib/features/score/score-slice';
-import { api, monsterApi } from '@/app/api/api-slice';
+import { adventurerApi, monsterApi } from '@/app/api/api-slice';
 import themeReducer from '@/app/lib/features/theme/theme-slice';
 
 export const makeStore = () => {
@@ -10,12 +10,12 @@ export const makeStore = () => {
     reducer: {
       score: scoreSlice.reducer,
       theme: themeReducer,
-      api: api.reducer,
+      adventurerApi: adventurerApi.reducer,
       monsterApi: monsterApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
-        .concat(api.middleware)
+        .concat(adventurerApi.middleware)
         .concat(monsterApi.middleware),
   })
 };

@@ -9,7 +9,7 @@ import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
 import { getRandomMonsterId } from '@/app/lib/utils';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
-import { useGetAdventurersQuery, api, useGetMonstersQuery } from '@/app/api/api-slice';
+import { useGetAdventurersQuery, adventurerApi, useGetMonstersQuery } from '@/app/api/api-slice';
 import { 
   adventurersVictorious,
   adventurerConditionAssignment,
@@ -58,7 +58,7 @@ const CombatPage = () => {
   }, [data, hiredAdventurers.length]);
 
   const resetAdventurerStatus = useCallback(async () => {
-    const updatedAdventurers = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+    const updatedAdventurers = adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
       hiredAdventurers.forEach((adventurer: Adventurer) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurer.id);
         if (idx !== -1) {
@@ -71,7 +71,7 @@ const CombatPage = () => {
   }, [hiredAdventurers, dispatch]);
 
   const updateAdventurerCondition = useCallback(async (updatedAdventurers: Adventurer[]) => {
-    dispatch(api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+    dispatch(adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
       updatedAdventurers.forEach((adventurer: Adventurer) => {
         const idx = draft.adventurers.findIndex(a => a.id === adventurer.id);
         if (idx !== -1) {

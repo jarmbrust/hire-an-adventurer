@@ -5,7 +5,7 @@ import Modal from "@/app/ui/modal";
 import { Adventurer, AdventurerStatuses } from '@/app/lib/definitions';
 import { adventurerDetailsPath } from '@/app/lib/paths';
 import { modifyCoinAmount } from '@/app/lib/features/score/score-slice';
-import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
+import { useGetAdventurersQuery, adventurerApi } from '@/app/api/api-slice';
 import { useAppDispatch, useAppStore } from '@/app/lib/hooks';
 
 const SelectedAdventurers = () => {
@@ -76,7 +76,7 @@ const SelectedAdventurers = () => {
   };
 
   const updateAdventurerStatus = async (newStatus: AdventurerStatuses, id: number | null = null) => {
-    const updateAdventurer = api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+    const updateAdventurer = adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
       if (id) {
         const idx: number = draft.adventurers.findIndex(a => a.id === id);
         if (idx !== -1) {

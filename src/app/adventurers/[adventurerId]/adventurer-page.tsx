@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Button from '@/app/ui/button';
 import { type Adventurer, AdventurerConditions, AdventurerStatuses } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
+import { useGetAdventurersQuery, adventurerApi } from '@/app/api/api-slice';
 import { useAppDispatch } from '@/app/lib/hooks';
 import { adventurersListPath } from '@/app/lib/paths';
 
@@ -35,7 +35,7 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
       return;
     }
     dispatch(
-      api.util.updateQueryData('getAdventurers', undefined, (draft) => {
+      adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
         const idx: number = draft.adventurers.findIndex(a => a.id === adventurerId);
         if (idx !== -1) {
           draft.adventurers[idx].status = newStatus;
