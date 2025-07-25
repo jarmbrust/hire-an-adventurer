@@ -15,7 +15,6 @@ const Button = ({ children, className, ...rest }: ButtonProps) => {
           'items-center',
           'text-center',
           'rounded-lg',
-          'z-10',
           'px-4',
           'text-sm',
           'font-medium',

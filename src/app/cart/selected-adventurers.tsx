@@ -6,7 +6,9 @@ import { Adventurer, AdventurerStatuses } from '@/app/lib/definitions';
 import { adventurerDetailsPath } from '@/app/lib/paths';
 import { modifyCoinAmount } from '@/app/lib/features/score/score-slice';
 import { useGetAdventurersQuery, adventurerApi } from '@/app/api/api-slice';
-import { useAppDispatch, useAppStore } from '@/app/lib/hooks';
+import { selectTheme } from '@/app/lib/features/theme/theme-slice';
+import { useAppDispatch, useAppStore, useAppSelector } from '@/app/lib/hooks';
+import clsx from 'clsx';
 
 const SelectedAdventurers = () => {
   const [totalFee, setTotalFee] = useState(0);
@@ -17,6 +19,7 @@ const SelectedAdventurers = () => {
 
   const dispatch = useAppDispatch();
   const { data, isLoading, /*error*/} = useGetAdventurersQuery();
+  const theme = useAppSelector(selectTheme);
   const store = useAppStore();
   const score = store.getState().score;
   const scoreValue = score.score.value;
@@ -146,7 +149,14 @@ const SelectedAdventurers = () => {
         </tbody>
       </table>
       <Button
-        className="mt-4 mb-4"
+        className={clsx(
+          'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm mt-4 mb-4'
+          + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
+          {
+            'bg-gray-500 text-gray-600': theme === 'light',
+            'bg-gray-700 text-gray-300': theme === 'dark',
+          },
+        )}
         onClick={ handleHireAdventurers }
         disabled={ isLoading || selectedAdventurers.length === 0 }
         aria-disabled={ isLoading || selectedAdventurers.length === 0 }>

@@ -1,21 +1,23 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useRouter } from 'next/navigation';
 import { increaseScore } from '@/app/lib/features/score/score-slice';
-import { useAppDispatch } from '@/app/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/lib/hooks';
 import Button from '@/app/ui/button';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
 import { getRandomMonsterId } from '@/app/lib/utils';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
 import { useGetAdventurersQuery, adventurerApi, useGetMonstersQuery } from '@/app/api/api-slice';
+import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 import { 
   adventurersVictorious,
   adventurerConditionAssignment,
   adventurerStatusAssignment
 } from '@/app/combat/combat-functions';
-import { skipToken } from '@reduxjs/toolkit/query';
+import clsx from 'clsx';
 
 const CombatPage = () => {
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
@@ -27,8 +29,10 @@ const CombatPage = () => {
   const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const theme = useAppSelector(selectTheme);
   // TODO: should handle errors
-  const { data, /*isLoading, /*error*/} = useGetAdventurersQuery();
+  const { data: adventurerData, /*isLoading, /*error*/} = useGetAdventurersQuery();
   const { data: monsterData, /*isLoading: monsterLoading, error: monsterError*/ } = useGetMonstersQuery(
     randomMonsterId !== null ? { id: randomMonsterId } : skipToken
   );
@@ -45,7 +49,7 @@ const CombatPage = () => {
 
   useEffect(() => {
     const getHiredAdventurers = () => {
-      const adventurers = data?.adventurers ?? [];
+      const adventurers = adventurerData?.adventurers ?? [];
       return adventurers.filter((adventurer: Adventurer) => adventurer.status === AdventurerStatuses.Hired);
     };
 
@@ -55,7 +59,7 @@ const CombatPage = () => {
     } else {
       setShowNoAdventurersModal(false);
     }
-  }, [data, hiredAdventurers.length]);
+  }, [adventurerData, hiredAdventurers.length]);
 
   const resetAdventurerStatus = useCallback(async () => {
     const updatedAdventurers = adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
@@ -124,20 +128,35 @@ const CombatPage = () => {
       )) }
 
       <div className="flex justify-center mt-6 text-2xl">Would you like to:</div>
-        <div className="flex justify-center mt-6 text-2xl">
-          <Link 
-            href="/adventurers">
-            <Button
-              disabled={ combatEngaged }
-              aria-disabled={ combatEngaged }>
-              Hire More Adventurers
-            </Button>
-          </Link>
-          &nbsp; or &nbsp;
+        <div className="flex justify-center align-text-bottom mt-6 text-2xl">
+          {/* TODO: pull out button to make more DRY */}
           <Button
+            className={clsx(
+              'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm mt-4 mb-4'
+              + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
+              {
+                'bg-gray-500 text-gray-600': theme === 'light',
+                'bg-gray-700 text-gray-300': theme === 'dark',
+              },
+            )}
+            onClick={ () => router.push('/adventurers') }
             disabled={ combatEngaged }
-            aria-disabled={ combatEngaged }
-            onClick={ getTheMonsters }>
+            aria-disabled={ combatEngaged }>
+            Hire More Adventurers
+          </Button>
+          <span className="flex justify-center align-text-bottom mt-4 text-2xl px-4">or</span>
+          <Button
+            className={clsx(
+              'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm mt-4 mb-4'
+              + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
+              {
+                'bg-gray-500 text-gray-600': theme === 'light',
+                'bg-gray-700 text-gray-300': theme === 'dark',
+              },
+            )}
+            onClick={ getTheMonsters }
+            disabled={ combatEngaged }
+            aria-disabled={ combatEngaged }>
             Fight the monsters!
           </Button>
         </div>

@@ -1,21 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Button from '@/app/ui/button';
-import { type Adventurer, AdventurerConditions, AdventurerStatuses } from '@/app/lib/definitions';
+import ChooseAdventurerButton from '@/app/adventurers/[adventurerId]/choose-button';
+import { type Adventurer } from '@/app/lib/definitions';
 import AdventurerStats from '@/app/ui/adventurer-stats';
-import { useGetAdventurersQuery, adventurerApi } from '@/app/api/api-slice';
-import { useAppDispatch } from '@/app/lib/hooks';
-import { adventurersListPath } from '@/app/lib/paths';
+import { useGetAdventurersQuery } from '@/app/api/api-slice';
 
 const AdventurerDetailsPage = (params: { adventurerId: number })  => {
-  const router = useRouter();
-  const [disableButton, setDisableButton] = useState(false);
-  const [adventurerInfo, setAdventurerInfo] = useState<Adventurer | null>(null);
+  const [adventurerInfo, setAdventurerInfo] = useState<Adventurer>({} as Adventurer);
   const { data, isLoading, /*error*/ } = useGetAdventurersQuery();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const adventurers: Adventurer[] = data?.adventurers ?? [];
@@ -25,67 +19,13 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
     }
   }, [data?.adventurers, params.adventurerId]);
 
-  const returnToAdventurersList = () => {
-    router.push(adventurersListPath());
-  };
-
-  const handleStatusChange = (adventurerId: number, newStatus: AdventurerStatuses) => {
-    if (adventurerId <= 0 || !adventurerInfo) {
-      console.error('Invalid adventurer ID or adventurer info:', adventurerId, adventurerInfo);
-      return;
-    }
-    dispatch(
-      adventurerApi.util.updateQueryData('getAdventurers', undefined, (draft) => {
-        const idx: number = draft.adventurers.findIndex(a => a.id === adventurerId);
-        if (idx !== -1) {
-          draft.adventurers[idx].status = newStatus;
-        }
-      })
-    );
-    returnToAdventurersList();
-  };
-
-  useEffect(() => {
-    if (adventurerInfo?.condition === AdventurerConditions.Dead || adventurerInfo?.status === AdventurerStatuses.Hired) {
-      setDisableButton(true);
-    };
-  }, [adventurerInfo]);
-
-  const buttonText = () => {
-    if (adventurerInfo?.condition === AdventurerConditions.Fatigued) {
-      return 'Adventurer is fatigued';
-    }
-    if (adventurerInfo?.condition === AdventurerConditions.Injured) {
-      return 'Adventurer is injured';
-    }
-    if (disableButton && adventurerInfo?.condition === AdventurerConditions.Dead) {
-      return 'Adventurer is dead';
-    }
-    if (disableButton && adventurerInfo?.status === AdventurerStatuses.Hired) {
-      return 'Adventurer is already hired';
-    }
-    if (adventurerInfo?.status === AdventurerStatuses.Selected) {
-      return 'Adventurer is selected (click again to de-select)';
-    }
-    return 'Choose this adventurer';
-  }
-
   return (
     <div className="flex flex-col">
       <span>
-        <h1 className="text-3xl font-bold mb-4">
+        <h2 className="text-3xl font-bold mb-4">
           Adventurer Details
-        </h1>
-        <Button
-          className="mt-4 mb-4 w-full"
-          onClick={() => handleStatusChange(
-            adventurerInfo?.id ?? 0, 
-            adventurerInfo?.status === AdventurerStatuses.Selected ? AdventurerStatuses.Available :  AdventurerStatuses.Selected
-          )}
-          disabled={ isLoading || disableButton }
-          aria-disabled={ isLoading || disableButton }>
-          { buttonText() }
-        </Button>
+        </h2>
+        <ChooseAdventurerButton adventurerInfo={adventurerInfo} />
       </span>
       { isLoading ?
         <Image 
@@ -97,16 +37,7 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
         :
         <AdventurerStats stats={adventurerInfo} />
       }
-      <Button
-        className="mt-4 mb-4"
-        onClick={() => handleStatusChange(
-          adventurerInfo?.id ?? 0, 
-          adventurerInfo?.status === AdventurerStatuses.Selected ? AdventurerStatuses.Available :  AdventurerStatuses.Selected
-        )}
-        disabled={ isLoading || disableButton }
-        aria-disabled={ isLoading || disableButton }>
-        { buttonText() }
-      </Button>
+      <ChooseAdventurerButton adventurerInfo={adventurerInfo} />
     </div>
   );
 };
