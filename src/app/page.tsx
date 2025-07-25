@@ -13,7 +13,17 @@ const HomePage = async () => {
         a score you can get before you either run out of silver, or the pool of adventurers are all defeated!
       </p>
       <p className="mt-4 mb-3">
-        To start, simply go to the Available Adventurers section (the button is to the left on the navbar).
+        To start, simply go to the Available Adventurers section (the button is to the left on the navbar). From there,
+        you can select the adventurers you want to hire, then go to the Adventurer Cart to hire them.  Then, off to 
+        battle the monsters!
+        <span className="mt-2 pl-4 block">
+          * Keep in mind that if the adventurers loose the fight, you get no points, and the adventurers will be fatigued or injured.
+          Once in that condition they have an increased chance of injury (if not already injured), or even death if they are
+          hired and sent off again to fight.
+        </span>
+        <span className="pl-4 block">
+          ...And, well, you can&apos;t hire dead adventurers.
+        </span>
       </p>
     </>
   );

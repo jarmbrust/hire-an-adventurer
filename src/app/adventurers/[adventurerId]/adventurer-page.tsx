@@ -8,6 +8,7 @@ import { type Adventurer, AdventurerConditions, AdventurerStatuses } from '@/app
 import AdventurerStats from '@/app/ui/adventurer-stats';
 import { useGetAdventurersQuery, api } from '@/app/api/api-slice';
 import { useAppDispatch } from '@/app/lib/hooks';
+import { adventurersListPath } from '@/app/lib/paths';
 
 const AdventurerDetailsPage = (params: { adventurerId: number })  => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const AdventurerDetailsPage = (params: { adventurerId: number })  => {
   }, [data?.adventurers, params.adventurerId]);
 
   const returnToAdventurersList = () => {
-    router.push('/adventurers');
+    router.push(adventurersListPath());
   };
 
   const handleStatusChange = (adventurerId: number, newStatus: AdventurerStatuses) => {

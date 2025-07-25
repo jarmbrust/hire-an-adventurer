@@ -6,6 +6,7 @@ import {
   ShoppingCartIcon,
   FireIcon,
   QuestionMarkCircleIcon,
+  // TrophyIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -16,6 +17,7 @@ import {
   cartPath,
   combatPath,
   homePath,
+  // topScoresPath,
 } from '@/app/lib/paths';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
@@ -41,7 +43,12 @@ const links = [
     href: combatPath(),
     icon: FireIcon,
   },
-    {
+  // {
+  //   name: 'Top Scores',
+  //   href: topScoresPath(),
+  //   icon: TrophyIcon,
+  // },
+  {
     name: 'About',
     href: aboutPath(),
     icon: QuestionMarkCircleIcon,

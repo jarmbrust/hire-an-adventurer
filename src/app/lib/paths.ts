@@ -7,3 +7,4 @@ export const cartPath = () => '/cart';
 export const combatPath = () => '/combat';
 export const imageOfAdventurer = (adventurerImage: string) => `/images/${adventurerImage}`;
 export const aboutPath = () => '/about';
+export const topScoresPath = () => '/top-scores';

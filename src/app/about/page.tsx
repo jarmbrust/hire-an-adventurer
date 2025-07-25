@@ -26,10 +26,12 @@ const AboutPage = () => {
         If you run out of silver (or adventurers), you can restart the game. Try to rack up as high a score as you can until then!
       </p>
       <div className="mb-5">
-        <p className="mb-1 font-bold">Upcoming features include:</p>
+        <p className="mb-1 text-lg underline">Upcoming features include:</p>
         <ul>
           <li>A top 10 leaderboard.</li>
+          <li>Adding bounties for defeated monsters.</li>
           <li>A resting and healing mechanic for adventurers.</li>
+          <li>Improve the flow of the UI.</li>
           <li>Fine-tuning on the combat mechanics.</li>
           <li>Sorting adventurers by various abilities.</li>
           <li>Modifying adventurer stats based on fatigue or injury.</li>
@@ -44,7 +46,7 @@ const AboutPage = () => {
           href="https://github.com/jarmbrust/hire-an-adventurer" 
           target="_blank"
         >
-          can be located here
+          can be accessed here
         </a>.
         The images were generated from Google&apos;s ImageFX. 
       </p>

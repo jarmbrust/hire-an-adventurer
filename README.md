@@ -11,8 +11,6 @@ Good luck!
 
 ## Technical
 
-This was created with React 19 and Next.js 15.  Styling is done with Tailwind, and PostgreSQL for the database.
+This was created with React 19 and Next.js 15.  Styling is done with Tailwind with PostgreSQL for the database.
 
-This site is designed to be responsive for mobile.
-
-It is still being expanded on, more notes in the "About" section of the app.
+This app is still being expanded on, more notes in the "About" section of the app.
