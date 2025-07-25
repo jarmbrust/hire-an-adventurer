@@ -64,7 +64,7 @@ const adventurerConditionModifier = (currentCondition: AdventurerConditions): nu
 
 const adventurerAfflictions = (modifier: number): AdventurerConditions => {
   // Randomly select an affliction for the adventurer, can be from 1 to 6.
-  // There can be a possible +2 to the affliction based onm the the condition
+  // There can be a +2 to +4 modifier to the affliction based on the the condition
   // of the adventurer when they entered combat.
   // Results: 1-3: Fatigued, 4-6: Injured, 7-10: Dead
   console.log('Modifier:', modifier);

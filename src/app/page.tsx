@@ -17,11 +17,16 @@ const HomePage = async () => {
         you can select the adventurers you want to hire, then go to the Adventurer Cart to hire them.  Then, off to 
         battle the monsters!
         <span className="mt-2 pl-4 block">
-          * Keep in mind that if the adventurers loose the fight, you get no points, and the adventurers will be fatigued or injured.
-          Once in that condition they have an increased chance of injury (if not already injured), or even death if they are
-          hired and sent off again to fight.
+          * When hiring adventurers, know that strength is only useful in melee (ground combat),
+          while agility is only useful in fighting ranged (flying monsters). The arcane, on the other hand, 
+          while not quite as effective as a good sword or bow, is useful against all types of monsters.
         </span>
-        <span className="pl-4 block">
+        <span className="mt-2 pl-4 block">
+          * Keep in mind that if the adventurers loose the fight, you get no points, and the adventurers
+          will be fatigued or injured. Once in that condition they have an increased chance of injury 
+          (if not already injured), or even death if they are hired and sent off again to fight.
+        </span>
+        <span className="pl-6 block">
           ...And, well, you can&apos;t hire dead adventurers.
         </span>
       </p>
