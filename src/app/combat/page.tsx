@@ -2,22 +2,19 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useRouter } from 'next/navigation';
 import { increaseScore } from '@/app/lib/features/score/score-slice';
-import { useAppDispatch, useAppSelector } from '@/app/lib/hooks';
-import Button from '@/app/ui/button';
+import { useAppDispatch } from '@/app/lib/hooks';
 import Modal from '@/app/ui/modal';
 import CombatResolution from '@/app/ui/combat-resolution';
-import { getRandomMonsterId } from '@/app/lib/utils';
 import { AdventurerStatuses, type Adventurer, type Monster } from '@/app/lib/definitions';
 import { useGetAdventurersQuery, adventurerApi, useGetMonstersQuery } from '@/app/api/api-slice';
-import { selectTheme } from '@/app/lib/features/theme/theme-slice';
 import { 
   adventurersVictorious,
   adventurerConditionAssignment,
   adventurerStatusAssignment
 } from '@/app/combat/combat-functions';
-import clsx from 'clsx';
+import { getRandomMonsterId } from '@/app/lib/utils';
+import CombatButtons from '@/app/combat/combat-buttons';
 
 const CombatPage = () => {
   const [theMonster, setTheMonster] = useState<Monster | null>(null);
@@ -29,17 +26,15 @@ const CombatPage = () => {
   const [hiredAdventurers, setHiredAdventurers] = useState<Adventurer[]>([]);
 
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const theme = useAppSelector(selectTheme);
   // TODO: should handle errors
   const { data: adventurerData, /*isLoading, /*error*/} = useGetAdventurersQuery();
   const { data: monsterData, /*isLoading: monsterLoading, error: monsterError*/ } = useGetMonstersQuery(
     randomMonsterId !== null ? { id: randomMonsterId } : skipToken
   );
 
-  const getTheMonsters = () => {
+  useEffect(() => {
     setRandomMonsterId(getRandomMonsterId());
-  };
+  }, []);
 
   useEffect(() => {
     if (monsterData?.monster) {
@@ -86,11 +81,7 @@ const CombatPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (showNoAdventurersModal) {
-      return;
-    }
-    if (hiredAdventurers.length > 0 && theMonster && !combatEngaged) {
-      setCombatEngaged(true);
+    if (combatEngaged && theMonster && hiredAdventurers.length > 0) {
       const adventurersWin = adventurersVictorious(theMonster, hiredAdventurers);
       let updatedAdventurers: Adventurer[] = [];
       if (adventurersWin) {
@@ -109,58 +100,30 @@ const CombatPage = () => {
       setCombatEngaged(false);
       setShowResolutionModal(true);
     }
-  }, [hiredAdventurers, theMonster, showNoAdventurersModal, combatEngaged, monsterDefeated, dispatch, resetAdventurerStatus, updateAdventurerCondition]);
+  }, [combatEngaged, theMonster, hiredAdventurers, dispatch, resetAdventurerStatus, updateAdventurerCondition]);
 
   return (
     <>
       <h2 className="flex justify-center text-2xl font-bold">Combat!!</h2>
       { showNoAdventurersModal && <Modal message="No adventurers have been Hired" link="/adventurers" /> }
       { showResolutionModal && <Modal message={
-         <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={hiredAdventurers} />
+         <CombatResolution monsterDefeated={monsterDefeated} monster={theMonster} adventurers={hiredAdventurers}/>
         } link="/adventurers" /> 
       }
 
-      <p className="flex justify-center mt-6 text-2xl">These are the adventurers you have hired:</p>
+      <p className="flex justify-center mt-6 mb-6 text-2xl">These are the adventurers you have hired:</p>
       { hiredAdventurers.map((adventurer) => (
         <div key={adventurer.id}>
-          <p className="flex mt-4 text-lg justify-center font-bold">{ adventurer.name }</p>
+          <p className="flex mt-3 text-3xl justify-center font-bold font-sans text-yellow-100">{ adventurer.name }</p>
         </div>
       )) }
 
-      <div className="flex justify-center mt-6 text-2xl">Would you like to:</div>
-        <div className="flex justify-center align-text-bottom mt-6 text-2xl">
-          {/* TODO: pull out button to make more DRY */}
-          <Button
-            className={clsx(
-              'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm mt-4 mb-4'
-              + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
-              {
-                'bg-gray-500 text-gray-600': theme === 'light',
-                'bg-gray-700 text-gray-300': theme === 'dark',
-              },
-            )}
-            onClick={ () => router.push('/adventurers') }
-            disabled={ combatEngaged }
-            aria-disabled={ combatEngaged }>
-            Hire More Adventurers
-          </Button>
-          <span className="flex justify-center align-text-bottom mt-4 text-2xl px-4">or</span>
-          <Button
-            className={clsx(
-              'flex h-10 grow items-center justify-center gap-2 rounded-md p-3 text-sm mt-4 mb-4'
-              + 'font-medium hover:bg-gray-400 hover:rounded-lg md:flex-none md:justify-start md:p-2 md:px-3',
-              {
-                'bg-gray-500 text-gray-600': theme === 'light',
-                'bg-gray-700 text-gray-300': theme === 'dark',
-              },
-            )}
-            onClick={ getTheMonsters }
-            disabled={ combatEngaged }
-            aria-disabled={ combatEngaged }>
-            Fight the monsters!
-          </Button>
-        </div>
-
+      <div className="flex justify-center mt-8 text-xl">Would you like to:</div>
+      <div className="flex justify-center align-text-bottom mt-4 text-2xl">
+        <CombatButtons buttonType="hire" setCombatEngaged={setCombatEngaged} />
+        <span className="flex justify-center align-text-bottom mt-4 text-2xl px-4">or</span>
+        <CombatButtons buttonType="fight" setCombatEngaged={setCombatEngaged} />
+      </div>
       {combatEngaged && theMonster &&
       <>
         <p className="flex justify-center mt-6 text-xl">{ hiredAdventurers.length > 0 ? (
