@@ -4,8 +4,10 @@ const HomePage = async () => {
       <h2 className="text-3xl font-semibold">Welcome to Hire an Adventurer!</h2>
 
       <p className="mt-4 mb-5 text-lg italic">
-        Dragon destroying your town?  Minotaur mashing your village?  Goblins going berserk?!
-        Hire some adventurers to put the problem to rest!
+        <p>Dragon destroying your town?</p>
+        <p>Minotaur mashing your village?</p>
+        <p>Goblins going berserk?!</p>
+        <p>Hire some adventurers to put the problem to rest!</p>
       </p>
       <p className="mt-4 mb-3">
         In this simulation, you start with 200 silver coins.  You can use this silver to hire adventurers
@@ -26,8 +28,8 @@ const HomePage = async () => {
           will be fatigued or injured. Once in that condition they have an increased chance of injury 
           (if not already injured), or even death if they are hired and sent off again to fight.
         </span>
-        <span className="pl-6 block">
-          ...And, well, you can&apos;t hire dead adventurers.
+        <span className="pl-4 block">
+          ...And, well, dead adventurers slay no monsters.
         </span>
       </p>
     </>
