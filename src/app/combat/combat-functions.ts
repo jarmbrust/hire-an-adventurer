@@ -18,8 +18,8 @@ export const adventurersVictorious = (theMonster: Monster, hiredAdventurers: Adv
     partyAttackValue = hiredAdventurers.reduce((total, adventurer) => 
       total + ((Number(adventurer.strength) || 0) * strengthMultiplier) + ((Number(adventurer.arcane) || 0) * arcaneMultiplier), 0);
   }
-  console.log('partyAttackValue:', partyAttackValue);
-  console.log('theMonsterAttackPower:', theMonster.attackPower);
+  // console.log('partyAttackValue:', partyAttackValue);
+  // console.log('theMonsterAttackPower:', theMonster.attackPower);
   return partyAttackValue > theMonster.attackPower ? true : false; 
 };
 
@@ -67,9 +67,7 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
   // There can be a +2 to +4 modifier to the affliction based on the the condition
   // of the adventurer when they entered combat.
   // Results: 1-3: Fatigued, 4-6: Injured, 7-10: Dead
-  console.log('Modifier:', modifier);
   const conditionNumber = Math.floor(Math.random() * 6 + 1) + modifier;
-  console.log('Condition Number:', conditionNumber);
   switch (conditionNumber) {
     case 1:
     case 2:
@@ -85,6 +83,6 @@ const adventurerAfflictions = (modifier: number): AdventurerConditions => {
     case 10:
       return AdventurerConditions.Dead;
     default:
-      return AdventurerConditions.Fatigued;
+      throw new Error(`Unknown condition number: ${conditionNumber}`);
   }
 };
