@@ -14,17 +14,17 @@ export default function SideNavbar() {
   return (
     <div className="flex h-full flex-col px-3 py-1 md:px-2">
       <Button
-        className="mb-2 flex h-20 items-end justify-start rounded-md bg-zinc-600 p-4 md:h-40"
+        className={clsx("flex h-20 rounded-md p-4 mb-2 md:h-40 justify-center md:justify-start", {
+          'dark-sidebar': theme === 'dark',
+          'light-sidebar': theme === 'light',
+        })}
         onClick={() => router.push('/')} 
       >
-        <div className="w-32 text-white md:w-40">
-          <InnLogo />
-        </div>
+        <InnLogo />
       </Button>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <NavLinks />
-        <div className={clsx("hidden h-auto w-full grow rounded-md bg-gray-50 md:block",
-          {
+        <div className={clsx("hidden h-auto w-full grow rounded-md bg-gray-50 md:block", {
             'dark-sidebar': theme === 'dark',
             'light-sidebar': theme === 'light',
           })}>

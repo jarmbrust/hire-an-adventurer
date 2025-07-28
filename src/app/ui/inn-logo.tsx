@@ -1,8 +1,7 @@
+// TODO: create a logo for this component
 const InnLogo = () => {
   return (
-    <div className="flex items-center text-white">
-      <div className="text-3xl px-3">Hire an Adventurer!</div>
-    </div>
+    <div className="text-3xl">Hire an Adventurer!</div>
   );
 }
 
