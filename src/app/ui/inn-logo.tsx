@@ -1,7 +1,7 @@
 const InnLogo = () => {
   return (
-    <div className={ 'flex flex-row items-center leading-none text-white' }>
-      <div className="text-[28px]">Hire an Adventurer!</div>
+    <div className="flex items-center text-white">
+      <div className="text-3xl px-3">Hire an Adventurer!</div>
     </div>
   );
 }
