@@ -3,12 +3,12 @@ const HomePage = async () => {
     <>
       <h2 className="text-3xl font-semibold">Welcome to Hire an Adventurer!</h2>
 
-      <p className="mt-4 mb-5 text-lg italic">
+      <div className="mt-4 mb-5 text-lg italic">
         <p>Dragon destroying your town?</p>
         <p>Minotaur mashing your village?</p>
         <p>Goblins going berserk?!</p>
         <p>Hire some adventurers to put the problem to rest!</p>
-      </p>
+      </div>
       <p className="mt-4 mb-3">
         In this simulation, you start with 200 silver coins.  You can use this silver to hire adventurers
         to fight the monsters plaguing your village.  See how many monsters you can defeat and how high of 

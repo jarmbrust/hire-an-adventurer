@@ -1,7 +1,7 @@
 'use server';
 
 import { neon } from '@neondatabase/serverless';
-import { Adventurer, Monster } from '@/app/lib/definitions';
+import { Adventurer, Monster, TopScoreList } from '@/app/lib/definitions';
 
 export async function getAllAdventurers() {
     if (!process.env.DATABASE_URL) {
@@ -119,4 +119,27 @@ export async function getMonsterByName(name: string): Promise<Monster> {
     throw new Error(`Monster ${name} not found`);
   }
   return result[0] as Monster;
+};
+
+export async function getTopScores(): Promise<TopScoreList[]> {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is not defined');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  const result = await sql`
+    SELECT id, score, initials, TO_CHAR(date, 'DD-MON-YYYY') AS date, gameVersion
+    FROM high_scores ORDER BY score DESC, initials DESC LIMIT 10
+  `;
+  return result as TopScoreList[];
+};
+
+export async function insertTopScore(score: number, initials: string, gameVersion: string): Promise<void> {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is not defined');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  await sql`
+    INSERT INTO high_scores (score, initials, date, gameVersion)
+    VALUES (${score}, ${initials}, CURRENT_DATE, ${gameVersion})
+  `;
 };

@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  env: {
+    APP_VERSION: '1.0.0',
+    APP_DISPLAY_VERSION: 'v1.0'
+  },
 };
 
 export default nextConfig;

@@ -54,3 +54,11 @@ export type RootState = {
   theme: { theme: Theme };
   score: { score: { value: number; coins: number } };
 };
+
+export type TopScoreList = {
+  id: number;
+  initials: string;
+  score: number;
+  date: string;
+  gameVersion: string;
+};
