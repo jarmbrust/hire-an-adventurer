@@ -16,12 +16,12 @@ const TopScores = () => {
 
   console.log(version);
 
-  const madeTopTen = (): boolean => {
-    if (scoreValue > 0) {
-      return true;
-    }
-    return false;
-  }
+  // const madeTopTen = (): boolean => {
+  //   if (scoreValue > 0) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   return (
     <>

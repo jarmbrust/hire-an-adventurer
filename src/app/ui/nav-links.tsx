@@ -6,7 +6,7 @@ import {
   ShoppingCartIcon,
   FireIcon,
   QuestionMarkCircleIcon,
-  TrophyIcon,
+  // TrophyIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Button from '@/app/ui/button';
@@ -17,7 +17,7 @@ import {
   cartPath,
   combatPath,
   homePath,
-  topScoresPath,
+  // topScoresPath,
 } from '@/app/lib/paths';
 import { useAppSelector } from '@/app/lib/hooks';
 import { selectTheme } from '@/app/lib/features/theme/theme-slice';
