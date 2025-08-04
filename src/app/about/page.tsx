@@ -15,7 +15,7 @@ const AboutPage = () => {
         To play, you select the adventurers you want to hire.  Then go to the cart and hire them -- being mindful
         of the fee for each adventurer and how may coins you have left.  Once you have hired your adventurers,
         go to the Combat section and see if you can defeat the monster!  Monsters are randomly selected from
-        a pool.
+        a pool (although weaker, low-point monsters are more common).
       </p>
       <p className="mb-5">
         Fighting monsters is taxing for the adventurers however, and they will return from a loss fatigued

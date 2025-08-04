@@ -55,7 +55,7 @@ export type RootState = {
   score: { score: { value: number; coins: number } };
 };
 
-export type TopScoreList = {
+export type HighScoreList = {
   id: number;
   initials: string;
   score: number;
